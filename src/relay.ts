@@ -11,6 +11,8 @@ import { overwriteRegistryEntry } from "libskynetnode/dist";
 import { Buffer } from "buffer";
 import { blake2b } from "libskynet/dist";
 
+const REGISTRY_DHT_KEY = "lumeweb-dht-relay";
+
 export async function start() {
   const RELAY_PORT = process.env.RELAY_PORT ?? (8080 as unknown as string);
 
@@ -22,7 +24,7 @@ export async function start() {
 
   await overwriteRegistryEntry(
     dht.defaultKeyPair,
-    hashDataKey("lume-dht-relay"),
+    hashDataKey(REGISTRY_DHT_KEY),
     stringToUint8ArrayUtf8(`${dht.localAddress()}:${RELAY_PORT}`)
   );
 
