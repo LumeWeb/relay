@@ -61,9 +61,7 @@ function getRequestId(request: RPCRequest) {
   return hash(stringify(clonedRequest));
 }
 
-function maybeProcessRequest(item: any) {
-  let request: RPCRequest = unpack(item) as RPCRequest;
-
+function maybeProcessRequest(request: RPCRequest) {
   if (!request.chain) {
     throw new Error("RPC chain missing");
   }
@@ -137,8 +135,15 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
 export async function start() {
   (await getDHT()).on("connection", (socket: any) => {
     socket.on("data", async (data: any) => {
+      let request: RPCRequest;
       try {
-        socket.write(pack(await maybeProcessRequest(data)));
+        request = unpack(data) as RPCRequest;
+      } catch (e) {
+        return;
+      }
+
+      try {
+        socket.write(pack(await maybeProcessRequest(request)));
       } catch (error) {
         console.trace(error);
         socket.write(pack({ error }));

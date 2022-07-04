@@ -1,4 +1,4 @@
 export function errorExit(msg: string): void {
-  console.log(msg);
+  console.error(msg);
   process.exit(1);
 }

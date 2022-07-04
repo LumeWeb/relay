@@ -8,6 +8,7 @@ import {
   seedPhraseToSeed,
   validSeedPhrase,
 } from "libskynet";
+import { RELAY_SEED } from "./constant_vars";
 
 let server: {
   listen: (arg0: ed25519Keypair) => void;
@@ -15,12 +16,6 @@ let server: {
 };
 
 async function start() {
-  const RELAY_SEED = process.env.RELAY_SEED ?? null;
-
-  if (!RELAY_SEED) {
-    errorExit("RELAY_SEED missing. Aborting.");
-  }
-
   let [, err] = validSeedPhrase(RELAY_SEED as string);
   if (err !== null) {
     errorExit("RELAY_SEED is invalid. Aborting.");

@@ -7,53 +7,60 @@ import { relay } from "@hyperswarm/dht-relay";
 // @ts-ignore
 import Stream from "@hyperswarm/dht-relay/ws";
 import { get as getDHT } from "./dht.js";
-import { overwriteRegistryEntry } from "libskynetnode/dist";
-import { Buffer } from "buffer";
-import { blake2b } from "libskynet/dist";
+import { RELAY_DOMAIN, RELAY_PORT } from "./constants.js";
+// @ts-ignore
+import GLE from "greenlock-express";
+// @ts-ignore
+import Greenlock from "@root/greenlock";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const REGISTRY_DHT_KEY = "lumeweb-dht-relay";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const config = {
+  packageRoot: path.dirname(__dirname),
+  configDir: path.resolve(__dirname, "../", "./data/greenlock.d/"),
+  cluster: false,
+  agreeToTerms: true,
+  staging: true,
+};
 
 export async function start() {
-  const RELAY_PORT = process.env.RELAY_PORT ?? (8080 as unknown as string);
-
-  const server = new WS.Server({
-    port: RELAY_PORT as unknown as number,
+  const greenlock = Greenlock.create(config);
+  await greenlock.add({
+    subject: RELAY_DOMAIN,
+    altnames: [RELAY_DOMAIN],
   });
+  // @ts-ignore
+  config.greenlock = greenlock;
+  GLE.init(config).ready(async (GLEServer: any) => {
+    let httpsServer = GLEServer.httpsServer();
+    var httpServer = GLEServer.httpServer();
 
-  const dht = await getDHT();
+    await new Promise((resolve) => {
+      httpServer.listen(80, "0.0.0.0", function () {
+        console.info("HTTP Listening on ", httpServer.address());
+        resolve(null);
+      });
+    });
 
-  await overwriteRegistryEntry(
-    dht.defaultKeyPair,
-    hashDataKey(REGISTRY_DHT_KEY),
-    stringToUint8ArrayUtf8(`${dht.localAddress()}:${RELAY_PORT}`)
-  );
+    const dht = await getDHT();
 
-  server.on("connection", (socket) => {
-    relay(dht, new Stream(false, socket));
+    let wsServer = new WS.Server({ server: httpServer });
+
+    wsServer.on("connection", (socket: any) => {
+      relay(dht, new Stream(false, socket));
+    });
+    await new Promise((resolve) => {
+      httpsServer.listen(RELAY_PORT, "0.0.0.0", function () {
+        console.info("Relay started on ", httpsServer.address());
+        resolve(null);
+      });
+    });
+
+    await greenlock.get({
+      servername: RELAY_DOMAIN,
+    });
   });
-}
-
-export function hashDataKey(dataKey: string): Uint8Array {
-  return blake2b(encodeUtf8String(dataKey));
-}
-
-function encodeUtf8String(str: string): Uint8Array {
-  const byteArray = stringToUint8ArrayUtf8(str);
-  const encoded = new Uint8Array(8 + byteArray.length);
-  encoded.set(encodeNumber(byteArray.length));
-  encoded.set(byteArray, 8);
-  return encoded;
-}
-
-function stringToUint8ArrayUtf8(str: string): Uint8Array {
-  return Uint8Array.from(Buffer.from(str, "utf-8"));
-}
-
-function encodeNumber(num: number): Uint8Array {
-  const encoded = new Uint8Array(8);
-  for (let index = 0; index < encoded.length; index++) {
-    encoded[index] = num & 0xff;
-    num = num >> 8;
-  }
-  return encoded;
 }
