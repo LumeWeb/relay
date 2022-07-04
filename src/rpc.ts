@@ -5,15 +5,40 @@ import { Mutex } from "async-mutex";
 import { createRequire } from "module";
 import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
+import {
+  POCKET_ACCOUNT_PRIVATE_KEY,
+  POCKET_ACCOUNT_PUBLIC_KEY,
+  POCKET_APP_ID,
+  POCKET_APP_KEY,
+  POCKET_HOST,
+  POCKET_PORT,
+} from "./constant_vars";
+import { updateUsePocketGateway, usePocketGateway } from "./constants";
+import { Server as JSONServer } from "jayson/promise/index.js";
+import { rpcMethods } from "./rpc/index.js";
+import {
+  Configuration,
+  HttpRpcProvider,
+  Pocket,
+  PocketAAT,
+} from "@pokt-network/pocket-js";
+import {
+  JSONRPCRequest,
+  JSONRPCResponseWithError,
+  JSONRPCResponseWithResult,
+} from "jayson";
+
 const require = createRequire(import.meta.url);
 
 const stringify = require("json-stable-stringify");
-
-const clients: { [chain: string]: any } = {};
 const pendingRequests = new NodeCache();
 const processedRequests = new NodeCache({
   stdTTL: 60 * 60 * 12,
 });
+
+let pocketServer: Pocket;
+let _aat: PocketAAT;
+let jsonServer: jayson.Server;
 
 interface RPCRequest {
   force: boolean;
@@ -33,23 +58,6 @@ interface RPCResponse {
 
 function hash(data: string): string {
   return crypto.createHash("sha256").update(data).digest("hex");
-}
-
-function getClient(chain: string): Function {
-  chain = chain.replace(/[^a-z0-9\-]/g, "");
-
-  if (!(chain in clients)) {
-    clients[chain] = jayson.Client.http({
-      host: process.env.RPC_PROXY_HOST,
-      port: parseInt(process.env.RPC_PROXY_PORT as string),
-      path: "/",
-      headers: {
-        "X-Chain": chain,
-      },
-    });
-  }
-
-  return clients[chain];
 }
 
 function getRequestId(request: RPCRequest) {
@@ -98,10 +106,13 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
 
   let error;
   try {
-    // @ts-ignore
-    rpcResp = await getClient(request.chain).request(
-      request.query,
-      request.data
+    rpcResp = await processRpcRequest(
+      {
+        method: request.query,
+        jsonrpc: "2.0",
+        params: request.data,
+      } as unknown as JSONRPCRequest,
+      request.chain
     );
   } catch (e) {
     error = (e as Error).message;
@@ -113,15 +124,22 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
   };
 
   if (rpcResp) {
+    rpcResp = rpcResp as JSONRPCResponseWithResult;
     if (false === rpcResp.result) {
       error = true;
     }
+
+    rpcResp = rpcResp as unknown as JSONRPCResponseWithError;
+
     if (rpcResp.error) {
+      // @ts-ignore
       error = rpcResp.error.message;
     }
   }
 
-  dbData.data = error ? { error } : rpcResp.result;
+  dbData.data = error
+    ? { error }
+    : (rpcResp as unknown as JSONRPCResponseWithResult).result;
 
   if (!processedRequests.get(reqId) || request.force) {
     processedRequests.set(reqId, dbData);
@@ -132,7 +150,93 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
   return dbData;
 }
 
+export function updateAat(aat: PocketAAT): void {
+  _aat = aat;
+}
+
+export function getAat(): PocketAAT {
+  return _aat;
+}
+export function getPocketServer(): Pocket {
+  return pocketServer;
+}
+
+export async function unlockAccount(
+  accountPrivateKey: string,
+  accountPublicKey: string,
+  accountPassphrase: string
+): Promise<PocketAAT> {
+  try {
+    const account = await pocketServer.keybase.importAccount(
+      Buffer.from(accountPrivateKey, "hex"),
+      accountPassphrase
+    );
+
+    if (account instanceof Error) {
+      // noinspection ExceptionCaughtLocallyJS
+      throw account;
+    }
+
+    await pocketServer.keybase.unlockAccount(
+      account.addressHex,
+      accountPassphrase,
+      0
+    );
+
+    return await PocketAAT.from(
+      "0.0.1",
+      accountPublicKey,
+      accountPublicKey,
+      accountPrivateKey
+    );
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
+}
+
+export async function processRpcRequest(
+  request: JSONRPCRequest,
+  chain: string
+): Promise<JSONRPCResponseWithResult | JSONRPCResponseWithError | undefined> {
+  return new Promise((resolve) => {
+    jsonServer.call(
+      request,
+      { chain },
+      (
+        err?: JSONRPCResponseWithError | null,
+        result?: JSONRPCResponseWithResult
+      ): void => {
+        if (err) {
+          return resolve(err);
+        }
+        resolve(result);
+      }
+    );
+  });
+}
+
 export async function start() {
+  if (!POCKET_APP_ID || !POCKET_APP_KEY) {
+    const dispatchURL = new URL(`http://${POCKET_HOST}:${POCKET_PORT}`);
+    const rpcProvider = new HttpRpcProvider(dispatchURL);
+    const configuration = new Configuration();
+    pocketServer = new Pocket([dispatchURL], rpcProvider, configuration);
+    updateUsePocketGateway(false);
+  }
+
+  if (!usePocketGateway()) {
+    updateAat(
+      await unlockAccount(
+        <string>POCKET_ACCOUNT_PRIVATE_KEY,
+        <string>POCKET_ACCOUNT_PUBLIC_KEY,
+        "0"
+      )
+    );
+  }
+
+  jsonServer = new JSONServer(rpcMethods, { useContext: true });
+
   (await getDHT()).on("connection", (socket: any) => {
     socket.on("data", async (data: any) => {
       let request: RPCRequest;
