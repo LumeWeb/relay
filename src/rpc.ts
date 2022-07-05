@@ -14,6 +14,7 @@ import {
   JSONRPCResponseWithResult,
 } from "jayson";
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
+import { errorExit } from "./util";
 
 const require = createRequire(import.meta.url);
 
@@ -210,6 +211,14 @@ export async function processRpcRequest(
 
 export async function start() {
   if (!config.str("pocket-app-id") || !config.str("pocket-app-key")) {
+    const pocketHost = config.str("pocket-host");
+    const pocketPort = config.uint("pocket-port");
+    if (!pocketHost || !pocketPort) {
+      errorExit(
+        "Please set pocket-host and pocket-port config options if you do not have an API key set"
+      );
+    }
+
     const dispatchURL = new URL(
       `http://${config.str("pocket-host")}:${config.uint("pocket-port")}`
     );
