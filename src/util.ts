@@ -1,4 +1,6 @@
-import { chainNetworks } from "./rpc/index.js";
+import * as chainNetworks from "./networks.json";
+
+type networks = { [net: string]: string };
 
 export function errorExit(msg: string): void {
   console.error(msg);
@@ -7,7 +9,7 @@ export function errorExit(msg: string): void {
 
 export function maybeMapChainId(chain: string): string | boolean {
   if (chain in chainNetworks) {
-    return chainNetworks[chain];
+    return (chainNetworks as networks)[chain];
   }
 
   if (

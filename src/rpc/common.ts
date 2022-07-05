@@ -5,8 +5,6 @@ import { Connection } from "@solana/web3.js";
 import { getAat, getPocketServer } from "../rpc.js";
 import config, { usePocketGateway } from "../config.js";
 
-export const chainNetworks = require("../../networks.json");
-
 type RpcProviderMethod = (method: string, params: Array<any>) => Promise<any>;
 
 const gatewayProviders: { [name: string]: RpcProviderMethod } = {};
