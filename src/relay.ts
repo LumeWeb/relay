@@ -20,6 +20,7 @@ const __dirname = path.dirname(__filename);
 
 const sslConfig = {
   packageRoot: path.dirname(__dirname),
+  maintainerEmail: "contact@lumeweb.com",
   configDir: path.resolve(config.prefix, "ssl"),
   cluster: false,
   agreeToTerms: true,
