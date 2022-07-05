@@ -24,6 +24,7 @@ export const POCKET_ACCOUNT_PUBLIC_KEY =
 export const POCKET_ACCOUNT_PRIVATE_KEY =
   process.env.POCKET_ACCOUNT_PRIVATE_KEY || false;
 
+export const HSD_USE_EXTERNAL_NODE = process.env.HSD_USE_EXTERNAL_NODE || false;
 export const HSD_NETWORK_TYPE = process.env.HSD_NETWORK || "main";
 export const HSD_HOST = process.env.HSD_HOST || "localhost";
 export const HSD_PORT = Number(process.env.HSD_PORT) || 12037;
