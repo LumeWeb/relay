@@ -2,12 +2,8 @@ import { ethers } from "ethers";
 import { PocketAAT } from "@pokt-network/pocket-js";
 import { maybeMapChainId, reverseMapChainId } from "../util.js";
 import { Connection } from "@solana/web3.js";
-import {
-  POCKET_APP_ID,
-  POCKET_APP_KEY,
-  usePocketGateway,
-} from "../constants.js";
 import { getAat, getPocketServer } from "../rpc.js";
+import config, { usePocketGateway } from "../config.js";
 
 export const chainNetworks = require("../../networks.json");
 
@@ -20,14 +16,18 @@ const gatewayMethods: {
 } = {
   default: (chainId: string): RpcProviderMethod => {
     const provider = new ethers.providers.JsonRpcProvider({
-      url: `https://${chainId}.gateway.pokt.network/v1/lb/${POCKET_APP_ID}`,
-      password: <string>POCKET_APP_KEY,
+      url: `https://${chainId}.gateway.pokt.network/v1/lb/${config.str(
+        "pocket-api-id"
+      )}`,
+      password: config.str("pocket-api-key"),
     });
     return provider.send.bind(provider);
   },
   "sol-mainnet": (chainId: string): RpcProviderMethod => {
     const provider = new Connection(
-      `https://solana-mainnet.gateway.pokt.network/v1/lb/${POCKET_APP_ID}`
+      `https://solana-mainnet.gateway.pokt.network/v1/lb/${config.str(
+        "pocket-api-id"
+      )}`
     );
 
     // @ts-ignore

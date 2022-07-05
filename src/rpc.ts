@@ -5,15 +5,6 @@ import { Mutex } from "async-mutex";
 import { createRequire } from "module";
 import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
-import {
-  POCKET_ACCOUNT_PRIVATE_KEY,
-  POCKET_ACCOUNT_PUBLIC_KEY,
-  POCKET_APP_ID,
-  POCKET_APP_KEY,
-  POCKET_HOST,
-  POCKET_PORT,
-} from "./constant_vars";
-import { updateUsePocketGateway, usePocketGateway } from "./constants";
 import { Server as JSONServer } from "jayson/promise/index.js";
 import { rpcMethods } from "./rpc/index.js";
 import {
@@ -27,6 +18,7 @@ import {
   JSONRPCResponseWithError,
   JSONRPCResponseWithResult,
 } from "jayson";
+import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
 
 const require = createRequire(import.meta.url);
 
@@ -217,8 +209,10 @@ export async function processRpcRequest(
 }
 
 export async function start() {
-  if (!POCKET_APP_ID || !POCKET_APP_KEY) {
-    const dispatchURL = new URL(`http://${POCKET_HOST}:${POCKET_PORT}`);
+  if (!config.str("pocket-app-id") || !config.str("pocket-app-key")) {
+    const dispatchURL = new URL(
+      `http://${config.str("pocket-host")}:${config.uint("pocket-port")}`
+    );
     const rpcProvider = new HttpRpcProvider(dispatchURL);
     const configuration = new Configuration();
     pocketServer = new Pocket([dispatchURL], rpcProvider, configuration);
@@ -228,8 +222,8 @@ export async function start() {
   if (!usePocketGateway()) {
     updateAat(
       await unlockAccount(
-        <string>POCKET_ACCOUNT_PRIVATE_KEY,
-        <string>POCKET_ACCOUNT_PUBLIC_KEY,
+        <string>config.str("pocket-account-private-key"),
+        <string>config.str("pocket-account-public-key"),
         "0"
       )
     );

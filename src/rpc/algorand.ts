@@ -4,7 +4,7 @@ import minimatch from "minimatch";
 import HTTPClient from "algosdk/dist/cjs/src/client/client.js";
 import { sprintf } from "sprintf-js";
 import { RpcMethodList } from "./index.js";
-import { POCKET_APP_ID } from "../constants.js";
+import config from "../config.js";
 
 const allowedEndpoints: { [endpoint: string]: ("GET" | "POST")[] } = {
   "/v2/teal/compile": ["POST"],
@@ -60,7 +60,7 @@ export function proxyRestMethod(
 
     let apiUrl;
     try {
-      apiUrl = sprintf(apiServer, chainId, POCKET_APP_ID);
+      apiUrl = sprintf(apiServer, chainId, config.str("pocket-app-id"));
     } catch (e) {
       apiUrl = apiServer;
     }

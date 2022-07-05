@@ -8,7 +8,7 @@ import {
   seedPhraseToSeed,
   validSeedPhrase,
 } from "libskynet";
-import { RELAY_SEED } from "./constant_vars";
+import config from "./config.js";
 
 let server: {
   listen: (arg0: ed25519Keypair) => void;
@@ -16,14 +16,14 @@ let server: {
 };
 
 async function start() {
-  let [, err] = validSeedPhrase(RELAY_SEED as string);
+  const seed = config.str("relay-seed");
+
+  let [, err] = validSeedPhrase(seed);
   if (err !== null) {
     errorExit("RELAY_SEED is invalid. Aborting.");
   }
 
-  const keyPair = deriveMyskyRootKeypair(
-    seedPhraseToSeed(RELAY_SEED as string)[0]
-  );
+  const keyPair = deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
 
   const node = new DHT({ keyPair });
 

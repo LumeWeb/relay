@@ -1,9 +1,3 @@
-import {
-  AFRAID_USERNAME,
-  AFRAID_PASSWORD,
-  RELAY_PORT,
-  RELAY_DOMAIN,
-} from "./constants.js";
 import cron from "node-cron";
 import fetch from "node-fetch";
 import { get as getDHT } from "./dht.js";
@@ -14,6 +8,7 @@ import { Parser } from "xml2js";
 import { URL } from "url";
 import { errorExit } from "./util.js";
 import { pack } from "msgpackr";
+import config from "./config.js";
 
 const { createHash } = await import("crypto");
 
@@ -43,7 +38,7 @@ export async function start() {
   await overwriteRegistryEntry(
     dht.defaultKeyPair,
     hashDataKey(REGISTRY_DHT_KEY),
-    pack(`${RELAY_DOMAIN}:${RELAY_PORT}`)
+    pack(`${config.str("relay-domain")}:${config.uint("relay-port")}`)
   );
 
   cron.schedule("0 * * * *", ipUpdate);
@@ -75,6 +70,7 @@ function encodeNumber(num: number): Uint8Array {
 }
 
 async function getDomainInfo() {
+  const relayDomain = config.str("relay-domain");
   const parser = new Parser();
 
   const url = new URL("https://freedns.afraid.org/api/");
@@ -86,7 +82,9 @@ async function getDomainInfo() {
   params.append("style", "xml");
 
   const hash = createHash("sha1");
-  hash.update(`${AFRAID_USERNAME}|${AFRAID_PASSWORD}`);
+  hash.update(
+    `${config.str("afraid-username")}|${config.str("afraid-password")}`
+  );
 
   params.append("sha", hash.digest().toString("hex"));
 
@@ -101,14 +99,14 @@ async function getDomainInfo() {
   let domain = null;
 
   for (const item of json.xml.item) {
-    if (item.host[0] === RELAY_DOMAIN) {
+    if (item.host[0] === relayDomain) {
       domain = item;
       break;
     }
   }
 
   if (!domain) {
-    errorExit(`Domain ${RELAY_DOMAIN} not found in afraid.org account`);
+    errorExit(`Domain ${relayDomain} not found in afraid.org account`);
   }
 
   return domain;

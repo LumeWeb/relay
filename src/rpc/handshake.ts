@@ -3,13 +3,8 @@ import { RpcMethodList } from "./index.js";
 import rand from "random-key";
 // @ts-ignore
 import SPVNode from "hsd/lib/node/spvnode.js";
-import {
-  HSD_API_KEY,
-  HSD_HOST,
-  HSD_NETWORK_TYPE,
-  HSD_PORT,
-  HSD_USE_EXTERNAL_NODE,
-} from "../constants.js";
+import config from "../config.js";
+
 const { NodeClient } = require("hs-client");
 
 let hsdServer: SPVNode;
@@ -21,11 +16,7 @@ let clientArgs = {
   apiKey: rand.generate(),
 };
 
-if (!HSD_USE_EXTERNAL_NODE) {
-  process.env.HSD_NO_DNS = "true";
-  process.env.HSD_NO_RS = "true";
-  process.env.HSD_HTTP_HOST = "127.0.0.1";
-  process.env.HSD_API_KEY = clientArgs.apiKey;
+if (!config.bool("hsd-use-extenal-node")) {
   hsdServer = new SPVNode({
     config: false,
     argv: false,
@@ -41,10 +32,10 @@ if (!HSD_USE_EXTERNAL_NODE) {
   });
 } else {
   clientArgs = {
-    network: HSD_NETWORK_TYPE,
-    host: HSD_HOST,
-    port: HSD_PORT,
-    apiKey: HSD_API_KEY,
+    network: config.str("hsd-network-type"),
+    host: config.str("hsd-host"),
+    port: config.uint("hsd-port"),
+    apiKey: config.str("hsd-api-key"),
   };
 }
 
