@@ -4,7 +4,9 @@ import rand from "random-key";
 // @ts-ignore
 import SPVNode from "hsd/lib/node/spvnode.js";
 import config from "../config.js";
+import { createRequire } from "module";
 
+const require = createRequire(import.meta.url);
 const { NodeClient } = require("hs-client");
 
 let hsdServer: SPVNode;
