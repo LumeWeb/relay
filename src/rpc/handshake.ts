@@ -1,4 +1,3 @@
-import { createRequire } from "module";
 import { RpcMethodList } from "./index.js";
 // @ts-ignore
 import rand from "random-key";
@@ -11,9 +10,6 @@ import {
   HSD_PORT,
   HSD_USE_EXTERNAL_NODE,
 } from "../constants.js";
-
-const require = createRequire(import.meta.url);
-
 const { NodeClient } = require("hs-client");
 
 let hsdServer: SPVNode;
@@ -34,14 +30,14 @@ if (!HSD_USE_EXTERNAL_NODE) {
     config: false,
     argv: false,
     env: true,
+    noDns: true,
+    httpHost: "127.0.0.1",
+    apiKey: clientArgs.apiKey,
     logFile: false,
     logConsole: false,
     logLevel: "info",
-    memory: false,
     workers: true,
-    listen: false,
     network: "main",
-    loader: require,
   });
 } else {
   clientArgs = {
