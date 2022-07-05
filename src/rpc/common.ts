@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { PocketAAT } from "@pokt-network/pocket-js";
+import { Pocket, PocketAAT } from "@pokt-network/pocket-js";
 import { maybeMapChainId, reverseMapChainId } from "../util.js";
 import { Connection } from "@solana/web3.js";
 import { getAat, getPocketServer } from "../rpc.js";
@@ -73,7 +73,11 @@ export function proxyRpcMethod(
       return await provider(method, args);
     }
 
-    return await sendRelay(JSON.stringify(args), <string>chainId, getAat());
+    return await sendRelay(
+      JSON.stringify(args),
+      <string>chainId,
+      getAat() as unknown as PocketAAT
+    );
   };
 }
 
@@ -84,7 +88,11 @@ async function sendRelay(
   pocketAAT: PocketAAT
 ) {
   try {
-    return await getPocketServer().sendRelay(rpcQuery, blockchain, pocketAAT);
+    return await (getPocketServer() as unknown as Pocket).sendRelay(
+      rpcQuery,
+      blockchain,
+      pocketAAT
+    );
   } catch (e) {
     console.log(e);
     throw e;

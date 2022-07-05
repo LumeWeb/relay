@@ -5,14 +5,9 @@ import { Mutex } from "async-mutex";
 import { createRequire } from "module";
 import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
-import { Server as JSONServer } from "jayson/promise/index.js";
 import { rpcMethods } from "./rpc/index.js";
-import {
-  Configuration,
-  HttpRpcProvider,
-  Pocket,
-  PocketAAT,
-} from "@pokt-network/pocket-js";
+import PocketPKG from "@pokt-network/pocket-js";
+const { Configuration, HttpRpcProvider, PocketAAT, Pocket } = PocketPKG;
 import {
   JSONRPCRequest,
   JSONRPCResponseWithError,
@@ -28,8 +23,10 @@ const processedRequests = new NodeCache({
   stdTTL: 60 * 60 * 12,
 });
 
-let pocketServer: Pocket;
-let _aat: PocketAAT;
+type PocketAATObject = typeof PocketAAT;
+
+let pocketServer: typeof Pocket;
+let _aat: PocketAATObject;
 let jsonServer: jayson.Server;
 
 interface RPCRequest {
@@ -142,14 +139,14 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
   return dbData;
 }
 
-export function updateAat(aat: PocketAAT): void {
+export function updateAat(aat: PocketAATObject): void {
   _aat = aat;
 }
 
-export function getAat(): PocketAAT {
+export function getAat(): PocketAATObject {
   return _aat;
 }
-export function getPocketServer(): Pocket {
+export function getPocketServer(): typeof Pocket {
   return pocketServer;
 }
 
@@ -157,8 +154,9 @@ export async function unlockAccount(
   accountPrivateKey: string,
   accountPublicKey: string,
   accountPassphrase: string
-): Promise<PocketAAT> {
+): Promise<PocketAATObject> {
   try {
+    // @ts-ignore
     const account = await pocketServer.keybase.importAccount(
       Buffer.from(accountPrivateKey, "hex"),
       accountPassphrase
@@ -169,12 +167,14 @@ export async function unlockAccount(
       throw account;
     }
 
+    // @ts-ignore
     await pocketServer.keybase.unlockAccount(
       account.addressHex,
       accountPassphrase,
       0
     );
 
+    // @ts-ignore
     return await PocketAAT.from(
       "0.0.1",
       accountPublicKey,
@@ -215,6 +215,7 @@ export async function start() {
     );
     const rpcProvider = new HttpRpcProvider(dispatchURL);
     const configuration = new Configuration();
+    // @ts-ignore
     pocketServer = new Pocket([dispatchURL], rpcProvider, configuration);
     updateUsePocketGateway(false);
   }
@@ -229,7 +230,7 @@ export async function start() {
     );
   }
 
-  jsonServer = new JSONServer(rpcMethods, { useContext: true });
+  jsonServer = new jayson.Server(rpcMethods, { useContext: true });
 
   (await getDHT()).on("connection", (socket: any) => {
     socket.on("data", async (data: any) => {
