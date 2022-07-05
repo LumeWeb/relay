@@ -14,7 +14,7 @@ import {
   JSONRPCResponseWithResult,
 } from "jayson";
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
-import { errorExit } from "./util";
+import { errorExit } from "./util.js";
 
 const require = createRequire(import.meta.url);
 
