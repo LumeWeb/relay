@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 
 const sslConfig = {
   packageRoot: path.dirname(__dirname),
-  configDir: path.resolve(__dirname, "../", "./data/greenlock.d/"),
+  configDir: path.resolve(config.prefix, "ssl"),
   cluster: false,
   agreeToTerms: true,
   staging: true,
