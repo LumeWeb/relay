@@ -1,41 +1,57 @@
-import { createRequire } from "module";
+import {createRequire} from "module";
+
 const require = createRequire(import.meta.url);
 const DHT = require("@hyperswarm/dht");
-import { errorExit } from "./util.js";
+import {errorExit} from "./util.js";
 import {
-  deriveMyskyRootKeypair,
-  ed25519Keypair,
-  seedPhraseToSeed,
-  validSeedPhrase,
+    deriveMyskyRootKeypair,
+    ed25519Keypair,
+    seedPhraseToSeed,
+    validSeedPhrase,
 } from "libskynet";
 import config from "./config.js";
 
+let node: {
+    ready: () => any;
+    createServer: () => any;
+    defaultKeyPair: any;
+    on: any;
+};
 let server: {
-  listen: (arg0: ed25519Keypair) => void;
-  ready: () => any;
+    listen: (arg0: ed25519Keypair) => any;
+    on: any;
 };
 
 async function start() {
-  const seed = config.str("relay-seed");
+    const seed = config.str("relay-seed");
 
-  let [, err] = validSeedPhrase(seed);
-  if (err !== null) {
-    errorExit("RELAY_SEED is invalid. Aborting.");
-  }
+    let [, err] = validSeedPhrase(seed);
+    if (err !== null) {
+        errorExit("RELAY_SEED is invalid. Aborting.");
+    }
 
-  const keyPair = deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
+    const keyPair = deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
 
-  const node = new DHT({ keyPair });
+    node = new DHT({keyPair});
 
-  await node.ready();
+    await node.ready();
 
-  return (server = node);
+    server = node.createServer();
+    await server.listen(keyPair);
+
+    return node;
 }
 
-export async function get() {
-  if (!server) {
-    return start();
-  }
+export async function get(
+    ret: "server" | "dht" = "dht"
+): Promise<typeof server | typeof node> {
+    if (!node) {
+        await start();
+    }
 
-  return server;
+    if (ret == "server") {
+        return server;
+    }
+
+    return node;
 }
