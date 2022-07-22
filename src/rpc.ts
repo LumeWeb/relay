@@ -246,7 +246,17 @@ export async function start() {
 
   (await getDHT("server")).on("connection", (socket: any) => {
     socket.rawStream._ondestroy = () => false;
-    socket.on("data", async (data: any) => {
+
+    let isRpc = false;
+    socket.once("data", async (data: any) => {
+      if (data === "rpc") {
+        isRpc = true;
+      }
+    });
+    socket.once("data", async (data: any) => {
+      if (!isRpc) {
+        return;
+      }
       let request: RPCRequest;
       try {
         request = unpack(data) as RPCRequest;
