@@ -5,7 +5,7 @@ const DHT = require("@hyperswarm/dht");
 import { errorExit } from "./util.js";
 import {
   deriveMyskyRootKeypair,
-  ed25519Keypair,
+  Ed25519Keypair,
   seedPhraseToSeed,
   validSeedPhrase,
 } from "libskynet";
@@ -18,14 +18,14 @@ let node: {
   on: any;
 };
 let server: {
-  listen: (arg0: ed25519Keypair) => any;
+  listen: (arg0: Ed25519Keypair) => any;
   on: any;
 };
 
 async function start() {
   const seed = config.str("relay-seed");
 
-  let [, err] = validSeedPhrase(seed);
+  let err = validSeedPhrase(seed);
   if (err !== null) {
     errorExit("RELAY_SEED is invalid. Aborting.");
   }

@@ -30,7 +30,7 @@
         "hsd": "https://github.com/LumeWeb/hsd.git#spv-namestate",
         "jayson": "^3.6.6",
         "json-stable-stringify": "^1.0.1",
-        "libskynet": "^0.0.48",
+        "libskynet": "^0.0.62",
         "libskynetnode": "^0.1.3",
         "minimatch": "^5.1.0",
         "msgpackr": "^1.6.1",
