@@ -23,7 +23,7 @@ let server: {
 };
 
 async function start() {
-  const seed = config.str("relay-seed");
+  const seed = config.str("seed");
 
   let err = validSeedPhrase(seed);
   if (err !== null) {

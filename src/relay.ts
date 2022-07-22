@@ -45,7 +45,7 @@ const FILE_KEY_NAME = "/lumeweb/relay/ssl.key";
 type SslData = { crt: IndependentFileSmall; key: IndependentFileSmall };
 
 export async function start() {
-  const relayPort = config.str("relay-port");
+  const relayPort = config.str("port");
   app = express();
   app.use(function (req, res, next) {
     router(req, res, next);
@@ -109,7 +109,7 @@ async function setupSSl() {
       dateValid = true;
     }
 
-    if (certInfo?.domains.commonName === config.str("relay-domain")) {
+    if (certInfo?.domains.commonName === config.str("domain")) {
       domainValid = true;
     }
   }
@@ -129,7 +129,7 @@ async function createOrRenewSSl(
   oldKey?: IndependentFileSmall
 ) {
   const [certificateKey, certificateRequest] = await acme.forge.createCsr({
-    commonName: config.str("relay-domain"),
+    commonName: config.str("domain"),
   });
   try {
     sslParams.cert = await acmeClient.auto({
@@ -218,7 +218,7 @@ async function getSslFile(
 }
 
 function getSeed(): Uint8Array {
-  let [seed, err] = seedPhraseToSeed(config.str("relay-seed"));
+  let [seed, err] = seedPhraseToSeed(config.str("seed"));
 
   if (err) {
     console.error(err);

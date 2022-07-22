@@ -38,7 +38,7 @@ export async function start() {
   await overwriteRegistryEntry(
     dht.defaultKeyPair,
     hashDataKey(REGISTRY_NODE_KEY),
-    pack(`${config.str("relay-domain")}:${config.uint("relay-port")}`)
+    pack(`${config.str("domain")}:${config.uint("port")}`)
   );
 
   console.log(
@@ -50,7 +50,7 @@ export async function start() {
 }
 
 async function getDomainInfo() {
-  const relayDomain = config.str("relay-domain");
+  const relayDomain = config.str("domain");
   const parser = new Parser();
 
   const url = new URL("https://freedns.afraid.org/api/");

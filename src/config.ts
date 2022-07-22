@@ -16,7 +16,7 @@ try {
   config.open("config.conf");
 } catch (e) {}
 
-for (const setting of ["relay-domain", "afraid-username", "relay-seed"]) {
+for (const setting of ["domain", "afraid-username", "seed"]) {
   if (!config.get(setting)) {
     errorExit(`Required config option ${setting} not set`);
   }
