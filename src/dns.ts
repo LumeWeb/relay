@@ -5,9 +5,10 @@ import { overwriteRegistryEntry } from "libskynetnode";
 import { Buffer } from "buffer";
 import { Parser } from "xml2js";
 import { URL } from "url";
-import { errorExit, hashDataKey } from "./util.js";
+import { errorExit } from "./util.js";
 import { pack } from "msgpackr";
 import config from "./config.js";
+import { hashDataKey } from "@lumeweb/kernel-utils";
 
 const { createHash } = await import("crypto");
 
