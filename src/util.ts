@@ -2,11 +2,6 @@ import * as chainNetworks from "./networks.json" assert { type: "json" };
 
 type networks = { [net: string]: string };
 
-export function errorExit(msg: string): void {
-  console.error(msg);
-  process.exit(1);
-}
-
 export function maybeMapChainId(chain: string): string | boolean {
   if (chain in chainNetworks) {
     return (chainNetworks as networks)[chain];

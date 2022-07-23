@@ -10,12 +10,13 @@ import PocketPKG from "@pokt-network/pocket-js";
 
 const { Configuration, HttpRpcProvider, PocketAAT, Pocket } = PocketPKG;
 import {
+  JSONRPCError,
   JSONRPCRequest,
   JSONRPCResponseWithError,
   JSONRPCResponseWithResult,
 } from "jayson";
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
-import { errorExit } from "./util.js";
+import { ERR_NOT_READY, errorExit } from "./error.js";
 
 const require = createRequire(import.meta.url);
 

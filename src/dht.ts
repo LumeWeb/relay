@@ -2,7 +2,6 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 const DHT = require("@hyperswarm/dht");
-import { errorExit } from "./util.js";
 import {
   deriveMyskyRootKeypair,
   Ed25519Keypair,
@@ -10,6 +9,7 @@ import {
   validSeedPhrase,
 } from "libskynet";
 import config from "./config.js";
+import { errorExit } from "./error.js";
 
 let node: {
   ready: () => any;
