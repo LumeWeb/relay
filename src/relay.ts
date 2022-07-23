@@ -121,6 +121,7 @@ async function setupSSl() {
   }
 
   if (dateValid && domainValid) {
+    sslCtx = tls.createSecureContext(sslParams);
     return;
   }
 
