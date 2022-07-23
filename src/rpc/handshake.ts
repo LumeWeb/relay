@@ -33,9 +33,6 @@ if (!config.bool("hsd-use-external-node")) {
     workers: true,
     network: "main",
   });
-
-  console.log(`HSD API KEY: ${clientArgs.apiKey}`);
-
   hsdServer.on("abort", async (err: any) => {
     const timeout = setTimeout(() => {
       console.error("Shutdown is taking a long time. Exiting.");
