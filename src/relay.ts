@@ -30,10 +30,9 @@ const sslParams: tls.SecureContextOptions = { cert: "", key: "" };
 const sslPrivateKey = await acme.forge.createPrivateKey();
 const acmeClient = new acme.Client({
   accountKey: sslPrivateKey,
-  directoryUrl:
-    config.str("ssl-mode") === "staging"
-      ? acme.directory.letsencrypt.staging
-      : acme.directory.letsencrypt.production,
+  directoryUrl: isSSlStaging()
+    ? acme.directory.letsencrypt.staging
+    : acme.directory.letsencrypt.production,
 });
 
 let app: Express;
@@ -226,4 +225,8 @@ function getSeed(): Uint8Array {
   }
 
   return seed;
+}
+
+function isSSlStaging() {
+  return config.str("ssl-mode") === "staging";
 }
