@@ -5,6 +5,7 @@ import rand from "random-key";
 import SPVNode from "hsd/lib/node/spvnode.js";
 import config from "../config.js";
 import { createRequire } from "module";
+import { ERR_NOT_READY } from "../error.js";
 
 const require = createRequire(import.meta.url);
 const { NodeClient } = require("hs-client");
@@ -80,6 +81,19 @@ export default {
       throw new Error("Invalid Chain");
     }
 
-    return await hnsClient.execute("getnameresource", args);
+    let resp;
+    try {
+      resp = await hnsClient.execute("getnameresource", args);
+    } catch (e: any) {
+      e = e as Error;
+      const eType = e.type.toLowerCase();
+      const eMessage = e.message.toLowerCase();
+
+      if (eType === "rpcerror" && eMessage.includes("chain is not synced")) {
+        return Promise.reject({ ...e, message: ERR_NOT_READY });
+      }
+    }
+
+    return resp;
   },
 } as RpcMethodList;
