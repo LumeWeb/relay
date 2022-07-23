@@ -1,11 +1,33 @@
 // @ts-ignore
 import BConfig from "bcfg";
 import { errorExit } from "./util.js";
+import * as os from "os";
+import { createRequire } from "module";
+import path from "path";
 
+const require = createRequire(import.meta.url);
 const config = new BConfig("lumeweb-relay");
+
+let configLocation;
+const configFile = "config.conf";
+
+switch (os.platform()) {
+  case "win32":
+    configLocation = path.resolve(
+      require?.main?.filename as string,
+      configFile
+    );
+    break;
+
+  case "linux":
+  default:
+    configLocation = path.join("/etc/lumeweb/relay", configFile);
+    break;
+}
 
 config.inject({
   relayPort: 8080,
+  config: configLocation,
 });
 
 config.load({
@@ -13,8 +35,10 @@ config.load({
   argv: true,
 });
 try {
-  config.open("config.conf");
-} catch (e) {}
+  config.open(configLocation);
+} catch (e) {
+  console.error((e as Error).message);
+}
 
 for (const setting of ["domain", "afraid-username", "seed"]) {
   if (!config.get(setting)) {
