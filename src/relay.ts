@@ -111,6 +111,13 @@ async function setupSSl() {
     if (certInfo?.domains.commonName === config.str("domain")) {
       domainValid = true;
     }
+
+    if (
+      Boolean(isSSlStaging()) !==
+      Boolean(certInfo?.issuer.commonName.toLowerCase().includes("staging"))
+    ) {
+      domainValid = false;
+    }
   }
 
   if (dateValid && domainValid) {
