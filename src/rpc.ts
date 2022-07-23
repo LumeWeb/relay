@@ -124,9 +124,8 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
 
     rpcResp = rpcResp as unknown as JSONRPCResponseWithError;
 
-    if (rpcResp.error) {
-      // @ts-ignore
-      error = rpcResp.error.message;
+    if (rpcResp.error && typeof rpcResp.error === "object") {
+      error = (rpcResp.error as JSONRPCError).message;
     }
   }
 
