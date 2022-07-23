@@ -255,35 +255,38 @@ export async function start() {
 
 class RPCConnection {
   private _socket: any;
-  private _process = false;
   constructor(socket: any) {
     this._socket = socket;
     socket.rawStream._ondestroy = () => false;
+    socket.once("data", this.checkRpc.bind(this));
+  }
 
-    let isRpc = false;
-    socket.once("data", async (data: any) => {
-      if (data === "rpc") {
-        isRpc = true;
-      }
-    });
-    socket.once("data", async (data: any) => {
-      if (!isRpc) {
-        return;
-      }
-      let request: RPCRequest;
-      try {
-        request = unpack(data) as RPCRequest;
-      } catch (e) {
-        return;
-      }
+  private async checkRpc(data: Buffer) {
+    if (data.toString() === "rpc") {
+      this._socket.once("data", this.processRequest);
+    }
+  }
 
-      try {
-        socket.write(pack(await maybeProcessRequest(request)));
-      } catch (error) {
-        console.trace(error);
-        socket.write(pack({ error }));
-      }
-      socket.end();
-    });
-  });
+  private async processRequest(data: Buffer) {
+    let request: RPCRequest;
+    try {
+      request = unpack(data) as RPCRequest;
+    } catch (e) {
+      return;
+    }
+
+    const that = this as any;
+
+    try {
+      that.write(pack(await maybeProcessRequest(request)));
+    } catch (error) {
+      console.trace(error);
+      that.write(pack({ error }));
+    }
+    that.end();
+  }
+
+  public static handleRequest(socket: any) {
+    new RPCConnection(socket);
+  }
 }
