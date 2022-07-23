@@ -7,6 +7,7 @@ import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
 import { rpcMethods } from "./rpc/index.js";
 import PocketPKG from "@pokt-network/pocket-js";
+import { start as startDns } from "./dns.js";
 
 const { Configuration, HttpRpcProvider, PocketAAT, Pocket } = PocketPKG;
 import {
@@ -245,6 +246,8 @@ export async function start() {
   jsonServer = new jayson.Server(rpcMethods, { useContext: true });
 
   (await getDHT("server")).on("connection", RPCConnection.handleRequest);
+
+  await startDns();
 }
 
 class RPCConnection {
