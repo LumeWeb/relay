@@ -134,7 +134,10 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
     ? { error }
     : (rpcResp as unknown as JSONRPCResponseWithResult).result;
 
-  if (!processedRequests.get(reqId) || request.force) {
+  if (
+    (!processedRequests.get(reqId) || request.force) &&
+    dbData.data?.error !== ERR_NOT_READY
+  ) {
     processedRequests.set(reqId, dbData);
   }
 
