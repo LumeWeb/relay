@@ -244,7 +244,14 @@ export async function start() {
 
   jsonServer = new jayson.Server(rpcMethods, { useContext: true });
 
-  (await getDHT("server")).on("connection", (socket: any) => {
+  (await getDHT("server")).on("connection", RPCConnection.handleRequest);
+}
+
+class RPCConnection {
+  private _socket: any;
+  private _process = false;
+  constructor(socket: any) {
+    this._socket = socket;
     socket.rawStream._ondestroy = () => false;
 
     let isRpc = false;
