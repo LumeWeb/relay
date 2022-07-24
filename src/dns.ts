@@ -44,8 +44,8 @@ export async function start() {
     pack(`${config.str("domain")}:${config.uint("port")}`)
   );
 
-  console.log(
-    "node pubkey:",
+  log.info(
+    "Relay Identity is",
     Buffer.from(dht.defaultKeyPair.publicKey).toString("hex")
   );
 
