@@ -23,6 +23,9 @@ import {
   overwriteIndependentFileSmall,
 } from "./file.js";
 import { seedPhraseToSeed } from "libskynet";
+import log from "loglevel";
+import { AddressInfo } from "net";
+import { sprintf } from "sprintf-js";
 
 let sslCtx: tls.SecureContext = tls.createSecureContext();
 const sslParams: tls.SecureContextOptions = { cert: "", key: "" };
@@ -62,7 +65,8 @@ export async function start() {
 
   await new Promise((resolve) => {
     httpServer.listen(80, "0.0.0.0", function () {
-      console.info("HTTP Listening on ", httpServer.address());
+      const address = httpServer.address() as AddressInfo;
+      log.info("HTTP Server started on ", `${address.address}:${address.port}`);
       resolve(null);
     });
   });
@@ -76,7 +80,11 @@ export async function start() {
 
   await new Promise((resolve) => {
     httpsServer.listen(relayPort, "0.0.0.0", function () {
-      console.info("Relay started on ", httpsServer.address());
+      const address = httpServer.address() as AddressInfo;
+      log.info(
+        "DHT Relay Server started on ",
+        `${address.address}:${address.port}`
+      );
       resolve(null);
     });
   });
@@ -91,6 +99,7 @@ async function setupSSl() {
   let exists = false;
   let domainValid = false;
   let dateValid = false;
+  let configDomain = config.str("domain");
 
   if (sslCert && sslKey) {
     sslParams.cert = Buffer.from((sslCert as IndependentFileSmall).fileData);
@@ -108,7 +117,7 @@ async function setupSSl() {
       dateValid = true;
     }
 
-    if (certInfo?.domains.commonName === config.str("domain")) {
+    if (certInfo?.domains.commonName === configDomain) {
       domainValid = true;
     }
 
@@ -122,6 +131,7 @@ async function setupSSl() {
 
   if (dateValid && domainValid) {
     sslCtx = tls.createSecureContext(sslParams);
+    log.info(`Loaded SSL Certificate for ${configDomain}`);
     return;
   }
 
@@ -135,6 +145,16 @@ async function createOrRenewSSl(
   oldCert?: IndependentFileSmall,
   oldKey?: IndependentFileSmall
 ) {
+  const existing = oldCert && oldKey;
+
+  log.info(
+    sprintf(
+      "%s SSL Certificate for %s",
+      existing ? "Renewing" : "Creating",
+      config.str("domain")
+    )
+  );
+
   const [certificateKey, certificateRequest] = await acme.forge.createCsr({
     commonName: config.str("domain"),
   });
@@ -171,6 +191,8 @@ async function saveSsl(
   oldKey?: IndependentFileSmall
 ): Promise<void> {
   const seed = getSeed();
+
+  log.info(`Saving SSL Certificate for ${config.str("domain")}`);
 
   if (oldCert) {
     await overwriteIndependentFileSmall(

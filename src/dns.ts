@@ -9,6 +9,7 @@ import { pack } from "msgpackr";
 import config from "./config.js";
 import { hashDataKey } from "@lumeweb/kernel-utils";
 import { errorExit } from "./error.js";
+import log from "loglevel";
 
 const { createHash } = await import("crypto");
 
@@ -28,6 +29,8 @@ async function ipUpdate() {
   await fetch(domain.url[0].toString());
 
   activeIp = domain.address[0];
+
+  log.info(`Updated DynDNS hostname ${config.str("domain")} to ${activeIp}`);
 }
 
 export async function start() {

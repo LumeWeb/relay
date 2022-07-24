@@ -1,5 +1,7 @@
+import log from "loglevel";
+
 export function errorExit(msg: string): void {
-  console.error(msg);
+  log.error(msg);
   process.exit(1);
 }
 
