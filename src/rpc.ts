@@ -1,8 +1,10 @@
+//const require = createRequire(import.meta.url);
+//import { createRequire } from "module";
+
 import crypto from "crypto";
 import jayson from "jayson/promise/index.js";
 import { pack, unpack } from "msgpackr";
 import { Mutex } from "async-mutex";
-import { createRequire } from "module";
 import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
 import { rpcMethods } from "./rpc/index.js";
@@ -18,8 +20,6 @@ import {
 } from "jayson";
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
 import { ERR_NOT_READY, errorExit } from "./error.js";
-
-const require = createRequire(import.meta.url);
 
 const stringify = require("json-stable-stringify");
 const pendingRequests = new NodeCache();

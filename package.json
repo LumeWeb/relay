@@ -1,6 +1,6 @@
 {
     "name": "@lumeweb/relay",
-    "type": "module",
+    "type": "commonjs",
     "version": "0.1.0",
     "description": "",
     "main": "build/index.js",
@@ -50,6 +50,7 @@
         "@types/sprintf-js": "^1.1.2",
         "esbuild": "^0.14.49",
         "hyper-typings": "^1.0.0",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "rollup": "^2.77.0"
     }
 }

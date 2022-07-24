@@ -1,4 +1,4 @@
-import * as chainNetworks from "./networks.json" assert { type: "json" };
+import * as chainNetworks from "./networks.json";
 
 type networks = { [net: string]: string };
 

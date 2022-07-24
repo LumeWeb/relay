@@ -30,19 +30,14 @@ import { sprintf } from "sprintf-js";
 let sslCtx: tls.SecureContext = tls.createSecureContext();
 const sslParams: tls.SecureContextOptions = { cert: "", key: "" };
 
-const sslPrivateKey = await acme.forge.createPrivateKey();
-const acmeClient = new acme.Client({
-  accountKey: sslPrivateKey,
-  directoryUrl: isSSlStaging()
-    ? acme.directory.letsencrypt.staging
-    : acme.directory.letsencrypt.production,
-});
+let acmeClient: acme.Client;
 
 let app: Express;
 let router = express.Router();
 
 const FILE_CERT_NAME = "/lumeweb/relay/ssl.crt";
 const FILE_KEY_NAME = "/lumeweb/relay/ssl.key";
+const FILE_ACCOUNT_KEY_NAME = "/lumeweb/relay/account.key";
 
 type SslData = { crt: IndependentFileSmall; key: IndependentFileSmall };
 
@@ -155,6 +150,30 @@ async function createOrRenewSSl(
     )
   );
 
+  let accountKey: boolean | IndependentFileSmall | Buffer = await getSslFile(
+    FILE_ACCOUNT_KEY_NAME
+  );
+
+  if (accountKey) {
+    accountKey = Buffer.from((accountKey as IndependentFileSmall).fileData);
+  }
+
+  if (!accountKey) {
+    accountKey = await acme.forge.createPrivateKey();
+    await createIndependentFileSmall(
+      getSeed(),
+      FILE_ACCOUNT_KEY_NAME,
+      accountKey
+    );
+  }
+
+  acmeClient = new acme.Client({
+    accountKey: accountKey as Buffer,
+    directoryUrl: isSSlStaging()
+      ? acme.directory.letsencrypt.staging
+      : acme.directory.letsencrypt.production,
+  });
+
   const [certificateKey, certificateRequest] = await acme.forge.createCsr({
     commonName: config.str("domain"),
   });
@@ -228,6 +247,7 @@ async function getCertInfo() {
 async function getSslCert(): Promise<IndependentFileSmall | boolean> {
   return getSslFile(FILE_CERT_NAME);
 }
+
 async function getSslKey(): Promise<IndependentFileSmall | boolean> {
   return getSslFile(FILE_KEY_NAME);
 }

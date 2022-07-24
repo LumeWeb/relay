@@ -10,8 +10,7 @@ import config from "./config.js";
 import { hashDataKey } from "@lumeweb/kernel-utils";
 import { errorExit } from "./error.js";
 import log from "loglevel";
-
-const { createHash } = await import("crypto");
+import { createHash } from "crypto";
 
 let activeIp: string;
 

@@ -1,11 +1,13 @@
+//const require = createRequire(import.meta.url);
+//import { createRequire } from "module";
+
 // @ts-ignore
 import BConfig from "bcfg";
 import * as os from "os";
-import { createRequire } from "module";
+
 import path from "path";
 import { errorExit } from "./error.js";
 
-const require = createRequire(import.meta.url);
 const config = new BConfig("lumeweb-relay");
 
 let configLocation;

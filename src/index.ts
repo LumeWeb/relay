@@ -5,8 +5,10 @@ import config from "./config";
 
 log.setDefaultLevel(config.str("log-level"));
 
-await startRpc();
-await startRelay();
+async function boot() {
+  await startRpc();
+  await startRelay();
+}
 
 process.on("uncaughtException", function (err) {
   console.log("Caught exception: " + err);

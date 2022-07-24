@@ -1,13 +1,14 @@
+//const require = createRequire(import.meta.url);
+//import { createRequire } from "module";
+
 import { RpcMethodList } from "./index.js";
 // @ts-ignore
 import rand from "random-key";
 // @ts-ignore
 import SPVNode from "hsd/lib/node/spvnode.js";
 import config from "../config.js";
-import { createRequire } from "module";
 import { ERR_NOT_READY } from "../error.js";
 
-const require = createRequire(import.meta.url);
 const { NodeClient } = require("hs-client");
 
 let hsdServer: SPVNode;
@@ -54,15 +55,17 @@ if (!config.bool("hsd-use-external-node")) {
     }
   });
 
-  try {
-    await hsdServer.ensure();
-    await hsdServer.open();
-    await hsdServer.connect();
+  (async () => {
+    try {
+      await hsdServer.ensure();
+      await hsdServer.open();
+      await hsdServer.connect();
 
-    hsdServer.startSync();
-  } catch (e: any) {
-    console.error((e as Error).stack);
-  }
+      hsdServer.startSync();
+    } catch (e: any) {
+      console.error((e as Error).stack);
+    }
+  })();
 } else {
   clientArgs = {
     network: config.str("hsd-network-type"),

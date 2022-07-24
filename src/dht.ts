@@ -1,6 +1,6 @@
-import { createRequire } from "module";
+//const require = createRequire(import.meta.url);
+//import { createRequire } from "module";
 
-const require = createRequire(import.meta.url);
 const DHT = require("@hyperswarm/dht");
 import {
   deriveMyskyRootKeypair,

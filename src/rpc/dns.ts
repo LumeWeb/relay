@@ -1,8 +1,9 @@
+//import { createRequire } from "module";
+//const require = createRequire(import.meta.url);
+
 import { isIp } from "../util.js";
 import { RpcMethodList } from "./index.js";
-import { createRequire } from "module";
 
-const require = createRequire(import.meta.url);
 const bns = require("bns");
 const { StubResolver, RecursiveResolver } = bns;
 
