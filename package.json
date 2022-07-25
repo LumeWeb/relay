@@ -10,9 +10,11 @@
     },
     "scripts": {
         "compile": "tsc",
+        "prebuild": "bash prebuild.sh",
         "bundle": "node esbuild.config.js",
-        "package": "bash prebuild.sh && pkg -c pkg.json node-dist/index.js -t linux",
-        "build": "npm run compile && npm run bundle && npm run package"
+        "package": "pkg -c pkg.json node-dist/index.js -t linux --no-bytecode  --public",
+        "package-debug": "pkg -c pkg.json node-dist/index.js -b -t linux --no-bytecode  --public",
+        "build": "npm run compile && npm run prebuild && npm run bundle && npm run package"
     },
     "dependencies": {
         "@hyperswarm/dht": "^6.0.1",
