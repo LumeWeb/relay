@@ -8,6 +8,12 @@
         "name": "Derrick Hammer",
         "email": "contact@lumeweb.com"
     },
+    "scripts": {
+        "compile": "tsc",
+        "bundle": "node esbuild.config.js",
+        "package": "bash prebuild.sh && pkg -c pkg.json node-dist/index.js -t linux",
+        "build": "npm run compile && npm run bundle && npm run package"
+    },
     "dependencies": {
         "@hyperswarm/dht": "^6.0.1",
         "@hyperswarm/dht-relay": "^0.3.0",
@@ -50,7 +56,10 @@
         "@types/sprintf-js": "^1.1.2",
         "esbuild": "^0.14.49",
         "hyper-typings": "^1.0.0",
+        "pkg": "^5.8.0",
         "prettier": "^2.7.1",
-        "rollup": "^2.77.0"
+        "rollup": "^2.77.0",
+        "supports-color": "^9.2.2",
+        "typescript": "^4.7.4"
     }
 }

@@ -8,10 +8,14 @@ import { Mutex } from "async-mutex";
 import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
 import { rpcMethods } from "./rpc/index.js";
-import PocketPKG from "@pokt-network/pocket-js";
 import { start as startDns } from "./dns.js";
+const {
+  Configuration,
+  HttpRpcProvider,
+  PocketAAT,
+  Pocket,
+} = require("@pokt-network/pocket-js/dist/index.js");
 
-const { Configuration, HttpRpcProvider, PocketAAT, Pocket } = PocketPKG;
 import {
   JSONRPCError,
   JSONRPCRequest,

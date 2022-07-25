@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { Pocket, PocketAAT } from "@pokt-network/pocket-js";
+import { Pocket, PocketAAT } from "@pokt-network/pocket-js/dist/index.js";
 import { maybeMapChainId, reverseMapChainId } from "../util.js";
 import { Connection } from "@solana/web3.js";
 import { getAat, getPocketServer } from "../rpc.js";
