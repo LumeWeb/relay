@@ -56,7 +56,7 @@ export async function start() {
 
   let httpServer = http.createServer(app);
 
-  cron.schedule("0 * * * *", setupSSl);
+  cron.schedule("0 * * * *", setupSSl.bind(null, false));
 
   await new Promise((resolve) => {
     httpServer.listen(80, "0.0.0.0", function () {
@@ -84,10 +84,10 @@ export async function start() {
     });
   });
 
-  await setupSSl();
+  await setupSSl(true);
 }
 
-async function setupSSl() {
+async function setupSSl(bootup: boolean) {
   let sslCert = await getSslCert();
   let sslKey = await getSslKey();
   let certInfo;
@@ -125,8 +125,10 @@ async function setupSSl() {
   }
 
   if (dateValid && domainValid) {
-    sslCtx = tls.createSecureContext(sslParams);
-    log.info(`Loaded SSL Certificate for ${configDomain}`);
+    if (bootup) {
+      sslCtx = tls.createSecureContext(sslParams);
+      log.info(`Loaded SSL Certificate for ${configDomain}`);
+    }
     return;
   }
 
