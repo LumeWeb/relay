@@ -10,8 +10,8 @@ async function boot() {
   await startRelay();
 }
 
+boot();
+
 process.on("uncaughtException", function (err) {
   console.log("Caught exception: " + err);
 });
-
-export {};
