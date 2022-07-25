@@ -24,6 +24,7 @@ import {
 } from "jayson";
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
 import { ERR_NOT_READY, errorExit } from "./error.js";
+import log from "loglevel";
 
 const stringify = require("json-stable-stringify");
 const pendingRequests = new NodeCache();
@@ -284,7 +285,7 @@ class RPCConnection {
     try {
       that.write(pack(await maybeProcessRequest(request)));
     } catch (error) {
-      console.trace(error);
+      log.trace(error);
       that.write(pack({ error }));
     }
     that.end();
