@@ -68,7 +68,20 @@ export function proxyRpcMethod(
         provider = getRpcProvider(chainId as string);
       }
       gatewayProviders[chainId as string] = provider;
-      return await provider(method, args);
+
+      let resp;
+      try {
+        resp = await provider(method, args);
+      } catch (e: any) {
+        e = e as Error;
+        if ("error" in e) {
+          return e.error;
+        }
+
+        return e;
+      }
+
+      return resp;
     }
 
     return await sendRelay(
