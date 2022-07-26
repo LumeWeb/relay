@@ -75,7 +75,7 @@ export async function start() {
 
   await new Promise((resolve) => {
     httpsServer.listen(relayPort, "0.0.0.0", function () {
-      const address = httpServer.address() as AddressInfo;
+      const address = httpsServer.address() as AddressInfo;
       log.info(
         "DHT Relay Server started on ",
         `${address.address}:${address.port}`
