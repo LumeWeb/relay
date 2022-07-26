@@ -28,7 +28,7 @@ switch (os.platform()) {
 }
 
 config.inject({
-  relayPort: 8080,
+  port: 8080,
   config: configLocation,
   logLevel: "info",
 });
