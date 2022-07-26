@@ -42,7 +42,7 @@ const FILE_ACCOUNT_KEY_NAME = "/lumeweb/relay/account.key";
 type SslData = { crt: IndependentFileSmall; key: IndependentFileSmall };
 
 export async function start() {
-  const relayPort = config.str("port");
+  const relayPort = config.uint("port");
   app = express();
   app.use(function (req, res, next) {
     router(req, res, next);
