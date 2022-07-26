@@ -15,16 +15,16 @@ const gatewayMethods: {
   default: (chainId: string): RpcProviderMethod => {
     const provider = new ethers.providers.JsonRpcProvider({
       url: `https://${chainId}.gateway.pokt.network/v1/lb/${config.str(
-        "pocket-api-id"
+        "pocket-app-id"
       )}`,
-      password: config.str("pocket-api-key"),
+      password: config.str("pocket-app-key"),
     });
     return provider.send.bind(provider);
   },
   "sol-mainnet": (chainId: string): RpcProviderMethod => {
     const provider = new Connection(
       `https://solana-mainnet.gateway.pokt.network/v1/lb/${config.str(
-        "pocket-api-id"
+        "pocket-app-key"
       )}`
     );
 
