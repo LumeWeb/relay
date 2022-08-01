@@ -95,7 +95,10 @@ export function proxyRestMethod(
       };
     };
 
-    return JSON.parse(JSON.stringify(resp, getCircularReplacer()));
+    if (resp?.body && "current-round" in resp?.body) {
+      delete resp?.body["current-round"];
+    }
+    return JSON.parse(JSON.stringify(resp?.body, getCircularReplacer()));
   };
 }
 
