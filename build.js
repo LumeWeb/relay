@@ -1,4 +1,5 @@
 const esbuild = require("esbuild");
+
 esbuild.buildSync({
   entryPoints: ["build/index.js"],
   outdir: "node-dist",

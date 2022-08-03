@@ -8,8 +8,8 @@ import rand from "random-key";
 import SPVNode from "hsd/lib/node/spvnode.js";
 import config from "../config.js";
 import { ERR_NOT_READY } from "../error.js";
-
-const { NodeClient } = require("hs-client");
+// @ts-ignore
+import { NodeClient } from "hs-client";
 
 let hsdServer: SPVNode;
 

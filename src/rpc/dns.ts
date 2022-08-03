@@ -3,8 +3,8 @@
 
 import { isIp } from "../util.js";
 import { RpcMethodList } from "./index.js";
-
-const bns = require("bns");
+// @ts-ignore
+import bns from "bns";
 const { StubResolver, RecursiveResolver } = bns;
 
 const resolverOpt = {

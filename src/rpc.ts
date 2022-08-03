@@ -9,13 +9,12 @@ import NodeCache from "node-cache";
 import { get as getDHT } from "./dht.js";
 import { rpcMethods } from "./rpc/index.js";
 import { start as startDns } from "./dns.js";
-const {
+import {
   Configuration,
   HttpRpcProvider,
   PocketAAT,
   Pocket,
-} = require("@pokt-network/pocket-js/dist/index.js");
-
+} from "@pokt-network/pocket-js/dist/index.js";
 import {
   JSONRPCError,
   JSONRPCRequest,
@@ -25,8 +24,9 @@ import {
 import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
 import { ERR_NOT_READY, errorExit } from "./error.js";
 import log from "loglevel";
+// @ts-ignore
+import stringify from "json-stable-stringify";
 
-const stringify = require("json-stable-stringify");
 const pendingRequests = new NodeCache();
 const processedRequests = new NodeCache({
   stdTTL: 60 * 60 * 12,

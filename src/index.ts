@@ -1,7 +1,7 @@
 import { start as startRpc } from "./rpc.js";
 import { start as startRelay } from "./relay.js";
 import log from "loglevel";
-import config from "./config";
+import config from "./config.js";
 
 log.setDefaultLevel(config.str("log-level"));
 
@@ -13,5 +13,5 @@ async function boot() {
 boot();
 
 process.on("uncaughtException", function (err) {
-  console.log("Caught exception: " + err);
+  console.log(`Caught exception: ${err.message} ${err.stack}`);
 });
