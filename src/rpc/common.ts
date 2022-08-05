@@ -4,6 +4,7 @@ import { maybeMapChainId, reverseMapChainId } from "../util.js";
 import { Connection } from "@solana/web3.js";
 import { getAat, getPocketServer } from "../rpc.js";
 import config, { usePocketGateway } from "../config.js";
+import { ERR_INVALID_CHAIN } from "../error.js";
 
 type RpcProviderMethod = (method: string, params: Array<any>) => Promise<any>;
 
