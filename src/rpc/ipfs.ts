@@ -1,4 +1,4 @@
-import { rpcError, RpcMethodList } from "./index.js";
+import { rpcError, RpcMethodList, validateChain } from "./index.js";
 import type { IPFS } from "ipfs-core";
 import type { UnixFSEntry } from "ipfs-core/dist/src/utils";
 import { dynImport } from "../util.js";
@@ -211,20 +211,17 @@ async function resolveIpns(hash: string, path: string): Promise<string> {
   );
 }
 
-export default {
-  stat_ipfs: async (args: any, context: object) => {
-    // @ts-ignore
-    if ("ipfs" !== context.chain) {
-      return rpcError(ERR_INVALID_CHAIN);
-    }
+const CHAIN = "ipfs";
 
+export default {
+  stat_ipfs: validateChain(CHAIN, async (args: any, context: object) => {
     try {
       return await statFile(args?.hash, args?.path);
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
-  },
-  stat_ipns: async (args: any, context: object) => {
+  }),
+  stat_ipns: validateChain(CHAIN, async (args: any, context: object) => {
     // @ts-ignore
     if ("ipfs" !== context.chain) {
       return rpcError(ERR_INVALID_CHAIN);
@@ -239,9 +236,9 @@ export default {
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
-  },
+  }),
 
-  fetch_ipfs: async (args: any, context: object) => {
+  fetch_ipfs: validateChain(CHAIN, async (args: any, context: object) => {
     // @ts-ignore
     if ("ipfs" !== context.chain) {
       return rpcError(ERR_INVALID_CHAIN);
@@ -256,8 +253,8 @@ export default {
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
-  },
-  fetch_ipns: async (args: any, context: object) => {
+  }),
+  fetch_ipns: validateChain(CHAIN, async (args: any, context: object) => {
     // @ts-ignore
     if ("ipfs" !== context.chain) {
       return rpcError(ERR_INVALID_CHAIN);
@@ -274,5 +271,5 @@ export default {
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
-  },
+  }),
 } as RpcMethodList;
