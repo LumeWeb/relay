@@ -2,7 +2,7 @@
 //const require = createRequire(import.meta.url);
 
 import { isIp } from "../util.js";
-import { RpcMethodList } from "./index.js";
+import { RpcMethodList, validateChain } from "./index.js";
 // @ts-ignore
 import bns from "bns";
 const { StubResolver, RecursiveResolver } = bns;
@@ -59,7 +59,7 @@ async function getDnsRecords(
 }
 
 export default {
-  dnslookup: async function (args: any) {
+  dnslookup: validateChain("icann", async function (args: any) {
     let dnsResults: string[] = [];
     let domain = args.domain;
     let ns = args.nameserver;
@@ -104,5 +104,5 @@ export default {
     }
 
     return false;
-  },
+  }),
 } as RpcMethodList;

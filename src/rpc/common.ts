@@ -8,6 +8,10 @@ import { ERR_INVALID_CHAIN } from "../error.js";
 
 type RpcProviderMethod = (method: string, params: Array<any>) => Promise<any>;
 
+interface RpcContext {
+  chain?: string;
+}
+
 const gatewayProviders: { [name: string]: RpcProviderMethod } = {};
 
 const gatewayMethods: {
@@ -125,4 +129,14 @@ class RpcError extends Error {
 
 export function rpcError(message: string): Promise<RpcError> {
   return Promise.reject(new RpcError(message));
+}
+
+export function validateChain(chain: string, handler: any) {
+  return async (args: any, context: RpcContext) => {
+    if (!context?.chain || "hns" !== context?.chain) {
+      return rpcError(ERR_INVALID_CHAIN);
+    }
+
+    return handler(args, context);
+  };
 }

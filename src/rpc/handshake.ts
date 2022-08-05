@@ -1,7 +1,7 @@
 //const require = createRequire(import.meta.url);
 //import { createRequire } from "module";
 
-import { rpcError, RpcMethodList } from "./index.js";
+import { rpcError, RpcMethodList, validateChain } from "./index.js";
 // @ts-ignore
 import rand from "random-key";
 // @ts-ignore
@@ -78,12 +78,7 @@ if (!config.bool("hsd-use-external-node")) {
 const hnsClient = new NodeClient(clientArgs);
 
 export default {
-  getnameresource: async (args: any, context: object) => {
-    // @ts-ignore
-    if ("hns" !== context.chain) {
-      throw rpcError(ERR_INVALID_CHAIN);
-    }
-
+  getnameresource: validateChain("hns", async (args: any) => {
     let resp;
     try {
       resp = await hnsClient.execute("getnameresource", args);
@@ -100,5 +95,5 @@ export default {
     }
 
     return resp;
-  },
+  }),
 } as RpcMethodList;

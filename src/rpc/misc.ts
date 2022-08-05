@@ -1,7 +1,7 @@
-import { RpcMethodList } from "./index";
+import { RpcMethodList, validateChain } from "./index.js";
 
 export default {
-  ping: async () => {
+  ping: validateChain("misc", async () => {
     return { pong: true };
-  },
+  }),
 } as RpcMethodList;
