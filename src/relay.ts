@@ -41,8 +41,6 @@ const FILE_CERT_NAME = "/lumeweb/relay/ssl.crt";
 const FILE_KEY_NAME = "/lumeweb/relay/ssl.key";
 const FILE_ACCOUNT_KEY_NAME = "/lumeweb/relay/account.key";
 
-type SslData = { crt: IndependentFileSmall; key: IndependentFileSmall };
-
 export async function start() {
   seedPhraseToSeed = (await dynImport("libskynet")).seedPhraseToSeed;
 
