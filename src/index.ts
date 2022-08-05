@@ -15,3 +15,9 @@ boot();
 process.on("uncaughtException", function (err) {
   console.log(`Caught exception: ${err.message} ${err.stack}`);
 });
+process.on("SIGINT", function () {
+  process.exit();
+});
+process.on("SIGTERM", function () {
+  process.exit();
+});
