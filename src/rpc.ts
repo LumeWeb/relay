@@ -299,20 +299,18 @@ class RPCConnection {
       ) as AsyncIterable<Uint8Array>;
       const emptyData = Uint8Array.from([]);
       const streamResp = {
-        result: {
-          data: {
-            data: emptyData,
-            done: false,
-          } as StreamFileResponse,
-        },
+        data: {
+          data: emptyData,
+          done: false,
+        } as StreamFileResponse,
       };
       for await (const chunk of stream) {
-        streamResp.result.data.data = chunk.slice() as unknown as Uint8Array;
+        streamResp.data.data = chunk as unknown as Uint8Array;
         that.write(pack(streamResp));
       }
 
-      streamResp.result.data.data = emptyData;
-      streamResp.result.data.done = true;
+      streamResp.data.data = emptyData;
+      streamResp.data.done = true;
       response = streamResp;
     }
 
