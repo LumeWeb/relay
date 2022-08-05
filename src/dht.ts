@@ -3,14 +3,9 @@
 
 // @ts-ignore
 import DHT from "@hyperswarm/dht";
-import {
-  deriveMyskyRootKeypair,
-  Ed25519Keypair,
-  seedPhraseToSeed,
-  validSeedPhrase,
-} from "libskynet";
 import config from "./config.js";
 import { errorExit } from "./error.js";
+import { dynImport } from "./util.js";
 
 let node: {
   ready: () => any;
@@ -18,12 +13,17 @@ let node: {
   defaultKeyPair: any;
   on: any;
 };
-let server: {
-  listen: (arg0: Ed25519Keypair) => any;
-  on: any;
-};
+let server: any;
 
 async function start() {
+  const {
+    deriveMyskyRootKeypair,
+    // @ts-ignore
+    Ed25519Keypair,
+    seedPhraseToSeed,
+    validSeedPhrase,
+  } = await dynImport("libskynet");
+
   const seed = config.str("seed");
 
   let err = validSeedPhrase(seed);

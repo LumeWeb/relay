@@ -22,10 +22,10 @@ import {
   openIndependentFileSmall,
   overwriteIndependentFileSmall,
 } from "./file.js";
-import { seedPhraseToSeed } from "libskynet";
 import log from "loglevel";
 import { AddressInfo } from "net";
 import { sprintf } from "sprintf-js";
+import { dynImport } from "./util.js";
 
 let sslCtx: tls.SecureContext = tls.createSecureContext();
 const sslParams: tls.SecureContextOptions = { cert: "", key: "" };
@@ -35,6 +35,8 @@ let acmeClient: acme.Client;
 let app: Express;
 let router = express.Router();
 
+let seedPhraseToSeed: typeof import("libskynet").seedPhraseToSeed;
+
 const FILE_CERT_NAME = "/lumeweb/relay/ssl.crt";
 const FILE_KEY_NAME = "/lumeweb/relay/ssl.key";
 const FILE_ACCOUNT_KEY_NAME = "/lumeweb/relay/account.key";
@@ -42,6 +44,8 @@ const FILE_ACCOUNT_KEY_NAME = "/lumeweb/relay/account.key";
 type SslData = { crt: IndependentFileSmall; key: IndependentFileSmall };
 
 export async function start() {
+  seedPhraseToSeed = (await dynImport("libskynet")).seedPhraseToSeed;
+
   const relayPort = config.uint("port");
   app = express();
   app.use(function (req, res, next) {

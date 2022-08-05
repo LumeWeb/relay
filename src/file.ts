@@ -1,30 +1,7 @@
-import {
-  addContextToErr,
-  blake2b,
-  bufToHex,
-  Ed25519Keypair,
-  ed25519Sign,
-  encodePrefixedBytes,
-  encodeU64,
-  Err,
-} from "libskynet";
-import { progressiveFetch } from "libskynetnode/dist/progressivefetch.js";
-import { defaultPortalList } from "libskynet/dist/defaultportals.js";
-import { readRegistryEntry } from "libskynetnode/dist/registryread.js";
-import {
-  bufToB64,
-  decryptFileSmall,
-  deriveChildSeed,
-  deriveRegistryEntryID,
-  encryptFileSmall,
-  entryIDToSkylink,
-  namespaceInode,
-  skylinkToResolverEntryData,
-  taggedRegistryEntryKeys,
-} from "libskynet";
-import { upload } from "libskynetnode";
+import type { Ed25519Keypair, Err, progressiveFetchResult } from "libskynet";
 // @ts-ignore
 import { SkynetClient } from "@skynetlabs/skynet-nodejs";
+import { dynImport } from "./util.js";
 
 const ERR_EXISTS = "exists";
 const ERR_NOT_EXISTS = "DNE";
@@ -63,12 +40,58 @@ interface IndependentFileSmallViewer {
   readData: ReadDataFn;
 }
 
-function overwriteRegistryEntry(
+let addContextToErr: typeof import("libskynet").addContextToErr,
+  blake2b: typeof import("libskynet").blake2b,
+  bufToHex: typeof import("libskynet").bufToHex,
+  ed25519Sign: typeof import("libskynet").ed25519Sign,
+  encodePrefixedBytes: typeof import("libskynet").encodePrefixedBytes,
+  encodeU64: typeof import("libskynet").encodeU64,
+  progressiveFetch: typeof import("libskynet").progressiveFetch,
+  defaultPortalList: typeof import("libskynet").defaultPortalList,
+  readRegistryEntry: typeof import("libskynetnode/dist/registryread.js").readRegistryEntry,
+  upload: typeof import("libskynetnode").upload,
+  skylinkToResolverEntryData: typeof import("libskynet").skylinkToResolverEntryData,
+  encryptFileSmall: typeof import("libskynet").encryptFileSmall,
+  deriveChildSeed: typeof import("libskynet").deriveChildSeed,
+  bufToB64: typeof import("libskynet").bufToB64,
+  decryptFileSmall: typeof import("libskynet").decryptFileSmall,
+  entryIDToSkylink: typeof import("libskynet").entryIDToSkylink,
+  deriveRegistryEntryID: typeof import("libskynet").deriveRegistryEntryID,
+  taggedRegistryEntryKeys: typeof import("libskynet").taggedRegistryEntryKeys,
+  namespaceInode: typeof import("libskynet").namespaceInode;
+
+async function loadLibs() {
+  const libskynet = await dynImport("libskynet");
+  addContextToErr = libskynet.addContextToErr;
+  bufToHex = libskynet.bufToHex;
+  ed25519Sign = libskynet.ed25519Sign;
+  encodePrefixedBytes = libskynet.encodePrefixedBytes;
+  encodeU64 = libskynet.encodeU64;
+  defaultPortalList = libskynet.defaultPortalList;
+  skylinkToResolverEntryData = libskynet.skylinkToResolverEntryData;
+  encryptFileSmall = libskynet.encryptFileSmall;
+  deriveChildSeed = libskynet.deriveChildSeed;
+  bufToB64 = libskynet.bufToB64;
+  decryptFileSmall = libskynet.decryptFileSmall;
+  entryIDToSkylink = libskynet.entryIDToSkylink;
+  deriveRegistryEntryID = libskynet.deriveRegistryEntryID;
+  taggedRegistryEntryKeys = libskynet.taggedRegistryEntryKeys;
+  namespaceInode = libskynet.namespaceInode;
+
+  progressiveFetch = (await dynImport("libskynetnode/dist/progressivefetch.js"))
+    .progressiveFetch;
+  readRegistryEntry = (await dynImport("libskynetnode/dist/registryread.js"))
+    .readRegistryEntry;
+  upload = (await dynImport("libskynetnode")).upload;
+}
+
+async function overwriteRegistryEntry(
   keypair: any,
   datakey: Uint8Array,
   data: Uint8Array,
   revision: bigint
 ): Promise<null> {
+  await loadLibs();
   return new Promise((resolve, reject) => {
     if (data.length > 86) {
       reject("provided data is too large to fit in a registry entry");
@@ -119,7 +142,7 @@ function overwriteRegistryEntry(
       fetchOpts,
       defaultPortalList,
       verifyRegistryWrite
-    ).then((result) => {
+    ).then((result: progressiveFetchResult) => {
       if (result.success === true) {
         resolve(null);
         return;
@@ -128,7 +151,8 @@ function overwriteRegistryEntry(
     });
   });
 }
-function verifyRegistryWrite(response: Response): Promise<Err> {
+async function verifyRegistryWrite(response: Response): Promise<Err> {
+  await loadLibs();
   return new Promise((resolve) => {
     if (!("status" in response)) {
       resolve("response did not contain a status");
@@ -142,11 +166,12 @@ function verifyRegistryWrite(response: Response): Promise<Err> {
   });
 }
 
-function createIndependentFileSmall(
+async function createIndependentFileSmall(
   seed: Uint8Array,
   userInode: string,
   fileData: Uint8Array
 ): Promise<[IndependentFileSmall, Err]> {
+  await loadLibs();
   return new Promise(async (resolve) => {
     let [inode, errNI] = namespaceInode("IndependentFileSmall", userInode);
     if (errNI !== null) {
@@ -276,10 +301,11 @@ function createIndependentFileSmall(
   });
 }
 
-function openIndependentFileSmall(
+async function openIndependentFileSmall(
   seed: Uint8Array,
   userInode: string
 ): Promise<[IndependentFileSmall, Err]> {
+  await loadLibs();
   return new Promise(async (resolve) => {
     let [inode, errNI] = namespaceInode("IndependentFileSmall", userInode);
     if (errNI !== null) {
@@ -378,10 +404,11 @@ function openIndependentFileSmall(
     resolve([ifile, null]);
   });
 }
-function overwriteIndependentFileSmall(
+async function overwriteIndependentFileSmall(
   file: IndependentFileSmall,
   newData: Uint8Array
 ): Promise<Err> {
+  await loadLibs();
   return new Promise(async (resolve) => {
     // Create a new metadata for the file based on the current file
     // metadata. Need to update the largest historic size.

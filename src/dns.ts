@@ -1,18 +1,19 @@
 import cron from "node-cron";
-import fetch from "node-fetch";
 import { get as getDHT } from "./dht.js";
-import { overwriteRegistryEntry } from "libskynetnode";
 import { Buffer } from "buffer";
 import { Parser } from "xml2js";
 import { URL } from "url";
 import { pack } from "msgpackr";
 import config from "./config.js";
-import { hashDataKey } from "@lumeweb/kernel-utils";
 import { errorExit } from "./error.js";
 import log from "loglevel";
 import { createHash } from "crypto";
+import { dynImport } from "./util.js";
 
 let activeIp: string;
+let fetch: typeof import("node-fetch").default;
+let overwriteRegistryEntry: typeof import("libskynetnode").overwriteRegistryEntry;
+let hashDataKey: typeof import("@lumeweb/kernel-utils").hashDataKey;
 
 const REGISTRY_NODE_KEY = "lumeweb-dht-node";
 
@@ -33,6 +34,11 @@ async function ipUpdate() {
 }
 
 export async function start() {
+  fetch = (await dynImport("node-fetch")).default;
+  overwriteRegistryEntry = (await dynImport("libskynetnode"))
+    .overwriteRegistryEntry;
+  hashDataKey = (await dynImport("@lumeweb/kernel-utils")).hashDataKey;
+
   const dht = (await getDHT()) as any;
 
   await ipUpdate();
