@@ -133,7 +133,7 @@ export function rpcError(message: string): Promise<RpcError> {
 
 export function validateChain(chain: string, handler: any) {
   return async (args: any, context: RpcContext) => {
-    if (!context?.chain || "hns" !== context?.chain) {
+    if (!context?.chain || chain !== context?.chain) {
       return rpcError(ERR_INVALID_CHAIN);
     }
 
