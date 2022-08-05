@@ -16,8 +16,8 @@ import last from "it-last";
 // @ts-ignore
 import toStream from "it-to-stream";
 import { addStream } from "../streams.js";
-import { ERR_INVALID_CHAIN } from "../error.js";
 import { bases } from "multiformats/basics";
+import { ERR_HASH_IS_DIRECTORY } from "../error.js";
 
 let client: IPFS | Promise<any>;
 let resolver: typeof import("ipfs-http-response").resolver;
@@ -134,6 +134,10 @@ async function fetchFile(hash?: string, path?: string, fullPath?: string) {
     return data;
   }
 
+  if (data?.type === "directory") {
+    return rpcError(ERR_HASH_IS_DIRECTORY);
+  }
+
   const streamId = addStream(data.content());
 
   return { streamId };
@@ -228,14 +232,14 @@ async function resolveIpns(hash: string, path: string): Promise<string> {
 const CHAIN = "ipfs";
 
 export default {
-  stat_ipfs: validateChain(CHAIN, async (args: any, context: object) => {
+  stat_ipfs: validateChain(CHAIN, async (args: any) => {
     try {
       return await statFile(args?.hash, args?.path);
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
   }),
-  stat_ipns: validateChain(CHAIN, async (args: any, context: object) => {
+  stat_ipns: validateChain(CHAIN, async (args: any) => {
     let ipfsPath;
 
     try {
@@ -247,7 +251,7 @@ export default {
     }
   }),
 
-  fetch_ipfs: validateChain(CHAIN, async (args: any, context: object) => {
+  fetch_ipfs: validateChain(CHAIN, async (args: any) => {
     try {
       const ret = await fetchFile(args?.hash, args?.path);
       if (ret instanceof Error) {
@@ -259,7 +263,7 @@ export default {
       return rpcError((e as Error).message);
     }
   }),
-  fetch_ipns: validateChain(CHAIN, async (args: any, context: object) => {
+  fetch_ipns: validateChain(CHAIN, async (args: any) => {
     let ipfsPath;
     try {
       ipfsPath = await resolveIpns(args.hash, args.path);
