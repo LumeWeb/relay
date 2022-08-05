@@ -3,8 +3,13 @@ import minimatch from "minimatch";
 // @ts-ignore
 import HTTPClient from "algosdk/dist/cjs/src/client/client.js";
 import { sprintf } from "sprintf-js";
-import { RpcMethodList } from "./index.js";
+import { rpcError, RpcMethodList } from "./index.js";
 import config from "../config.js";
+import {
+  ERR_ENDPOINT_INVALID,
+  ERR_INVALID_CHAIN,
+  ERR_METHOD_INVALID,
+} from "../error.js";
 
 const allowedEndpoints: { [endpoint: string]: ("GET" | "POST")[] } = {
   "/v2/teal/compile": ["POST"],
@@ -21,12 +26,12 @@ export function proxyRestMethod(
     let chainId = maybeMapChainId(chain);
 
     if (!chainId) {
-      throw new Error("Invalid Chain");
+      return rpcError(ERR_INVALID_CHAIN);
     }
 
     chainId = reverseMapChainId(chainId as string);
     if (!chainId || chainId !== matchChainId) {
-      throw new Error("Invalid Chain");
+      return rpcError(ERR_INVALID_CHAIN);
     }
 
     let method = args.method ?? false;
@@ -55,7 +60,7 @@ export function proxyRestMethod(
     }
 
     if (!found) {
-      throw new Error("Endpoint Invalid");
+      return rpcError(ERR_ENDPOINT_INVALID);
     }
 
     let apiUrl;
@@ -79,7 +84,7 @@ export function proxyRestMethod(
         resp = await client.post(endpoint, data, { ...fullHeaders });
         break;
       default:
-        throw new Error("Method Invalid");
+        return rpcError(ERR_METHOD_INVALID);
     }
 
     const getCircularReplacer = () => {

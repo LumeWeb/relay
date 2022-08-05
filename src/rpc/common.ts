@@ -53,13 +53,13 @@ export function proxyRpcMethod(
     }
 
     if (!chainId || !chainMatch) {
-      throw new Error("Invalid Chain");
+      return rpcError(ERR_INVALID_CHAIN);
     }
 
     if (usePocketGateway()) {
       chainId = reverseMapChainId(chainId as string);
       if (!chainId) {
-        throw new Error("Invalid Chain");
+        return rpcError(ERR_INVALID_CHAIN);
       }
 
       let provider: RpcProviderMethod | boolean =
@@ -116,4 +116,12 @@ function getRpcProvider(chain: string): RpcProviderMethod {
   }
 
   return gatewayMethods.default(chain);
+}
+
+class RpcError extends Error {
+  public code: number = -1;
+}
+
+export function rpcError(message: string): Promise<RpcError> {
+  return Promise.reject(new RpcError(message));
 }

@@ -1,13 +1,13 @@
 //const require = createRequire(import.meta.url);
 //import { createRequire } from "module";
 
-import { RpcMethodList } from "./index.js";
+import { rpcError, RpcMethodList } from "./index.js";
 // @ts-ignore
 import rand from "random-key";
 // @ts-ignore
 import SPVNode from "hsd/lib/node/spvnode.js";
 import config from "../config.js";
-import { ERR_NOT_READY } from "../error.js";
+import { ERR_INVALID_CHAIN, ERR_NOT_READY } from "../error.js";
 // @ts-ignore
 import { NodeClient } from "hs-client";
 
@@ -78,10 +78,10 @@ if (!config.bool("hsd-use-external-node")) {
 const hnsClient = new NodeClient(clientArgs);
 
 export default {
-  getnameresource: async function (args: any, context: object) {
+  getnameresource: async (args: any, context: object) => {
     // @ts-ignore
     if ("hns" !== context.chain) {
-      throw new Error("Invalid Chain");
+      throw rpcError(ERR_INVALID_CHAIN);
     }
 
     let resp;
@@ -93,8 +93,10 @@ export default {
       const eMessage = e.message.toLowerCase();
 
       if (eType === "rpcerror" && eMessage.includes("chain is not synced")) {
-        return Promise.reject({ ...e, message: ERR_NOT_READY });
+        return rpcError(ERR_NOT_READY);
       }
+
+      return rpcError(eMessage);
     }
 
     return resp;
