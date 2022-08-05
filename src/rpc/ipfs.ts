@@ -202,7 +202,7 @@ async function fileExists(
 }
 
 async function resolveIpns(hash: string, path: string): Promise<string> {
-  let fullPath = `${hash}/${path}`;
+  let fullPath = `${hash}/${path}`.replace(/\/+/, "/");
 
   client = client as IPFS;
 
