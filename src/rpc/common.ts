@@ -42,16 +42,16 @@ export function proxyRpcMethod(
   method: string,
   chains: string[] = []
 ): Function {
-  return async function (args: any, context: object) {
+  return async function (args: any, context: RpcContext) {
     // @ts-ignore
     let chain = context.chain;
-    let chainId = maybeMapChainId(chain);
+    let chainId = maybeMapChainId(chain as string);
 
     let chainMatch = true;
 
     if (
       chains.length > 0 &&
-      !chains.includes(chain) &&
+      !chains.includes(chain as string) &&
       !chains.includes(chainId.toString())
     ) {
       chainMatch = false;
