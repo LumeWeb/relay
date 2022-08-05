@@ -17,6 +17,7 @@ import last from "it-last";
 import toStream from "it-to-stream";
 import { addStream } from "../streams.js";
 import { ERR_INVALID_CHAIN } from "../error.js";
+import { bases } from "multiformats/basics";
 
 let client: IPFS | Promise<any>;
 let resolver: typeof import("ipfs-http-response").resolver;
@@ -72,7 +73,7 @@ async function initIpfs() {
   detectContentType = utils.detectContentType;
 
   client = IPFS.create({
-    relay: { hop: { enabled: false } },
+    //  relay: { hop: { enabled: false } },
     silent: true,
     repo,
   });
@@ -202,12 +203,25 @@ async function fileExists(
 }
 
 async function resolveIpns(hash: string, path: string): Promise<string> {
+  switch (hash.substring(0, 1)) {
+    case bases.base36.prefix: {
+      hash = CID.parse(hash, bases.base36).toString();
+    }
+  }
   let fullPath = `${hash}/${path}`.replace(/\/+/, "/");
 
   client = client as IPFS;
 
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 5000);
+
   return (
-    (await last(client.name.resolve(fullPath, { recursive: true }))) || path
+    (await last(
+      client.name.resolve(fullPath, {
+        recursive: true,
+        signal: controller.signal,
+      })
+    )) || path
   );
 }
 
@@ -222,11 +236,6 @@ export default {
     }
   }),
   stat_ipns: validateChain(CHAIN, async (args: any, context: object) => {
-    // @ts-ignore
-    if ("ipfs" !== context.chain) {
-      return rpcError(ERR_INVALID_CHAIN);
-    }
-
     let ipfsPath;
 
     try {
@@ -239,10 +248,6 @@ export default {
   }),
 
   fetch_ipfs: validateChain(CHAIN, async (args: any, context: object) => {
-    // @ts-ignore
-    if ("ipfs" !== context.chain) {
-      return rpcError(ERR_INVALID_CHAIN);
-    }
     try {
       const ret = await fetchFile(args?.hash, args?.path);
       if (ret instanceof Error) {
@@ -255,10 +260,6 @@ export default {
     }
   }),
   fetch_ipns: validateChain(CHAIN, async (args: any, context: object) => {
-    // @ts-ignore
-    if ("ipfs" !== context.chain) {
-      return rpcError(ERR_INVALID_CHAIN);
-    }
     let ipfsPath;
     try {
       ipfsPath = await resolveIpns(args.hash, args.path);
