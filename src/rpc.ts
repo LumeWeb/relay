@@ -26,6 +26,8 @@ import { ERR_NOT_READY, errorExit } from "./error.js";
 import log from "loglevel";
 // @ts-ignore
 import stringify from "json-stable-stringify";
+import { getStream } from "./streams.js";
+import type { StreamFileResponse } from "./streams.js";
 
 const pendingRequests = new NodeCache();
 const processedRequests = new NodeCache({
@@ -281,13 +283,40 @@ class RPCConnection {
     }
 
     const that = this as any;
-
+    let response;
     try {
-      that.write(pack(await maybeProcessRequest(request)));
+      response = await maybeProcessRequest(request);
     } catch (error) {
       log.trace(error);
       that.write(pack({ error }));
+      that.end();
+      return;
     }
+
+    if (response.data?.streamId) {
+      const stream = getStream(
+        response.data?.streamId
+      ) as AsyncIterable<Uint8Array>;
+      const emptyData = Uint8Array.from([]);
+      const streamResp = {
+        result: {
+          data: {
+            data: emptyData,
+            done: false,
+          } as StreamFileResponse,
+        },
+      };
+      for await (const chunk of stream) {
+        streamResp.result.data.data = chunk.slice() as unknown as Uint8Array;
+        that.write(pack(streamResp));
+      }
+
+      streamResp.result.data.data = emptyData;
+      streamResp.result.data.done = true;
+      response = streamResp;
+    }
+
+    that.write(pack(response));
     that.end();
   }
 
