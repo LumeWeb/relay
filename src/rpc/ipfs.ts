@@ -42,8 +42,13 @@ interface StatFileResponse {
   contentType: string | null;
   error: any;
   directory: boolean;
-  files: string[];
+  files: StatFileSubfile[];
   timeout: boolean;
+}
+
+interface StatFileSubfile {
+  name: string;
+  size: number;
 }
 
 async function initIpfs() {
@@ -161,7 +166,12 @@ async function statFile(hash?: string, path?: string, fullPath?: string) {
 
   if (exists?.type === "directory") {
     stats.directory = true;
-    stats.files = exists.node.Links.map((item) => item.Name) as string[];
+    stats.files = exists.node.Links.map((item) => {
+      return {
+        name: item.Name,
+        size: item.Tsize,
+      } as StatFileSubfile;
+    });
     return stats;
   }
 
