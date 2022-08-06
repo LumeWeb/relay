@@ -81,36 +81,6 @@ async function initIpfs() {
   client = await client;
 }
 
-function joinURLParts(...urls: string[]) {
-  urls = urls.filter((url) => url.length > 0);
-  urls = [""].concat(urls.map((url) => removeSlashFromBothEnds(url)));
-
-  return urls.join("/");
-}
-
-function removeSlashFromBothEnds(url: string): string {
-  url = removeLeadingSlash(url);
-  url = removeTrailingSlash(url);
-
-  return url;
-}
-
-function removeLeadingSlash(url: string): string {
-  if (url[0] === "/") {
-    url = url.substring(1);
-  }
-
-  return url;
-}
-
-export function removeTrailingSlash(url: string): string {
-  if (url.endsWith("/")) {
-    url = url.substring(0, url.length - 1);
-  }
-
-  return url;
-}
-
 initIpfs();
 
 function normalizePath(
