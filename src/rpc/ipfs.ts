@@ -45,6 +45,7 @@ interface StatFileResponse {
   directory: boolean;
   files: StatFileSubfile[];
   timeout: boolean;
+  size: number;
 }
 
 interface StatFileSubfile {
@@ -151,6 +152,7 @@ async function statFile(hash?: string, path?: string, fullPath?: string) {
     directory: false,
     files: [],
     timeout: false,
+    size: 0,
   };
 
   client = client as IPFS;
@@ -179,6 +181,9 @@ async function statFile(hash?: string, path?: string, fullPath?: string) {
     });
     return stats;
   }
+
+  const { size } = await client.files.stat(`/ipfs/${exists.cid}`);
+  stats.size = size;
 
   const { contentType } = await detectContentType(
     fullPath,
