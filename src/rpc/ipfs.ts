@@ -1,42 +1,20 @@
 import { rpcError, RpcMethodList, validateChain } from "./index.js";
 import type { IPFS } from "ipfs-core";
-import type { UnixFSEntry } from "ipfs-core/dist/src/utils";
 import { dynImport } from "../util.js";
-import { exporter } from "ipfs-unixfs-exporter";
-// @ts-ignore
 import { CID } from "multiformats/cid";
-import { MemoryDatastore } from "datastore-core";
-import { MemoryBlockstore } from "blockstore-core";
-import { createRepo } from "ipfs-repo";
-// @ts-ignore
-import { MemoryLock } from "ipfs-repo/locks/memory";
-// @ts-ignore
-import * as rawCodec from "multiformats/codecs/raw";
 import last from "it-last";
 // @ts-ignore
 import toStream from "it-to-stream";
 import { addStream } from "../streams.js";
 import { bases } from "multiformats/basics";
 import { ERR_HASH_IS_DIRECTORY } from "../error.js";
+import type { StatResult } from "ipfs-core/dist/src/components/files/stat";
 
 let client: IPFS | Promise<any>;
 let resolver: typeof import("ipfs-http-response").resolver;
 let utils: typeof import("ipfs-http-response").utils;
 let detectContentType: typeof import("ipfs-http-response").utils.detectContentType;
 let normalizeCidPath: typeof import("ipfs-core/dist/src/utils.js").normalizeCidPath;
-
-const repo = createRepo(
-  "",
-  async () => rawCodec,
-  {
-    blocks: new MemoryBlockstore(),
-    datastore: new MemoryDatastore(),
-    keys: new MemoryDatastore(),
-    pins: new MemoryDatastore(),
-    root: new MemoryDatastore(),
-  },
-  { autoMigrate: false, repoLock: MemoryLock, repoOwner: true }
-);
 
 interface StatFileResponse {
   exists: boolean;
@@ -76,7 +54,6 @@ async function initIpfs() {
   client = IPFS.create({
     //  relay: { hop: { enabled: false } },
     silent: true,
-    repo,
   });
   client = await client;
 }
@@ -109,7 +86,9 @@ async function fetchFile(hash?: string, path?: string, fullPath?: string) {
     return rpcError(ERR_HASH_IS_DIRECTORY);
   }
 
-  const streamId = addStream(data.content());
+  client = client as IPFS;
+
+  const streamId = addStream(client.cat(data.cid));
 
   return { streamId };
 }
@@ -143,12 +122,12 @@ async function statFile(hash?: string, path?: string, fullPath?: string) {
 
   if (exists?.type === "directory") {
     stats.directory = true;
-    stats.files = exists.node.Links.map((item) => {
-      return {
-        name: item.Name,
-        size: item.Tsize,
-      } as StatFileSubfile;
-    });
+    for await (const item of client.ls(exists.cid)) {
+      stats.files.push({
+        name: item.name,
+        size: item.size,
+      } as StatFileSubfile);
+    }
     return stats;
   }
 
@@ -168,14 +147,16 @@ async function fileExists(
   hash?: string,
   path?: string,
   fullPath?: string
-): Promise<Error | UnixFSEntry> {
+): Promise<Error | StatResult> {
   await initIpfs();
   client = client as IPFS;
   let ipfsPath = normalizePath(hash, path, fullPath);
   try {
     const controller = new AbortController();
     setTimeout(() => controller.abort(), 5000);
-    return await exporter(ipfsPath, repo.blocks, { signal: controller.signal });
+    return client.files.stat(`/ipfs/${ipfsPath}`, {
+      signal: controller.signal,
+    });
   } catch (err: any) {
     return err;
   }
