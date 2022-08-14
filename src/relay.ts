@@ -86,6 +86,25 @@ export async function start() {
     });
   });
 
+  const statusCodeServer = http.createServer(function (req, res) {
+    // @ts-ignore
+    res.writeHead(req.headers["x-status"] ?? 200, {
+      "Content-Type": "text/plain",
+    });
+    res.end();
+  });
+
+  await new Promise((resolve) => {
+    statusCodeServer.listen(25252, "0.0.0.0", function () {
+      const address = statusCodeServer.address() as AddressInfo;
+      log.info(
+        "Status Code Server started on ",
+        `${address.address}:${address.port}`
+      );
+      resolve(null);
+    });
+  });
+
   await setupSSl(true);
 }
 
