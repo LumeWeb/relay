@@ -2,19 +2,15 @@ import { rpcError, RpcMethodList, validateChain } from "./index.js";
 import type { IPFS } from "ipfs-core";
 import { dynImport } from "../util.js";
 import { CID } from "multiformats/cid";
-import last from "it-last";
 // @ts-ignore
 import toStream from "it-to-stream";
 import { addStream } from "../streams.js";
-import { bases } from "multiformats/basics";
 import { ERR_HASH_IS_DIRECTORY } from "../error.js";
 import type { StatResult } from "ipfs-core/dist/src/components/files/stat";
 
 let client: IPFS | Promise<any>;
-let resolver: typeof import("ipfs-http-response").resolver;
 let utils: typeof import("ipfs-http-response").utils;
 let detectContentType: typeof import("ipfs-http-response").utils.detectContentType;
-let normalizeCidPath: typeof import("ipfs-core/dist/src/utils.js").normalizeCidPath;
 
 interface StatFileResponse {
   exists: boolean;
@@ -31,6 +27,24 @@ interface StatFileSubfile {
   size: number;
 }
 
+function normalizeCidPath(path: any) {
+  if (path instanceof Uint8Array) {
+    return CID.decode(path).toString();
+  }
+
+  path = path.toString();
+
+  if (path.indexOf("/ipfs/") === 0) {
+    path = path.substring("/ipfs/".length);
+  }
+
+  if (path.charAt(path.length - 1) === "/") {
+    path = path.substring(0, path.length - 1);
+  }
+
+  return path;
+}
+
 async function initIpfs() {
   if (client) {
     if (client instanceof Promise) {
@@ -40,20 +54,18 @@ async function initIpfs() {
     return;
   }
 
-  const IPFS: typeof import("ipfs-core") = await dynImport("ipfs-core");
+  const IPFS: typeof import("ipfs-http-client") = await dynImport(
+    "ipfs-http-client"
+  );
 
   const ipfsHttpResponse: typeof import("ipfs-http-response") = await dynImport(
     "ipfs-http-response"
   );
-  normalizeCidPath = (await dynImport("ipfs-core/src/utils.js"))
-    .normalizeCidPath;
-  resolver = ipfsHttpResponse.resolver;
   utils = ipfsHttpResponse.utils;
   detectContentType = utils.detectContentType;
 
   client = IPFS.create({
-    //  relay: { hop: { enabled: false } },
-    silent: true,
+    host: "127.0.0.1",
   });
   client = await client;
 }
@@ -72,6 +84,8 @@ function normalizePath(
 
     fullPath = `${hash}/${path}`;
   }
+
+  fullPath = fullPath.replace(/\/{2,}/, "/");
   return normalizeCidPath(fullPath);
 }
 
@@ -153,36 +167,27 @@ async function fileExists(
   let ipfsPath = normalizePath(hash, path, fullPath);
   try {
     const controller = new AbortController();
-    setTimeout(() => controller.abort(), 5000);
-    return client.files.stat(`/ipfs/${ipfsPath}`, {
+    // setTimeout(() => controller.abort(), 5000);
+    const ret = await client.files.stat(`/ipfs/${ipfsPath}`, {
       signal: controller.signal,
     });
+    return ret;
   } catch (err: any) {
     return err;
   }
 }
 
-async function resolveIpns(hash: string, path: string): Promise<string> {
-  switch (hash.substring(0, 1)) {
-    case bases.base36.prefix: {
-      hash = CID.parse(hash, bases.base36).toString();
-    }
-  }
-  let fullPath = `${hash}/${path}`.replace(/\/+/, "/");
-
+async function resolveIpns(
+  hash: string,
+  path: string
+): Promise<string | boolean> {
   client = client as IPFS;
 
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), 5000);
+  for await (const result of client.name.resolve(hash)) {
+    return normalizePath(undefined, undefined, `${result}/${path}`);
+  }
 
-  return (
-    (await last(
-      client.name.resolve(fullPath, {
-        recursive: true,
-        signal: controller.signal,
-      })
-    )) || path
-  );
+  return false;
 }
 
 const CHAIN = "ipfs";
@@ -196,12 +201,12 @@ export default {
     }
   }),
   stat_ipns: validateChain(CHAIN, async (args: any) => {
-    let ipfsPath;
-
     try {
-      ipfsPath = await resolveIpns(args.hash, args.path);
-
-      return statFile(undefined, undefined, ipfsPath);
+      let ipfsPath = await resolveIpns(args?.hash, args?.path);
+      if (!ipfsPath) {
+        throw new Error("ipns lookup failed");
+      }
+      return statFile(undefined, undefined, ipfsPath as string);
     } catch (e: any) {
       return rpcError((e as Error).message);
     }
@@ -220,10 +225,12 @@ export default {
     }
   }),
   fetch_ipns: validateChain(CHAIN, async (args: any) => {
-    let ipfsPath;
     try {
-      ipfsPath = await resolveIpns(args.hash, args.path);
-      const ret = await fetchFile(undefined, undefined, ipfsPath);
+      let ipfsPath = await resolveIpns(args?.hash, args?.path);
+      if (!ipfsPath) {
+        throw new Error("ipns lookup failed");
+      }
+      const ret = await fetchFile(undefined, undefined, ipfsPath as string);
       if (ret instanceof Error) {
         throw ret;
       }
