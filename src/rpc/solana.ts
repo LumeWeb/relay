@@ -4,6 +4,6 @@ import chainNetworks from "../networks.json";
 
 export default {
   getAccountInfo: proxyRpcMethod("getAccountInfo", [
-    chainNetworks["sol-mainnet"],
+    chainNetworks["solana-mainnet"],
   ]),
 } as RpcMethodList;

@@ -26,10 +26,10 @@ const gatewayMethods: {
     });
     return provider.send.bind(provider);
   },
-  "sol-mainnet": (chainId: string): RpcProviderMethod => {
+  "solana-mainnet": (chainId: string): RpcProviderMethod => {
     const provider = new Connection(
       `https://solana-mainnet.gateway.pokt.network/v1/lb/${config.str(
-        "pocket-app-key"
+        "pocket-app-id"
       )}`
     );
 
