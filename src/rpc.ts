@@ -41,7 +41,7 @@ let _aat: PocketAATObject;
 let jsonServer: jayson.Server;
 
 interface RPCRequest {
-  force: boolean;
+  bypassCache: boolean;
   chain: string;
   query: string;
   data: string;
@@ -64,7 +64,7 @@ function getRequestId(request: RPCRequest) {
   const clonedRequest = Object.assign({}, request);
 
   // @ts-ignore
-  delete clonedRequest.force;
+  delete clonedRequest.bypassCache;
 
   return hash(stringify(clonedRequest));
 }
@@ -98,7 +98,7 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
   }
   await lock.acquire();
 
-  if (!request.force && processedRequests.get(reqId)) {
+  if (!request.bypassCache && processedRequests.get(reqId)) {
     return processedRequests.get(reqId) as RPCResponse;
   }
 
@@ -142,7 +142,7 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
     : (rpcResp as unknown as JSONRPCResponseWithResult).result;
 
   if (
-    (!processedRequests.get(reqId) || request.force) &&
+    (!processedRequests.get(reqId) || request.bypassCache) &&
     dbData.data?.error !== ERR_NOT_READY
   ) {
     processedRequests.set(reqId, dbData);
