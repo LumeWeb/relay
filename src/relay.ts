@@ -118,19 +118,24 @@ async function setupSSl(bootup: boolean) {
   let domainValid = false;
   let dateValid = false;
   let configDomain = config.str("domain");
-  await promiseRetry(async (retry: any) => {
-    sslCert = await getSslCert();
-    if (!sslCert) {
-      retry();
-    }
-  });
 
-  await promiseRetry(async (retry: any) => {
-    sslKey = await getSslCert();
-    if (!sslKey) {
-      retry();
-    }
-  });
+  let retryOptions = bootup ? {} : { retry: 0 };
+
+  try {
+    await promiseRetry(async (retry: any) => {
+      sslCert = await getSslCert();
+      if (!sslCert) {
+        retry();
+      }
+    }, retryOptions);
+
+    await promiseRetry(async (retry: any) => {
+      sslKey = await getSslCert();
+      if (!sslKey) {
+        retry();
+      }
+    }, retryOptions);
+  } catch {}
 
   if (sslCert && sslKey) {
     sslParams.cert = Buffer.from((sslCert as IndependentFileSmall).fileData);
