@@ -49,11 +49,8 @@ interface RPCRequest {
 
 interface RPCResponse {
   updated: number;
-  data:
-    | any
-    | {
-        error: string | boolean;
-      };
+  data: any;
+  error?: string;
 }
 
 function hash(data: string): string {
@@ -137,9 +134,11 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
     }
   }
 
-  dbData.data = error
-    ? { error }
-    : (rpcResp as unknown as JSONRPCResponseWithResult).result;
+  if (error) {
+    dbData.error = error as string;
+  } else {
+    dbData.data = (rpcResp as unknown as JSONRPCResponseWithResult).result;
+  }
 
   if (
     (!processedRequests.get(reqId) || request.bypassCache) &&
