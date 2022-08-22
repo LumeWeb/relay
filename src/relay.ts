@@ -26,6 +26,8 @@ import log from "loglevel";
 import { AddressInfo } from "net";
 import { sprintf } from "sprintf-js";
 import { dynImport } from "./util.js";
+// @ts-ignore
+import promiseRetry from "promise-retry";
 
 let sslCtx: tls.SecureContext = tls.createSecureContext();
 const sslParams: tls.SecureContextOptions = { cert: "", key: "" };
@@ -109,13 +111,26 @@ export async function start() {
 }
 
 async function setupSSl(bootup: boolean) {
-  let sslCert = await getSslCert();
-  let sslKey = await getSslKey();
+  let sslCert: IndependentFileSmall | boolean = false;
+  let sslKey: IndependentFileSmall | boolean = false;
   let certInfo;
   let exists = false;
   let domainValid = false;
   let dateValid = false;
   let configDomain = config.str("domain");
+  await promiseRetry(async (retry: any) => {
+    sslCert = await getSslCert();
+    if (!sslCert) {
+      retry();
+    }
+  });
+
+  await promiseRetry(async (retry: any) => {
+    sslKey = await getSslCert();
+    if (!sslKey) {
+      retry();
+    }
+  });
 
   if (sslCert && sslKey) {
     sslParams.cert = Buffer.from((sslCert as IndependentFileSmall).fileData);
@@ -154,8 +169,8 @@ async function setupSSl(bootup: boolean) {
   }
 
   await createOrRenewSSl(
-    sslCert as IndependentFileSmall,
-    sslKey as IndependentFileSmall
+    sslCert as unknown as IndependentFileSmall,
+    sslKey as unknown as IndependentFileSmall
   );
 }
 
