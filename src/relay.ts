@@ -52,15 +52,7 @@ export async function start() {
     router(req, res, next);
   });
 
-  let httpsServer = https.createServer({
-    SNICallback(servername, cb) {
-      cb(null, sslCtx);
-    },
-  });
-
   let httpServer = http.createServer(app);
-
-  cron.schedule("0 * * * *", setupSSl.bind(null, false));
 
   await new Promise((resolve) => {
     httpServer.listen(80, "0.0.0.0", function () {
@@ -70,23 +62,6 @@ export async function start() {
     });
   });
   const dht = await getDHT();
-
-  let wsServer = new WS.Server({ server: httpsServer });
-
-  wsServer.on("connection", (socket: any) => {
-    relay(dht, new Stream(false, socket));
-  });
-
-  await new Promise((resolve) => {
-    httpsServer.listen(relayPort, "0.0.0.0", function () {
-      const address = httpsServer.address() as AddressInfo;
-      log.info(
-        "DHT Relay Server started on ",
-        `${address.address}:${address.port}`
-      );
-      resolve(null);
-    });
-  });
 
   const statusCodeServer = http.createServer(function (req, res) {
     // @ts-ignore
@@ -108,6 +83,31 @@ export async function start() {
   });
 
   await setupSSl(true);
+
+  let httpsServer = https.createServer({
+    SNICallback(servername, cb) {
+      cb(null, sslCtx);
+    },
+  });
+
+  let wsServer = new WS.Server({ server: httpsServer });
+
+  wsServer.on("connection", (socket: any) => {
+    relay(dht, new Stream(false, socket));
+  });
+
+  await new Promise((resolve) => {
+    httpsServer.listen(relayPort, "0.0.0.0", function () {
+      const address = httpsServer.address() as AddressInfo;
+      log.info(
+        "DHT Relay Server started on ",
+        `${address.address}:${address.port}`
+      );
+      resolve(null);
+    });
+  });
+
+  cron.schedule("0 * * * *", setupSSl.bind(null, false));
 }
 
 async function setupSSl(bootup: boolean) {
@@ -130,7 +130,7 @@ async function setupSSl(bootup: boolean) {
     }, retryOptions);
 
     await promiseRetry(async (retry: any) => {
-      sslKey = await getSslCert();
+      sslKey = await getSslKey();
       if (!sslKey) {
         retry();
       }
