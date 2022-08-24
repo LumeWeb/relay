@@ -21,6 +21,7 @@
         "@hyperswarm/dht": "^6.0.1",
         "@hyperswarm/dht-relay": "^0.3.0",
         "@lumeweb/kernel-utils": "https://github.com/LumeWeb/kernel-utils.git",
+        "@lumeweb/pokt-rpc-endpoints": "https://github.com/LumeWeb/pokt-rpc-endpoints.git",
         "@pokt-network/pocket-js": "^0.8.0-rc",
         "@skynetlabs/skynet-nodejs": "^2.6.0",
         "@solana/web3.js": "^1.47.3",

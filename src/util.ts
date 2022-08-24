@@ -1,4 +1,4 @@
-import chainNetworks from "./networks.json";
+import chainNetworks from "@lumeweb/pokt-rpc-endpoints";
 
 type networks = { [net: string]: string };
 
