@@ -10,34 +10,24 @@ import { get as getDHT } from "./dht.js";
 import { rpcMethods } from "./rpc/index.js";
 import { start as startDns } from "./dns.js";
 import {
-  Configuration,
-  HttpRpcProvider,
-  PocketAAT,
-  Pocket,
-} from "@pokt-network/pocket-js/dist/index.js";
-import {
   JSONRPCError,
   JSONRPCRequest,
   JSONRPCResponseWithError,
   JSONRPCResponseWithResult,
 } from "jayson";
-import config, { updateUsePocketGateway, usePocketGateway } from "./config.js";
+import config from "./config.js";
 import { ERR_NOT_READY, errorExit } from "./error.js";
 import log from "loglevel";
 // @ts-ignore
 import stringify from "json-stable-stringify";
-import { getStream } from "./streams.js";
 import type { StreamFileResponse } from "./streams.js";
+import { getStream } from "./streams.js";
 
 const pendingRequests = new NodeCache();
 const processedRequests = new NodeCache({
   stdTTL: 60 * 60 * 12,
 });
 
-type PocketAATObject = typeof PocketAAT;
-
-let pocketServer: typeof Pocket;
-let _aat: PocketAATObject;
 let jsonServer: jayson.Server;
 
 interface RPCRequest {
@@ -152,55 +142,6 @@ async function processRequest(request: RPCRequest): Promise<RPCResponse> {
   return dbData;
 }
 
-export function updateAat(aat: PocketAATObject): void {
-  _aat = aat;
-}
-
-export function getAat(): PocketAATObject {
-  return _aat;
-}
-
-export function getPocketServer(): typeof Pocket {
-  return pocketServer;
-}
-
-export async function unlockAccount(
-  accountPrivateKey: string,
-  accountPublicKey: string,
-  accountPassphrase: string
-): Promise<PocketAATObject> {
-  try {
-    // @ts-ignore
-    const account = await pocketServer.keybase.importAccount(
-      Buffer.from(accountPrivateKey, "hex"),
-      accountPassphrase
-    );
-
-    if (account instanceof Error) {
-      // noinspection ExceptionCaughtLocallyJS
-      throw account;
-    }
-
-    // @ts-ignore
-    await pocketServer.keybase.unlockAccount(
-      account.addressHex,
-      accountPassphrase,
-      0
-    );
-
-    // @ts-ignore
-    return await PocketAAT.from(
-      "0.0.1",
-      accountPublicKey,
-      accountPublicKey,
-      accountPrivateKey
-    );
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
-  }
-}
-
 export async function processRpcRequest(
   request: JSONRPCRequest,
   chain: string
@@ -224,32 +165,7 @@ export async function processRpcRequest(
 
 export async function start() {
   if (!config.str("pocket-app-id") || !config.str("pocket-app-key")) {
-    const pocketHost = config.str("pocket-host");
-    const pocketPort = config.uint("pocket-port");
-    if (!pocketHost || !pocketPort) {
-      errorExit(
-        "Please set pocket-host and pocket-port config options if you do not have an API key set"
-      );
-    }
-
-    const dispatchURL = new URL(
-      `http://${config.str("pocket-host")}:${config.uint("pocket-port")}`
-    );
-    const rpcProvider = new HttpRpcProvider(dispatchURL);
-    const configuration = new Configuration();
-    // @ts-ignore
-    pocketServer = new Pocket([dispatchURL], rpcProvider, configuration);
-    updateUsePocketGateway(false);
-  }
-
-  if (!usePocketGateway()) {
-    updateAat(
-      await unlockAccount(
-        <string>config.str("pocket-account-private-key"),
-        <string>config.str("pocket-account-public-key"),
-        "0"
-      )
-    );
+    errorExit("Please set pocket-app-id and pocket-app-key config options.");
   }
 
   jsonServer = new jayson.Server(rpcMethods, { useContext: true });
