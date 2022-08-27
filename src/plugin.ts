@@ -54,6 +54,7 @@ export class PluginApiManager {
         getRpcServer().registerMethod(pluginName, methodName, method);
       },
       loadPlugin: getPluginAPI().loadPlugin,
+      getMethods: getRpcServer().getMethods,
     };
   }
 }

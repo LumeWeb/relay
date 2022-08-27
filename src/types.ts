@@ -1,5 +1,6 @@
 import { JSONSchemaType } from "ajv";
 import { PluginApiManager } from "./plugin.js";
+import { RPCServer } from "./rpc/server.js";
 
 export interface RPCRequest {
   bypassCache?: boolean;
@@ -59,6 +60,7 @@ export interface PluginAPI {
   config: any;
   registerMethod: (methodName: string, method: RPCMethod) => void;
   loadPlugin: PluginApiManager["loadPlugin"];
+  getMethods: RPCServer["getMethods"];
 }
 
 export type PluginFunction = (api: PluginAPI) => Promise<void>;

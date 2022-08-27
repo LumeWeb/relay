@@ -64,6 +64,18 @@ export class RPCServer {
     methodMap.set(methodName, options);
   }
 
+  public getMethods(): string[] {
+    const methods = [];
+
+    for (const module in this.methods) {
+      for (const method in this.methods.get(module)) {
+        methods.push(`${module}.${method}`);
+      }
+    }
+
+    return methods;
+  }
+
   private async init(): Promise<void> {
     (await getDHT("server")).on(
       "connection",
