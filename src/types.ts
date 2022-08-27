@@ -19,7 +19,7 @@ export interface RPCMethod {
   handler: (
     request: RPCRequest,
     sendStream: (stream: AsyncIterable<Uint8Array>) => void
-  ) => RPCResponse | null;
+  ) => Promise<RPCResponse | null>;
 }
 
 export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
