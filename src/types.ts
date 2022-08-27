@@ -6,7 +6,7 @@ export interface RPCRequest {
   bypassCache?: boolean;
   module: string;
   method: string;
-  data: string;
+  data: any;
 }
 
 export interface RPCResponse {
@@ -23,6 +23,7 @@ export interface RPCMethod {
   ) => Promise<RPCResponse | null>;
 }
 
+// @ts-ignore
 export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
   anyOf: [],
   oneOf: [],
