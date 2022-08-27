@@ -15,7 +15,7 @@ export interface RPCResponse {
 }
 
 export interface RPCMethod {
-  cachable: boolean;
+  cacheable: boolean;
   handler: (
     request: RPCRequest,
     sendStream: (stream: AsyncIterable<Uint8Array>) => void

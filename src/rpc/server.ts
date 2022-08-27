@@ -127,7 +127,7 @@ export class RPCServer {
 
   private async waitOnRequestLock(request: RPCRequest) {
     let method = this.getMethodByRequest(request) as RPCMethod;
-    if (!method.cachable) {
+    if (!method.cacheable) {
       return;
     }
 
@@ -151,7 +151,7 @@ export class RPCServer {
 
   private getCachedRequest(request: RPCRequest): RPCResponse | undefined {
     let method = this.getMethodByRequest(request) as RPCMethod;
-    if (!method.cachable) {
+    if (!method.cacheable) {
       return;
     }
 
