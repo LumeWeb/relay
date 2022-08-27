@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { PluginAPI } from "./plugin.js";
+import { PluginApiManager } from "./plugin.js";
 
 export interface RPCRequest {
   bypassCache?: boolean;
@@ -55,13 +55,13 @@ export interface StreamFileResponse {
   done: boolean;
 }
 
-export interface RelayPluginAPI {
+export interface PluginAPI {
   config: any;
   registerMethod: (methodName: string, method: RPCMethod) => void;
-  loadPlugin: PluginAPI["loadPlugin"];
+  loadPlugin: PluginApiManager["loadPlugin"];
 }
 
-export type PluginFunction = (api: RelayPluginAPI) => Promise<void>;
+export type PluginFunction = (api: PluginAPI) => Promise<void>;
 
 export interface Plugin {
   name: string;

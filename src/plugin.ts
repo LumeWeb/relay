@@ -1,15 +1,15 @@
 import { globby } from "globby";
 import config from "./config.js";
 import { getRpcServer } from "./rpc/server.js";
-import { RelayPluginAPI, RPCMethod, Plugin } from "./types.js";
+import { PluginAPI, RPCMethod, Plugin } from "./types.js";
 import slugify from "slugify";
 
-let pluginApi: PluginAPI;
+let pluginApi: PluginApiManager;
 
 const sanitizeName = (name: string) =>
   slugify(name, { lower: true, strict: true });
 
-export class PluginAPI {
+export class PluginApiManager {
   private registeredPlugins: Map<string, Plugin> = new Map<string, Plugin>();
 
   public async loadPlugin(moduleName: string): Promise<Plugin> {
@@ -47,7 +47,7 @@ export class PluginAPI {
     return plugin;
   }
 
-  private getPluginAPI(pluginName: string): RelayPluginAPI {
+  private getPluginAPI(pluginName: string): PluginAPI {
     return {
       config,
       registerMethod: (methodName: string, method: RPCMethod): void => {
@@ -58,12 +58,12 @@ export class PluginAPI {
   }
 }
 
-export function getPluginAPI(): PluginAPI {
+export function getPluginAPI(): PluginApiManager {
   if (!pluginApi) {
-    pluginApi = new PluginAPI();
+    pluginApi = new PluginApiManager();
   }
 
-  return pluginApi as PluginAPI;
+  return pluginApi as PluginApiManager;
 }
 
 export async function loadPlugins() {
