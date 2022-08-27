@@ -21,6 +21,7 @@ export interface RPCMethod {
     sendStream: (stream: AsyncIterable<Uint8Array>) => void
   ) => RPCResponse | null;
 }
+
 export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
   anyOf: [],
   oneOf: [],
@@ -48,19 +49,20 @@ export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
     },
   },
 };
+
 export interface StreamFileResponse {
   data?: Uint8Array;
   done: boolean;
 }
+
 export interface RelayPluginAPI {
   config: any;
-  api: {
-    registerMethod: (methodName: string, method: RPCMethod) => void;
-    loadPlugin: PluginAPI["loadPlugin"];
-  };
+  registerMethod: (methodName: string, method: RPCMethod) => void;
+  loadPlugin: PluginAPI["loadPlugin"];
 }
 
 export type PluginFunction = (api: RelayPluginAPI) => Promise<void>;
+
 export interface Plugin {
   name: string;
   plugin: PluginFunction;

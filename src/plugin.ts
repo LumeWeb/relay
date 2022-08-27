@@ -50,12 +50,10 @@ export class PluginAPI {
   private getPluginAPI(pluginName: string): RelayPluginAPI {
     return {
       config,
-      api: {
-        registerMethod: (methodName: string, method: RPCMethod): void => {
-          getRpcServer().registerMethod(pluginName, methodName, method);
-        },
-        loadPlugin: getPluginAPI().loadPlugin,
+      registerMethod: (methodName: string, method: RPCMethod): void => {
+        getRpcServer().registerMethod(pluginName, methodName, method);
       },
+      loadPlugin: getPluginAPI().loadPlugin,
     };
   }
 }
