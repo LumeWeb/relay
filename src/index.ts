@@ -2,11 +2,13 @@ import { start as startRpc } from "./rpc.js";
 import { start as startRelay } from "./relay.js";
 import log from "loglevel";
 import config from "./config.js";
+import { loadPlugins } from "./plugin.js";
 
 log.setDefaultLevel(config.str("log-level"));
 
 async function boot() {
   await startRpc();
+  await loadPlugins();
   await startRelay();
 }
 

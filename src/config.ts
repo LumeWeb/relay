@@ -11,19 +11,19 @@ import { errorExit } from "./error.js";
 const config = new BConfig("lumeweb-relay");
 
 let configLocation;
+let configDir;
 const configFile = "config.conf";
 
 switch (os.platform()) {
   case "win32":
-    configLocation = path.resolve(
-      require?.main?.filename as string,
-      configFile
-    );
+    configDir = path.dirname(require?.main?.filename as string);
+    configLocation = path.resolve(configDir, configFile);
     break;
 
   case "linux":
   default:
-    configLocation = path.join("/etc/lumeweb/relay", configFile);
+    configDir = "/etc/lumeweb/relay";
+    configLocation = path.join(configDir, configFile);
     break;
 }
 
@@ -31,6 +31,8 @@ config.inject({
   port: 8080,
   config: configLocation,
   logLevel: "info",
+  pluginFolder: path.join(configDir, "plugins"),
+  plugins: ["core"],
 });
 
 config.load({
