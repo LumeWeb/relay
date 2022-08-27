@@ -4,6 +4,7 @@
     "version": "0.1.0",
     "description": "",
     "main": "build/index.js",
+    "types": "src/types.ts",
     "author": {
         "name": "Derrick Hammer",
         "email": "contact@lumeweb.com"
