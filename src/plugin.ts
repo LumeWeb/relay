@@ -2,10 +2,10 @@ import config from "./config.js";
 import { getRpcServer } from "./rpc/server.js";
 import { PluginAPI, RPCMethod, Plugin } from "./types.js";
 import slugify from "slugify";
-import { dynImport } from "./util";
+import * as fs from "fs";
+import path from "path";
 
 let pluginApi: PluginApiManager;
-let globby: typeof import("globby").globby;
 
 const sanitizeName = (name: string) =>
   slugify(name, { lower: true, strict: true });
@@ -20,9 +20,14 @@ export class PluginApiManager {
       return this.registeredPlugins.get(moduleName) as Plugin;
     }
 
-    const paths = await globby([`${moduleName}.js`, "${moduleName}.mjs"], {
-      cwd: config.get("plugin-folder"),
-    });
+    const paths = [];
+    for (const modulePath of [`${moduleName}.js`, `${moduleName}.mjs`]) {
+      const fullPath = path.join(config.get("plugin-folder"), modulePath);
+      if (fs.existsSync(fullPath)) {
+        paths.push(fullPath);
+        break;
+      }
+    }
 
     if (!paths.length) {
       throw new Error(`Plugin ${moduleName} does not exist`);
@@ -69,7 +74,6 @@ export function getPluginAPI(): PluginApiManager {
 }
 
 export async function loadPlugins() {
-  globby = ((await dynImport("globby")) as typeof import("globby")).globby;
   for (const plugin of config.array("plugins")) {
     await getPluginAPI().loadPlugin(plugin);
   }
