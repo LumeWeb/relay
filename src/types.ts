@@ -34,14 +34,7 @@ export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
       type: "string",
     },
     data: {
-      type: "string",
-      anyOf: [
-        { type: "string" },
-        { type: "number" },
-        { type: "integer" },
-        { type: "object" },
-        { type: "array" },
-      ],
+      type: ["number", "string", "boolean", "object", "array"],
     },
     bypassCache: {
       type: "boolean",

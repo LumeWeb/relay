@@ -15,8 +15,8 @@ import stringify from "json-stable-stringify";
 import Ajv from "ajv";
 import RPCConnection from "./connection.js";
 
-const ajv = new Ajv();
-ajv.addSchema(RPC_REQUEST_SCHEMA, "rpc_request");
+const ajv = new Ajv({ allowUnionTypes: true });
+const validateRpcRequest = ajv.compile(RPC_REQUEST_SCHEMA);
 
 let server: RPCServer;
 
@@ -193,9 +193,10 @@ export class RPCServer {
   }
 
   private verifyRequest(request: RPCRequest) {
-    let valid: any = ajv.getSchema("rpc_request")?.(request);
+    let valid: boolean | Error | RPCMethod = validateRpcRequest(request);
+
     if (!valid) {
-      return new Error("Invalid request");
+      return new Error(ajv.errorsText(validateRpcRequest.errors));
     }
 
     valid = this.getMethodByRequest(request);
