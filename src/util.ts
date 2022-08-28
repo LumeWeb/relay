@@ -1,10 +1,14 @@
-import chainNetworks from "@lumeweb/pokt-rpc-endpoints";
+let chainNetworks: networks;
+
+dynImport("@lumeweb/pokt-rpc-endpoints").then(
+  (module) => (chainNetworks = module as any)
+);
 
 type networks = { [net: string]: string };
 
 export function maybeMapChainId(chain: string): string | boolean {
   if (chain in chainNetworks) {
-    return (chainNetworks as networks)[chain];
+    return chainNetworks[chain];
   }
 
   if (
