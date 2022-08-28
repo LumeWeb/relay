@@ -1,10 +1,11 @@
-import { globby } from "globby";
 import config from "./config.js";
 import { getRpcServer } from "./rpc/server.js";
 import { PluginAPI, RPCMethod, Plugin } from "./types.js";
 import slugify from "slugify";
+import { dynImport } from "./util";
 
 let pluginApi: PluginApiManager;
+let globby: typeof import("globby").globby;
 
 const sanitizeName = (name: string) =>
   slugify(name, { lower: true, strict: true });
@@ -68,6 +69,7 @@ export function getPluginAPI(): PluginApiManager {
 }
 
 export async function loadPlugins() {
+  globby = ((await dynImport("globby")) as typeof import("globby")).globby;
   for (const plugin of config.array("plugins")) {
     await getPluginAPI().loadPlugin(plugin);
   }
