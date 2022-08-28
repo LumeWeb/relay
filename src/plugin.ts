@@ -39,6 +39,9 @@ export class PluginApiManager {
     } catch (e) {
       throw e;
     }
+    if ("default" in plugin) {
+      plugin = plugin?.default as Plugin;
+    }
 
     plugin.name = sanitizeName(plugin.name);
 
