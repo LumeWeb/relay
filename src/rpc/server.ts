@@ -67,8 +67,10 @@ export class RPCServer {
   public getMethods(): string[] {
     const methods = [];
 
-    for (const module in this.methods) {
-      for (const method in this.methods.get(module)) {
+    for (const module of this.methods.keys()) {
+      for (const method of (
+        this.methods.get(module) as Map<string, RPCMethod>
+      ).keys()) {
         methods.push(`${module}.${method}`);
       }
     }
