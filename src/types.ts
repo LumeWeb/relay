@@ -25,8 +25,6 @@ export interface RPCMethod {
 
 // @ts-ignore
 export const RPC_REQUEST_SCHEMA: JSONSchemaType<RPCRequest> = {
-  anyOf: [],
-  oneOf: [],
   type: "object",
   properties: {
     module: {
@@ -70,6 +68,7 @@ export interface Plugin {
   name: string;
   plugin: PluginFunction;
   exports?: any;
+  default?: Plugin;
 }
 
 export type RPCStreamHandler = (
