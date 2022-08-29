@@ -1,10 +1,9 @@
 import {
-  RPC_REQUEST_SCHEMA,
   RPCMethod,
   RPCRequest,
   RPCResponse,
   RPCStreamHandler,
-} from "../types.js";
+} from "@lumeweb/relay-types";
 import NodeCache from "node-cache";
 import { get as getDHT } from "../dht.js";
 import { Mutex } from "async-mutex";
@@ -14,6 +13,7 @@ import crypto from "crypto";
 import stringify from "json-stable-stringify";
 import Ajv from "ajv";
 import RPCConnection from "./connection.js";
+import { RPC_REQUEST_SCHEMA } from "../types.js";
 
 const ajv = new Ajv({ allowUnionTypes: true });
 const validateRpcRequest = ajv.compile(RPC_REQUEST_SCHEMA);

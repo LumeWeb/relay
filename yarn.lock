@@ -1074,6 +1074,10 @@
   version "0.1.0"
   resolved "https://github.com/LumeWeb/pokt-rpc-endpoints.git#0223b743f913aa46e914b1dc237ae2e12571d96d"
 
+"@lumeweb/relay-types@https://github.com/LumeWeb/relay-types.git":
+  version "0.1.0"
+  resolved "https://github.com/LumeWeb/relay-types.git#9768e2dc9dd8ccc2ee8569424bb9d7a2d8cde13e"
+
 "@msgpackr-extract/msgpackr-extract-darwin-arm64@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-darwin-arm64/-/msgpackr-extract-darwin-arm64-2.0.2.tgz#01e3669b8b2dc01f6353f2c87e1ec94faf52c587"

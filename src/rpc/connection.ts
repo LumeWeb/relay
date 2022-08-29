@@ -1,9 +1,9 @@
-import {
+import type {
   RPCRequest,
   RPCResponse,
   RPCStreamHandler,
   StreamFileResponse,
-} from "../types";
+} from "@lumeweb/relay-types";
 import { pack, unpack } from "msgpackr";
 import log from "loglevel";
 import { getRpcServer } from "./server";

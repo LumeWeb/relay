@@ -67,6 +67,7 @@
         "xml2js": "^0.4.23"
     },
     "devDependencies": {
+        "@lumeweb/relay-types": "https://github.com/LumeWeb/relay-types.git",
         "@types/express": "^4.17.13",
         "@types/minimatch": "^3.0.5",
         "@types/sprintf-js": "^1.1.2",
