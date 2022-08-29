@@ -62,7 +62,7 @@ export class PluginApiManager {
       registerMethod: (methodName: string, method: RPCMethod): void => {
         getRpcServer().registerMethod(pluginName, methodName, method);
       },
-      loadPlugin: getPluginAPI().loadPlugin,
+      loadPlugin: getPluginAPI().loadPlugin.bind(getPluginAPI()),
       getMethods: getRpcServer().getMethods.bind(getRpcServer()),
     };
   }
