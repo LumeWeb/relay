@@ -1,6 +1,6 @@
 import config from "./config.js";
 import { getRpcServer } from "./rpc/server.js";
-import { PluginAPI, RPCMethod, Plugin } from "./types.js";
+import type { PluginAPI, RPCMethod, Plugin } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
 import path from "path";
