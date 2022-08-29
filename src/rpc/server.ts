@@ -132,7 +132,7 @@ export class RPCServer {
 
     cachedRequest = this.getCachedRequest(request);
 
-    if (!cachedRequest && !isStream) {
+    if (!cachedRequest && !isStream && method.cacheable) {
       this.cacheRequest(request, result);
     }
 
