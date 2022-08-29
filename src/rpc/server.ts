@@ -179,6 +179,8 @@ export class RPCServer {
   private cacheRequest(request: RPCRequest, response: RPCResponse): void {
     const reqId = RPCServer.getRequestId(request);
 
+    response.updated = Date.now();
+
     this.processedRequests.set(reqId, response);
   }
 
