@@ -126,6 +126,10 @@ export class RPCServer {
 
     if (isStream) {
       result = await streamHandler(isStream);
+    } else {
+      if (result && !result.error && !("data" in result)) {
+        result = { data: result };
+      }
     }
 
     result = result as RPCResponse;
