@@ -33,6 +33,7 @@ config.inject({
   logLevel: "info",
   pluginFolder: path.join(configDir, "plugins"),
   plugins: ["core"],
+  ssl: true,
 });
 
 config.load({

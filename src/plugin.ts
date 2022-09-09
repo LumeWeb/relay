@@ -4,6 +4,23 @@ import type { PluginAPI, RPCMethod, Plugin } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
 import path from "path";
+import {
+  getSavedSsl,
+  getSsl,
+  getSslContext,
+  saveSSl,
+  setSsl,
+  setSslContext,
+} from "./ssl.js";
+import log from "loglevel";
+import { getSeed } from "./util.js";
+import { getRouter, resetRouter, setRouter } from "./relay";
+import {
+  createIndependentFileSmall,
+  openIndependentFileSmall,
+  overwriteIndependentFileSmall,
+} from "./file";
+import { setDnsProvider } from "./dns";
 
 let pluginApi: PluginApiManager;
 
@@ -64,6 +81,30 @@ export class PluginApiManager {
       },
       loadPlugin: getPluginAPI().loadPlugin.bind(getPluginAPI()),
       getMethods: getRpcServer().getMethods.bind(getRpcServer()),
+
+      ssl: {
+        setContext: setSslContext,
+        getContext: getSslContext,
+        getSaved: getSavedSsl,
+        set: setSsl,
+        get: getSsl,
+        save: saveSSl,
+      },
+      files: {
+        createIndependentFileSmall,
+        openIndependentFileSmall,
+        overwriteIndependentFileSmall,
+      },
+      dns: {
+        setProvider: setDnsProvider,
+      },
+      logger: log,
+      getSeed,
+      appRouter: {
+        get: getRouter,
+        set: setRouter,
+        reset: resetRouter,
+      },
     };
   }
 }

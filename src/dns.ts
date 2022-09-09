@@ -1,14 +1,11 @@
 import cron from "node-cron";
 import { get as getDHT } from "./dht.js";
 import { Buffer } from "buffer";
-import { Parser } from "xml2js";
-import { URL } from "url";
 import { pack } from "msgpackr";
 import config from "./config.js";
-import { errorExit } from "./error.js";
 import log from "loglevel";
-import { createHash } from "crypto";
 import { dynImport } from "./util.js";
+import type { DnsProvider } from "@lumeweb/relay-types";
 
 let activeIp: string;
 let fetch: typeof import("node-fetch").default;
@@ -17,6 +14,12 @@ let hashDataKey: typeof import("@lumeweb/kernel-utils").hashDataKey;
 
 const REGISTRY_NODE_KEY = "lumeweb-dht-node";
 
+let dnsProvider: DnsProvider = async (ip) => {};
+
+export function setDnsProvider(provider: DnsProvider) {
+  dnsProvider = provider;
+}
+
 async function ipUpdate() {
   let currentIp = await getCurrentIp();
 
@@ -24,11 +27,7 @@ async function ipUpdate() {
     return;
   }
 
-  let domain = await getDomainInfo();
-
-  await fetch(domain.url[0].toString());
-
-  activeIp = domain.address[0];
+  await dnsProvider(currentIp);
 
   log.info(`Updated DynDNS hostname ${config.str("domain")} to ${activeIp}`);
 }
@@ -55,49 +54,6 @@ export async function start() {
   );
 
   cron.schedule("0 * * * *", ipUpdate);
-}
-
-async function getDomainInfo() {
-  const relayDomain = config.str("domain");
-  const parser = new Parser();
-
-  const url = new URL("https://freedns.afraid.org/api/");
-
-  const params = url.searchParams;
-
-  params.append("action", "getdyndns");
-  params.append("v", "2");
-  params.append("style", "xml");
-
-  const hash = createHash("sha1");
-  hash.update(
-    `${config.str("afraid-username")}|${config.str("afraid-password")}`
-  );
-
-  params.append("sha", hash.digest().toString("hex"));
-
-  const response = await (await fetch(url.toString())).text();
-
-  if (/could not authenticate/i.test(response)) {
-    errorExit("Failed to authenticate to afraid.org");
-  }
-
-  const json = await parser.parseStringPromise(response);
-
-  let domain = null;
-
-  for (const item of json.xml.item) {
-    if (item.host[0] === relayDomain) {
-      domain = item;
-      break;
-    }
-  }
-
-  if (!domain) {
-    errorExit(`Domain ${relayDomain} not found in afraid.org account`);
-  }
-
-  return domain;
 }
 
 async function getCurrentIp(): Promise<string> {

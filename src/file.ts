@@ -1,44 +1,14 @@
-import type { Ed25519Keypair, Err, progressiveFetchResult } from "libskynet";
+import type { Err, progressiveFetchResult } from "libskynet";
 // @ts-ignore
 import { SkynetClient } from "@skynetlabs/skynet-nodejs";
 import { dynImport } from "./util.js";
+import type {
+  IndependentFileSmall,
+  IndependentFileSmallMetadata,
+} from "@lumeweb/relay-types";
 
-const ERR_EXISTS = "exists";
 const ERR_NOT_EXISTS = "DNE";
 const STD_FILENAME = "file";
-
-type OverwriteDataFn = (newData: Uint8Array) => Promise<Err>;
-
-type ReadDataFn = () => Promise<[Uint8Array, Err]>;
-
-export interface IndependentFileSmallMetadata {
-  largestHistoricSize: bigint;
-}
-
-export interface IndependentFileSmall {
-  dataKey: Uint8Array;
-  fileData: Uint8Array;
-  inode: string;
-  keypair: Ed25519Keypair;
-  metadata: IndependentFileSmallMetadata;
-  revision: bigint;
-  seed: Uint8Array;
-
-  skylink: string;
-  viewKey: string;
-
-  overwriteData: OverwriteDataFn;
-
-  readData: ReadDataFn;
-}
-
-interface IndependentFileSmallViewer {
-  fileData: Uint8Array;
-  skylink: string;
-  viewKey: string;
-
-  readData: ReadDataFn;
-}
 
 let addContextToErr: typeof import("libskynet").addContextToErr,
   blake2b: typeof import("libskynet").blake2b,
