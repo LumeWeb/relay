@@ -7,8 +7,8 @@ import { loadPlugins } from "./plugin.js";
 log.setDefaultLevel(config.str("log-level"));
 
 async function boot() {
-  await startRpc();
   await loadPlugins();
+  await startRpc();
   await startRelay();
 }
 
