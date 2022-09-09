@@ -30,7 +30,6 @@
         "@types/node": "^18.0.0",
         "@types/node-cron": "^3.0.2",
         "@types/ws": "^8.5.3",
-        "@types/xml2js": "^0.4.11",
         "acme-client": "^4.2.5",
         "ajv": "^8.11.0",
         "algosdk": "^1.18.1",
@@ -62,15 +61,12 @@
         "promise-retry": "^2.0.1",
         "random-access-memory": "^4.1.0",
         "random-key": "^0.3.2",
-        "slugify": "^1.6.5",
-        "sprintf-js": "^1.1.2",
-        "xml2js": "^0.4.23"
+        "slugify": "^1.6.5"
     },
     "devDependencies": {
         "@lumeweb/relay-types": "https://github.com/LumeWeb/relay-types.git",
         "@types/express": "^4.17.13",
         "@types/minimatch": "^3.0.5",
-        "@types/sprintf-js": "^1.1.2",
         "esbuild": "^0.14.49",
         "hyper-typings": "^1.0.0",
         "pkg": "^5.8.0",
