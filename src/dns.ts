@@ -27,11 +27,13 @@ async function ipUpdate() {
     return;
   }
 
-  await dnsProvider(currentIp);
+  const domain = config.str("domain");
+
+  await dnsProvider(currentIp, domain);
 
   activeIp = currentIp;
 
-  log.info(`Updated DynDNS hostname ${config.str("domain")} to ${activeIp}`);
+  log.info(`Updated DynDNS hostname ${domain} to ${activeIp}`);
 }
 
 export async function start() {
