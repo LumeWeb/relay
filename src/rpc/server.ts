@@ -224,13 +224,13 @@ export class RPCServer {
     let item: any = this.methods.get(moduleName);
 
     if (!item) {
-      return new Error("Invalid module");
+      return new Error("INVALID_MODULE");
     }
 
     item = item.get(method);
 
     if (!item) {
-      return new Error("Invalid method");
+      return new Error("INVALID_METHOD");
     }
 
     return item;
