@@ -29,6 +29,8 @@ async function ipUpdate() {
 
   await dnsProvider(currentIp);
 
+  activeIp = currentIp;
+
   log.info(`Updated DynDNS hostname ${config.str("domain")} to ${activeIp}`);
 }
 
