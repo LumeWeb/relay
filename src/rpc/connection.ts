@@ -65,6 +65,7 @@ export default class RPCConnection {
           break;
         }
         streamResp.data.data = chunk as unknown as Uint8Array;
+        await new Promise((resolve) => setTimeout(resolve, 15));
         that.write(pack(streamResp));
       }
 
