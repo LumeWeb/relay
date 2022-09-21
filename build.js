@@ -10,18 +10,9 @@ esbuild.buildSync({
   mainFields: ["main"],
   external: [
     "udx-native",
-    "secp256k1",
-    "bigint-buffer",
-    "bufferutil",
     "sodium-native",
     "loady",
     "bcrypto",
-    "bdb",
-    "hsd",
-    "goosig",
-    "mrmr",
-    "@pokt-network/amino-js",
-    "utf-8-validate",
   ],
   define: {
     "global.GENTLY": false,
