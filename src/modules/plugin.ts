@@ -40,7 +40,7 @@ export class PluginApiManager {
 
     const paths = [];
     for (const modulePath of [`${moduleName}.js`, `${moduleName}.mjs`]) {
-      const fullPath = path.join(config.get("plugin-dir"), modulePath);
+      const fullPath = path.join(config.get("plugindir"), modulePath);
       if (fs.existsSync(fullPath)) {
         paths.push(fullPath);
         break;
