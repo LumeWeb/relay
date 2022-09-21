@@ -15,7 +15,7 @@ import {
 } from "./ssl.js";
 import log from "loglevel";
 import { getSeed } from "./util.js";
-import { getRouter, resetRouter, setRouter } from "./relay.js";
+import { getRouter, resetRouter, setRouter } from "./app.js";
 import {
   createIndependentFileSmall,
   openIndependentFileSmall,
