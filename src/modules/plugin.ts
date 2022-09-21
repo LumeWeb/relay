@@ -120,7 +120,7 @@ export function getPluginAPI(): PluginApiManager {
 }
 
 export async function loadPlugins() {
-  for (const plugin of config.array("plugins")) {
+  for (const plugin of [...new Set(config.array("plugins", []))] as []) {
     await getPluginAPI().loadPlugin(plugin);
   }
 }
