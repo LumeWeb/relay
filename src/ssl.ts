@@ -143,3 +143,9 @@ export function setSSlCheck(checker: () => Promise<void>): void {
 export function getSslCheck(): () => Promise<void> {
   return sslChecker;
 }
+
+export async function start() {
+  if (config.bool("ssl") && getSslCheck()) {
+    await getSslCheck()();
+  }
+}
