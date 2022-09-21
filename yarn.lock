@@ -1087,7 +1087,7 @@
 
 "@lumeweb/relay-types@https://github.com/LumeWeb/relay-types.git":
   version "0.1.0"
-  resolved "https://github.com/LumeWeb/relay-types.git#c21fa3ea15edcac87442b9b9689ae60f09c7720f"
+  resolved "https://github.com/LumeWeb/relay-types.git#83b831b62171a28a6d24dfae2df228c3849634f1"
 
 "@msgpackr-extract/msgpackr-extract-darwin-arm64@2.1.2":
   version "2.1.2"
@@ -1120,23 +1120,35 @@
   integrity sha512-rIZVR48zA8hGkHIK7ED6+ZiXsjRCcAVBJbm8o89OKAMTmEAQ2QvoOxoiu3w2isAaWwzgtQIOFIqHwvZDyLKCvw==
 
 "@multiformats/mafmt@^11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@multiformats/mafmt/-/mafmt-11.0.2.tgz#22a42ee2caa0f35835ab41d9ae766b61cee6d81b"
-  integrity sha512-KesMM4fSEpMz1kZPzlvdwYNYrq5iH38S5EDKLu5qsGG4NT94UaruTjase9osaDW+CcDfshK9uZUD9lzpXJGreA==
+  version "11.0.3"
+  resolved "https://registry.yarnpkg.com/@multiformats/mafmt/-/mafmt-11.0.3.tgz#278bcf23ca7c954a9a04500527c011a6ce14f0cb"
+  integrity sha512-DvCQeZJgaC4kE3BLqMuW3gQkNAW14Z7I+yMt30Ze+wkfHkWSp+bICcHGihhtgfzYCumHA/vHlJ9n54mrCcmnvQ==
   dependencies:
-    "@multiformats/multiaddr" "^10.1.1"
+    "@multiformats/multiaddr" "^11.0.0"
 
 "@multiformats/multiaddr-to-uri@^9.0.0", "@multiformats/multiaddr-to-uri@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@multiformats/multiaddr-to-uri/-/multiaddr-to-uri-9.0.1.tgz#4e418c852a1aca868b6e36540a525892ee4060c5"
-  integrity sha512-kSyHZ2lKjoEzHu/TM4ZVwFj4AWV1B9qFBFJjYb/fK1NqrnrNb/M3uhoyckJvP7WZvpDsnEc7fUCpmPipDY6LMw==
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@multiformats/multiaddr-to-uri/-/multiaddr-to-uri-9.0.2.tgz#4461df67f0c5cd02b21e1d0d1e34831d849b62a7"
+  integrity sha512-vrWmfFadmix5Ab9l//oRQdQ7O3J5bGJpJRMSm21bHlQB0XV4xtNU6vMZBVXeu3Su79LgflEp37cjTFE3yKf3Hw==
   dependencies:
-    "@multiformats/multiaddr" "^10.1.1"
+    "@multiformats/multiaddr" "^11.0.0"
 
 "@multiformats/multiaddr@^10.0.0", "@multiformats/multiaddr@^10.1.1", "@multiformats/multiaddr@^10.1.5", "@multiformats/multiaddr@^10.1.7", "@multiformats/multiaddr@^10.1.8":
   version "10.5.0"
   resolved "https://registry.yarnpkg.com/@multiformats/multiaddr/-/multiaddr-10.5.0.tgz#2651e974c8d2dccc8f1612880987f44b33406bb4"
   integrity sha512-u4qHMyv25iAqCb9twJROoN1M8UDm8bureOCIzwz03fVhwJzV6DpgH1eFz9UAzDn7CpSShQ9SLS5MiC4hJjTfig==
+  dependencies:
+    dns-over-http-resolver "^2.1.0"
+    err-code "^3.0.1"
+    is-ip "^5.0.0"
+    multiformats "^9.4.5"
+    uint8arrays "^3.0.0"
+    varint "^6.0.0"
+
+"@multiformats/multiaddr@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@multiformats/multiaddr/-/multiaddr-11.0.0.tgz#a00166476548ab375533c93b997d2912ee14e343"
+  integrity sha512-NfOx/RF7TmGeCiQ5rmpvU7Ny7VKfmIG2jP2XSebTCv78vGuSRQ1YF+5UEKWft2Kjhtj1Xaq7dvgB9SeLp+BYSw==
   dependencies:
     dns-over-http-resolver "^2.1.0"
     err-code "^3.0.1"
@@ -7714,9 +7726,9 @@ ts-proto-descriptors@1.7.1:
     protobufjs "^6.8.8"
 
 ts-proto@^1.76.0:
-  version "1.125.0"
-  resolved "https://registry.yarnpkg.com/ts-proto/-/ts-proto-1.125.0.tgz#54c54e25ea2d4cd04dafa4bd7a20047380982d63"
-  integrity sha512-ADXnF+Psk3SaLzxtXrhvKUDrNNpg7LnL5rQuQL+u9PiOQ4C2ktWLvJM0VtL4zqQ9/OHROmXjebpR0KMZAkI93w==
+  version "1.126.0"
+  resolved "https://registry.yarnpkg.com/ts-proto/-/ts-proto-1.126.0.tgz#ef795794264d464012dc486d2bae5f6b60ea3eec"
+  integrity sha512-f2dKsGTJm4L48fFNTaEiScqrCDsqp5FqTK8TvoPaxr7mCrvZyG3YTEYPtEaDeUaxbiTZEjUa4QJTBAiMAbpHHA==
   dependencies:
     "@types/object-hash" "^1.3.0"
     dataloader "^1.4.0"
