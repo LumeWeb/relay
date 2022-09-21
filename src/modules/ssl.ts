@@ -35,7 +35,7 @@ export function setSsl(
   key: IndependentFileSmall | Uint8Array
 ): void {
   cert = (cert as IndependentFileSmall)?.fileData || cert;
-  key = (key as IndependentFileSmall)?.fileData || cert;
+  key = (key as IndependentFileSmall)?.fileData || key;
   sslObject.cert = cert as Uint8Array;
   sslObject.key = key as Uint8Array;
   setSslContext(
