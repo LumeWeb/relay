@@ -1,7 +1,6 @@
 //const require = createRequire(import.meta.url);
 //import { createRequire } from "module";
 
-import { start as startDns } from "./dns.js";
 import config from "./config.js";
 import { errorExit } from "./error.js";
 // @ts-ignore
@@ -14,5 +13,4 @@ export async function start() {
   }
 
   getRpcServer();
-  await startDns();
 }
