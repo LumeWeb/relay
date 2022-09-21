@@ -12,11 +12,10 @@
     "scripts": {
         "compile": "tsc",
         "prebuild": "bash prebuild.sh",
-        "bundle": "node build.js",
         "package": "pkg -c pkg.json build/index.js -t linux  --public",
         "package-debug": "pkg -c pkg.json build/index.js -b -t linux --no-bytecode  --public",
-        "build": "npm run compile && npm run prebuild && npm run bundle && npm run package",
-        "barebuild": "npm run compile && npm run bundle && npm run package"
+        "build": "npm run compile && npm run prebuild && npm run package",
+        "barebuild": "npm run compile && npm run package"
     },
     "dependencies": {
         "@hyperswarm/dht": "^6.0.1",
