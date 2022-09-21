@@ -6,7 +6,7 @@ import BConfig from "bcfg";
 import * as os from "os";
 
 import path from "path";
-import { errorExit } from "./error.js";
+import { errorExit } from "./lib/error.js";
 
 const config = new BConfig("lumeweb-relay");
 

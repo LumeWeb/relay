@@ -5,7 +5,7 @@ import {
   RPCStreamHandler,
 } from "@lumeweb/relay-types";
 import NodeCache from "node-cache";
-import { get as getDHT } from "../dht.js";
+import { get as getDHT } from "../modules/dht.js";
 import { Mutex } from "async-mutex";
 import crypto from "crypto";
 

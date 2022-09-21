@@ -3,8 +3,8 @@
 
 // @ts-ignore
 import DHT from "@hyperswarm/dht";
-import config from "./config.js";
-import { errorExit } from "./error.js";
+import config from "../config.js";
+import { errorExit } from "../lib/error.js";
 import {
   deriveMyskyRootKeypair,
   seedPhraseToSeed,

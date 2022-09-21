@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { get as getDHT } from "./dht.js";
 import { Buffer } from "buffer";
 import { pack } from "msgpackr";
-import config from "./config.js";
+import config from "../config.js";
 import log from "loglevel";
 import fetch from "node-fetch";
 import { overwriteRegistryEntry } from "libskynetnode";

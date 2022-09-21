@@ -3,12 +3,12 @@ import {
   createIndependentFileSmall,
   openIndependentFileSmall,
   overwriteIndependentFileSmall,
-} from "./file.js";
+} from "../lib/file.js";
 // @ts-ignore
 import promiseRetry from "promise-retry";
-import config from "./config.js";
+import config from "../config.js";
 import log from "loglevel";
-import { getSeed } from "./util.js";
+import { getSeed } from "../lib/util.js";
 import type {
   IndependentFileSmall,
   SavedSslData,

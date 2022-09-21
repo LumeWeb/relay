@@ -1,5 +1,5 @@
-import config from "./config.js";
-import { getRpcServer } from "./rpc/server.js";
+import config from "../config.js";
+import { getRpcServer } from "../rpc/server.js";
 import type { PluginAPI, RPCMethod, Plugin } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
@@ -14,13 +14,13 @@ import {
   setSslContext,
 } from "./ssl.js";
 import log from "loglevel";
-import { getSeed } from "./util.js";
+import { getSeed } from "../lib/util.js";
 import { getRouter, resetRouter, setRouter } from "./app.js";
 import {
   createIndependentFileSmall,
   openIndependentFileSmall,
   overwriteIndependentFileSmall,
-} from "./file";
+} from "../lib/file";
 import { setDnsProvider } from "./dns";
 
 let pluginApi: PluginApiManager;

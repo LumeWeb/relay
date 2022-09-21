@@ -5,7 +5,7 @@ import { relay } from "@hyperswarm/dht-relay";
 // @ts-ignore
 import Stream from "@hyperswarm/dht-relay/ws";
 import express, { Express } from "express";
-import config from "./config.js";
+import config from "../config.js";
 import * as http from "http";
 import * as https from "https";
 import { get as getDHT } from "./dht.js";
