@@ -6,8 +6,18 @@ import config from "./config.js";
 import { loadPlugins } from "./modules/plugin.js";
 import { start as startDns } from "./modules/dns.js";
 import { start as startSSl } from "./modules/ssl.js";
+import { generateSeedPhraseDeterministic } from "libskynet";
+import * as crypto from "crypto";
 
 log.setDefaultLevel(config.str("log-level"));
+
+if (!config.str("seed")) {
+  config.saveConfigJson("account.json", {
+    seed: generateSeedPhraseDeterministic(
+      crypto.randomBytes(100).toString("hex")
+    ),
+  });
+}
 
 async function boot() {
   await loadPlugins();
