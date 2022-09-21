@@ -83,7 +83,7 @@ export async function saveSSl(): Promise<void> {
 export async function getSavedSsl(
   retry = true
 ): Promise<boolean | SavedSslData> {
-  let retryOptions = retry ? {} : { retry: 0 };
+  let retryOptions = retry ? {} : { retries: 0 };
   let sslCert: IndependentFileSmall | boolean = false;
   let sslKey: IndependentFileSmall | boolean = false;
 
