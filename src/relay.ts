@@ -17,37 +17,9 @@ import { AddressInfo } from "net";
 import promiseRetry from "promise-retry";
 import { getSslContext } from "./ssl.js";
 
-let app: Express;
-let router = express.Router();
-
-export function getRouter(): express.Router {
-  return router;
-}
-
-export function setRouter(newRouter: express.Router): void {
-  router = newRouter;
-}
-
-export function resetRouter(): void {
-  setRouter(express.Router());
-}
-
 export async function start() {
   const relayPort = config.uint("port");
-  app = express();
-  app.use(function (req, res, next) {
-    router(req, res, next);
-  });
 
-  let httpServer = http.createServer(app);
-
-  await new Promise((resolve) => {
-    httpServer.listen(80, "0.0.0.0", function () {
-      const address = httpServer.address() as AddressInfo;
-      log.info("HTTP Server started on ", `${address.address}:${address.port}`);
-      resolve(null);
-    });
-  });
   const dht = await getDHT();
 
   const statusCodeServer = http.createServer(function (req, res) {
