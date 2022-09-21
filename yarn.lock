@@ -484,7 +484,7 @@
 
 "@lumeweb/cfg@https://github.com/LumeWeb/bcfg.git":
   version "0.1.7"
-  resolved "https://github.com/LumeWeb/bcfg.git#909e233f239b9cc707ec4ae9ad4211c01a8a5d55"
+  resolved "https://github.com/LumeWeb/bcfg.git#fcc3c40ba15cc76cc426abd050ec0ca7fa505de7"
   dependencies:
     bsert "~0.0.10"
 
