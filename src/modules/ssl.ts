@@ -57,7 +57,6 @@ export async function saveSSl(): Promise<void> {
 
   let oldCert = await getSslCert();
   let cert: any = getSsl()?.cert;
-  cert = cert?.fileData;
   if (oldCert) {
     await overwriteIndependentFileSmall(
       oldCert as IndependentFileSmall,
@@ -68,8 +67,7 @@ export async function saveSSl(): Promise<void> {
   }
 
   let oldKey = await getSslKey();
-  let key: any = getSsl()?.cert;
-  key = key?.fileData;
+  let key: any = getSsl()?.key;
 
   if (oldKey) {
     await overwriteIndependentFileSmall(
