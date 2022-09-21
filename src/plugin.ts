@@ -10,6 +10,7 @@ import {
   getSslContext,
   saveSSl,
   setSsl,
+  setSSlCheck,
   setSslContext,
 } from "./ssl.js";
 import log from "loglevel";
@@ -89,6 +90,7 @@ export class PluginApiManager {
         set: setSsl,
         get: getSsl,
         save: saveSSl,
+        setCheck: setSSlCheck,
       },
       files: {
         createIndependentFileSmall,

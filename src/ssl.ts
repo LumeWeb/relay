@@ -17,6 +17,7 @@ import type {
 
 let sslCtx: tls.SecureContext = tls.createSecureContext();
 let sslObject: SslData = {};
+let sslChecker: () => Promise<void>;
 
 const FILE_CERT_NAME = "/lumeweb/relay/ssl.crt";
 const FILE_KEY_NAME = "/lumeweb/relay/ssl.key";
@@ -133,4 +134,12 @@ async function getSslFile(
   }
 
   return file;
+}
+
+export function setSSlCheck(checker: () => Promise<void>): void {
+  sslChecker = checker;
+}
+
+export function getSslCheck(): () => Promise<void> {
+  return sslChecker;
 }

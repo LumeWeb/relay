@@ -9,6 +9,7 @@ import { overwriteRegistryEntry } from "libskynetnode";
 import type { DnsProvider } from "@lumeweb/relay-types";
 // @ts-ignore
 import { hashDataKey } from "@lumeweb/kernel-utils";
+import { getSslCheck } from "./ssl";
 
 let activeIp: string;
 const REGISTRY_NODE_KEY = "lumeweb-dht-node";
@@ -52,6 +53,9 @@ export async function start() {
   );
 
   cron.schedule("0 * * * *", ipUpdate);
+  if (config.bool("ssl") && getSslCheck()) {
+    await getSslCheck()();
+  }
 }
 
 async function getCurrentIp(): Promise<string> {
