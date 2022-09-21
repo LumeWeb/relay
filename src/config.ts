@@ -30,7 +30,7 @@ config.inject({
   configDir,
   port: 8080,
   logLevel: "info",
-  pluginDir: path.join(configDir, "plugins"),
+  pluginDir: path.resolve(configDir, "..", "plugins"),
   plugins: ["core"],
   ssl: true,
 });
