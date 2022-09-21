@@ -13,8 +13,8 @@
         "compile": "tsc",
         "prebuild": "bash prebuild.sh",
         "bundle": "node build.js",
-        "package": "pkg -c pkg.json node-dist/index.js -t linux  --public",
-        "package-debug": "pkg -c pkg.json node-dist/index.js -b -t linux --no-bytecode  --public",
+        "package": "pkg -c pkg.json build/index.js -t linux  --public",
+        "package-debug": "pkg -c pkg.json build/index.js -b -t linux --no-bytecode  --public",
         "build": "npm run compile && npm run prebuild && npm run bundle && npm run package",
         "barebuild": "npm run compile && npm run bundle && npm run package"
     },
@@ -56,7 +56,6 @@
         "@types/express": "^4.17.13",
         "@types/minimatch": "^3.0.5",
         "@types/node-fetch": "^2.6.2",
-        "esbuild": "^0.14.49",
         "hyper-typings": "^1.0.0",
         "pkg": "^5.8.0",
         "prebuildify": "^5.0.1",
