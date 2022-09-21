@@ -4,14 +4,13 @@ import { Buffer } from "buffer";
 import { pack } from "msgpackr";
 import config from "./config.js";
 import log from "loglevel";
-import { dynImport } from "./util.js";
+import fetch from "node-fetch";
+import { overwriteRegistryEntry } from "libskynetnode";
 import type { DnsProvider } from "@lumeweb/relay-types";
+// @ts-ignore
+import { hashDataKey } from "@lumeweb/kernel-utils";
 
 let activeIp: string;
-let fetch: typeof import("node-fetch").default;
-let overwriteRegistryEntry: typeof import("libskynetnode").overwriteRegistryEntry;
-let hashDataKey: typeof import("@lumeweb/kernel-utils").hashDataKey;
-
 const REGISTRY_NODE_KEY = "lumeweb-dht-node";
 
 let dnsProvider: DnsProvider = async (ip) => {};
@@ -37,11 +36,6 @@ async function ipUpdate() {
 }
 
 export async function start() {
-  fetch = (await dynImport("node-fetch")).default;
-  overwriteRegistryEntry = (await dynImport("libskynetnode"))
-    .overwriteRegistryEntry;
-  hashDataKey = (await dynImport("@lumeweb/kernel-utils")).hashDataKey;
-
   const dht = (await getDHT()) as any;
 
   await ipUpdate();

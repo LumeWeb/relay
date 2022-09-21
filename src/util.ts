@@ -1,10 +1,5 @@
 import config from "./config";
-
-let seedPhraseToSeed: typeof import("libskynet").seedPhraseToSeed;
-
-export async function loadUtilFunctions() {
-  seedPhraseToSeed = (await dynImport("libskynet")).seedPhraseToSeed;
-}
+import { seedPhraseToSeed } from "libskynet";
 
 export function dynImport(module: string) {
   return Function(`return import("${module}")`)() as Promise<any>;

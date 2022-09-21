@@ -13,8 +13,8 @@ import {
   setSslContext,
 } from "./ssl.js";
 import log from "loglevel";
-import { getSeed, loadUtilFunctions } from "./util.js";
-import { getRouter, resetRouter, setRouter } from "./relay";
+import { getSeed } from "./util.js";
+import { getRouter, resetRouter, setRouter } from "./relay.js";
 import {
   createIndependentFileSmall,
   openIndependentFileSmall,
@@ -118,7 +118,6 @@ export function getPluginAPI(): PluginApiManager {
 }
 
 export async function loadPlugins() {
-  await loadUtilFunctions();
   for (const plugin of config.array("plugins")) {
     await getPluginAPI().loadPlugin(plugin);
   }
