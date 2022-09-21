@@ -52,14 +52,4 @@ for (const setting of ["domain", "afraid-username", "seed"]) {
   }
 }
 
-let usingPocketGateway = true;
-
-export function usePocketGateway() {
-  return usingPocketGateway;
-}
-
-export function updateUsePocketGateway(state: boolean): void {
-  usingPocketGateway = state;
-}
-
 export default config;
