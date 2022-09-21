@@ -2,34 +2,32 @@
 //import { createRequire } from "module";
 
 // @ts-ignore
-import BConfig from "bcfg";
+import Config from "@lumeweb/cfg";
 import * as os from "os";
-
+import * as fs from "fs";
 import path from "path";
 import { errorExit } from "./lib/error.js";
 
-const config = new BConfig("lumeweb-relay");
+const config = new Config("lumeweb-relay");
 
-let configLocation;
 let configDir;
-const configFile = "config.conf";
 
 switch (os.platform()) {
   case "win32":
-    configDir = path.dirname(require?.main?.filename as string);
-    configLocation = path.resolve(configDir, configFile);
+    configDir = path.join(
+      path.dirname(require?.main?.filename as string),
+      "config"
+    );
     break;
 
   case "linux":
   default:
-    configDir = "/etc/lumeweb/relay";
-    configLocation = path.join(configDir, configFile);
+    configDir = "/etc/lumeweb/relay/config.d";
     break;
 }
 
 config.inject({
   port: 8080,
-  config: configLocation,
   logLevel: "info",
   pluginDir: path.join(configDir, "plugins"),
   plugins: ["core"],
@@ -40,13 +38,15 @@ config.load({
   env: true,
   argv: true,
 });
-try {
-  config.open(configLocation);
-} catch (e) {
-  console.error((e as Error).message);
+if (fs.existsSync(configDir)) {
+  try {
+    config.openDir(configDir);
+  } catch (e) {
+    console.error((e as Error).message);
+  }
 }
 
-for (const setting of ["domain", "afraid-username", "seed"]) {
+for (const setting of ["domain", "seed"]) {
   if (!config.get(setting)) {
     errorExit(`Required config option ${setting} not set`);
   }
