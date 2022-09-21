@@ -16,6 +16,7 @@ export function setRouter(newRouter: express.Router): void {
 }
 
 export async function start() {
+  app = express();
   server = http.createServer(app);
   await new Promise((resolve) => {
     server.listen(80, "0.0.0.0", function () {
@@ -27,7 +28,7 @@ export async function start() {
       resolve(null);
     });
   });
-  app = express();
+
   app.use(function (req, res, next) {
     router(req, res, next);
   });
