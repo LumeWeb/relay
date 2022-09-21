@@ -77,6 +77,8 @@ export async function saveSSl(): Promise<void> {
   } else {
     await createIndependentFileSmall(seed, FILE_KEY_NAME, Buffer.from(key));
   }
+
+  log.info(`Saved SSL Certificate for ${config.str("domain")}`);
 }
 
 export async function getSavedSsl(
