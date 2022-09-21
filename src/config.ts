@@ -27,6 +27,7 @@ switch (os.platform()) {
 }
 
 config.inject({
+  configDir,
   port: 8080,
   logLevel: "info",
   pluginDir: path.join(configDir, "plugins"),
@@ -38,6 +39,9 @@ config.load({
   env: true,
   argv: true,
 });
+
+configDir = config.str("configdir");
+
 if (fs.existsSync(configDir)) {
   try {
     config.openDir(configDir);
