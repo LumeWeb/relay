@@ -1,7 +1,9 @@
 {
     "assets": [
         "node_modules/*/build/Release/*.node",
-        "node_modules/hsd/lib/covenants/names.db"
+        "node_modules/libskynet",
+        "node_modules/libskynetnode",
+        "node_modules/@lumeweb"
     ],
     "outputPath": "dist"
 }
