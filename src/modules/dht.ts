@@ -19,15 +19,19 @@ let node: {
 };
 let server: any;
 
-async function start() {
+export function getKeyPair() {
   const seed = config.str("seed");
 
   let err = validSeedPhrase(seed);
   if (err !== null) {
-    errorExit("RELAY_SEED is invalid. Aborting.");
+    errorExit("LUME_WEB_RELAY_SEED is invalid. Aborting.");
   }
 
-  const keyPair = deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
+  return deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
+}
+
+async function start() {
+  const keyPair = getKeyPair();
 
   node = new DHT({ keyPair });
 
