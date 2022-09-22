@@ -50,6 +50,11 @@ if (fs.existsSync(configDir)) {
   }
 }
 
+config.load({
+  env: true,
+  argv: true,
+});
+
 for (const setting of ["domain"]) {
   if (!config.get(setting)) {
     errorExit(`Required config option ${setting} not set`);
