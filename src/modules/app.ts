@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import http from "http";
 import { AddressInfo } from "net";
 import log from "loglevel";
+import { getKeyPair } from "./dht";
 
 let app: Express;
 let router = express.Router();
@@ -18,6 +19,7 @@ export function setRouter(newRouter: express.Router): void {
 export async function start() {
   app = express();
   server = http.createServer(app);
+  resetRouter();
   await new Promise((resolve) => {
     server.listen(80, "0.0.0.0", function () {
       const address = server.address() as AddressInfo;
@@ -42,5 +44,17 @@ export function getServer(): http.Server {
 }
 
 export function resetRouter(): void {
-  setRouter(express.Router());
+  setRouter(newRouter());
+}
+
+function newRouter(): express.Router {
+  const router = express.Router();
+
+  let keyPair = getKeyPair();
+
+  router.get("/", (req, res) => {
+    res.send(Buffer.from(keyPair.publicKey).toString("hex"));
+  });
+
+  return router;
 }
