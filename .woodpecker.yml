@@ -1,0 +1,14 @@
+pipeline:
+    build:
+        image: node:18.5.0-alpine
+        commands:
+            - npm -g i yarn
+            - yarn
+            - yarn build
+    package:
+        image: debian:stable-slim
+        commands:
+            - echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+            - apt update
+            - apt install -y nfpm
+            - nfpm pkg --packager deb
