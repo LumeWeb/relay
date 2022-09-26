@@ -1,8 +1,8 @@
 pipeline:
     build:
-        image: node:18.5.0-alpine
+        image: node:18.5.0-bulleye-slim
         commands:
-            - apk --update --no-cache add git bash python3 make gcc
+            - apt-get -y install git python3 build-essential
             - yarn
             - yarn build
     package:
