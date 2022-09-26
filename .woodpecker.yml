@@ -1,6 +1,6 @@
 pipeline:
     build:
-        image: cimg/node
+        image: cimg/node:current
         commands:
             - yarn
             - yarn build
