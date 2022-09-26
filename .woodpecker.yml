@@ -1,6 +1,6 @@
 pipeline:
     build:
-        image: node:18.5.0-bulleye-slim
+        image: node:18.5.0-bullseye-slim
         commands:
             - apt-get -y install git python3 build-essential
             - yarn
