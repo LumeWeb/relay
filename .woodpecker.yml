@@ -2,7 +2,7 @@ pipeline:
     build:
         image: node:18.5.0-alpine
         commands:
-            - apt -y install git
+            - apk -y install git
             - yarn
             - yarn build
     package:
