@@ -5,9 +5,7 @@ pipeline:
             - yarn
             - yarn build
     package:
-        image: debian:stable-slim
+        image: ghcr.io/goreleaser/nfpm
         commands:
-            - echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
-            - apt update
             - apt install -y nfpm
             - nfpm pkg --packager deb
