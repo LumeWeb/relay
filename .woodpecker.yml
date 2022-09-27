@@ -1,6 +1,6 @@
 pipeline:
     build:
-        image: cimg/node:current
+        image: git.lumeweb.com/lumeweb/ci-node
         commands:
             - yarn
             - yarn build
