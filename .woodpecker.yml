@@ -7,5 +7,4 @@ pipeline:
     package:
         image: ghcr.io/goreleaser/nfpm
         commands:
-            - apt install -y nfpm
             - nfpm pkg --packager deb
