@@ -8,3 +8,13 @@ pipeline:
         image: ghcr.io/goreleaser/nfpm
         commands:
             - nfpm pkg --packager deb
+    publish:
+        image: git.lumeweb.com/lumeweb/aptly-publisher
+        settings:
+            apt_username:
+                from_secret: apt_username
+            apt_password:
+                from_secret: apt_password
+            repo: apt.web3relay.io
+
+
