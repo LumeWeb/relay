@@ -29,6 +29,6 @@ pipeline:
                 from_secret: apt_password
             repo: apt.web3relay.io
             folder: ubuntu
-            distro: focal
+            distro: jammy
             gpg_password:
                 from_secret: gpg_password
