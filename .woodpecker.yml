@@ -8,7 +8,7 @@ pipeline:
         image: ghcr.io/goreleaser/nfpm
         commands:
             - nfpm pkg --packager deb
-    publish:
+    publish_focal:
         image: git.lumeweb.com/lumeweb/aptly-publisher
         settings:
             apt_username:
@@ -16,5 +16,19 @@ pipeline:
             apt_password:
                 from_secret: apt_password
             repo: apt.web3relay.io
-
-
+            folder: ubuntu
+            distro: focal
+            gpg_password:
+                from_secret: gpg_password
+    publish_jammy:
+        image: git.lumeweb.com/lumeweb/aptly-publisher
+        settings:
+            apt_username:
+                from_secret: apt_username
+            apt_password:
+                from_secret: apt_password
+            repo: apt.web3relay.io
+            folder: ubuntu
+            distro: focal
+            gpg_password:
+                from_secret: gpg_password
