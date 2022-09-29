@@ -5,9 +5,7 @@ version: "v0.1.0"
 section: "default"
 priority: "extra"
 maintainer: "Derrick Hammer contact@lumeweb.com"
-description: |
-  FooBar is the great foo and bar software.
-    And this can be in multiple lines!
+description: P2P Web3 Relay Server
 vendor: "Hammer Technologies LLC"
 homepage: "https://lumeweb.com"
 license: "MIT"
