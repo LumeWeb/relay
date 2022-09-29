@@ -1,0 +1,13 @@
+[Unit]
+Description=Lume Web Relay
+After=network.target
+Wants=network-online.target
+
+[Service]
+Restart=always
+Type=simple
+ExecStart=/usr/bin/lumeweb-relay
+Environment=
+
+[Install]
+WantedBy=multi-user.target
