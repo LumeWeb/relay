@@ -185,6 +185,8 @@ export class RPCServer extends EventEmitter {
       this.cache.addItem(request, rpcResult);
     }
 
+    this.getRequestLock(request)?.release();
+
     return rpcResult;
   }
 
@@ -225,15 +227,12 @@ export class RPCServer extends EventEmitter {
       return;
     }
 
-    const reqId = RPCServer.hashQuery(request);
-
-    let lock: Mutex = this.pendingRequests.get(reqId) as Mutex;
-    const lockExists = !!lock;
-
-    if (!lockExists) {
-      lock = new Mutex();
-      this.pendingRequests.set(reqId, lock);
+    if (!this.getRequestLock(request)) {
+      this.createRequestLock(request);
     }
+
+    const reqId = RPCServer.hashQuery(request);
+    const lock: Mutex = this.getRequestLock(request) as Mutex;
 
     if (lock.isLocked()) {
       await lock.waitForUnlock();
@@ -243,5 +242,23 @@ export class RPCServer extends EventEmitter {
     }
 
     await lock.acquire();
+  }
+
+  private getRequestLock(request: RPCRequest): Mutex | null {
+    const reqId = RPCServer.hashQuery(request);
+
+    let lock: Mutex = this.pendingRequests.get(reqId) as Mutex;
+
+    if (!lock) {
+      return null;
+    }
+
+    return lock;
+  }
+
+  private createRequestLock(request: RPCRequest) {
+    const reqId = RPCServer.hashQuery(request);
+
+    this.pendingRequests.set(reqId, new Mutex());
   }
 }
