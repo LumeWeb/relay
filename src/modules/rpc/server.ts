@@ -147,6 +147,7 @@ export class RPCServer extends EventEmitter {
     let cachedRequest = this.getCachedRequest(request) as RPCCacheItem;
 
     if (cachedRequest) {
+      this.getRequestLock(request)?.release();
       return cachedRequest.value;
     }
 
@@ -193,7 +194,7 @@ export class RPCServer extends EventEmitter {
   private getCachedRequest(request: RPCRequest): RPCCacheItem | boolean {
     const req = RPCServer.hashQuery(request);
     if (RPCServer.hashQuery(request) in this._cache.data) {
-      this._cache.data[req];
+      return this._cache.data[req] as RPCCacheItem;
     }
 
     return false;
