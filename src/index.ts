@@ -6,6 +6,7 @@ import config from "./config.js";
 import { loadPlugins } from "./modules/plugin.js";
 import { start as startDns } from "./modules/dns.js";
 import { start as startSSl } from "./modules/ssl.js";
+import { start as startSwarm } from "./modules/swarm.js";
 import { generateSeedPhraseDeterministic } from "libskynet";
 import * as crypto from "crypto";
 
@@ -20,6 +21,7 @@ if (!config.str("seed")) {
 }
 
 async function boot() {
+  await startSwarm();
   await loadPlugins();
   await startApp();
   await startRpc();
