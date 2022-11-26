@@ -133,7 +133,7 @@ export class RPCServer extends EventEmitter {
     }
 
     return crypto
-      .sign(Buffer.from(raw, this._cache.swarm.keyPair.privateKey))
+      .sign(Buffer.from(raw, this._cache.swarm.keyPair.secretKey))
       .toString("hex");
   }
 
