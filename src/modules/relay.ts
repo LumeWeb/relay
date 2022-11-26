@@ -8,7 +8,7 @@ import express, { Express } from "express";
 import config from "../config.js";
 import * as http from "http";
 import * as https from "https";
-import { get as getDHT } from "./dht.js";
+import { get as getSwarm } from "./swarm.js";
 import WS from "ws";
 // @ts-ignore
 import log from "loglevel";
@@ -20,7 +20,7 @@ import { getSslContext } from "./ssl.js";
 export async function start() {
   const relayPort = config.uint("port");
 
-  const dht = await getDHT();
+  const dht = await getSwarm();
 
   const statusCodeServer = http.createServer(function (req, res) {
     // @ts-ignore

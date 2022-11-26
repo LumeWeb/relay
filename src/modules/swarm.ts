@@ -2,6 +2,8 @@
 //import { createRequire } from "module";
 
 // @ts-ignore
+import Hyperswarm from "hyperswarm";
+// @ts-ignore
 import DHT from "@hyperswarm/dht";
 import config from "../config.js";
 import { errorExit } from "../lib/error.js";
@@ -11,13 +13,15 @@ import {
   validSeedPhrase,
 } from "libskynet";
 
-let node: {
-  ready: () => any;
-  createServer: () => any;
-  defaultKeyPair: any;
-  on: any;
-};
-let server: any;
+// @ts-ignore
+import sodium from "sodium-universal";
+import b4a from "b4a";
+
+const LUMEWEB = b4a.from("lumeweb");
+
+export type SecretStream = any;
+
+let node: Hyperswarm;
 
 export function getKeyPair() {
   const seed = config.str("seed");
@@ -33,25 +37,21 @@ export function getKeyPair() {
 async function start() {
   const keyPair = getKeyPair();
 
-  node = new DHT({ keyPair });
+  node = new Hyperswarm({ keyPair, dht: new DHT({ keyPair }) });
+  const topic = b4a.allocUnsafe(32);
+  sodium.crypto_generichash(topic, LUMEWEB);
 
-  await node.ready();
-
-  server = node.createServer();
-  await server.listen(keyPair);
+  // @ts-ignore
+  await node.dht.ready();
+  await node.listen();
+  node.join(topic);
 
   return node;
 }
 
-export async function get(
-  ret: "server" | "dht" = "dht"
-): Promise<typeof server | typeof node> {
+export async function get(): Promise<Hyperswarm> {
   if (!node) {
     await start();
-  }
-
-  if (ret == "server") {
-    return server;
   }
 
   return node;

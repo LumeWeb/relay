@@ -1,5 +1,5 @@
 import config from "../config.js";
-import { getRpcServer } from "../rpc/server.js";
+import { getRpcServer } from "./rpc/server.js";
 import type { PluginAPI, RPCMethod, Plugin } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
@@ -22,6 +22,8 @@ import {
   overwriteIndependentFileSmall,
 } from "../lib/file";
 import { setDnsProvider } from "./dns";
+import pluginRpc from "./plugins/rpc";
+import pluginCore from "./plugins/core";
 
 let pluginApi: PluginApiManager;
 
@@ -57,6 +59,11 @@ export class PluginApiManager {
     } catch (e) {
       throw e;
     }
+
+    return this.loadPluginInstance(plugin);
+  }
+
+  public async loadPluginInstance(plugin: Plugin): Promise<Plugin> {
     if ("default" in plugin) {
       plugin = plugin?.default as Plugin;
     }
@@ -81,8 +88,7 @@ export class PluginApiManager {
         getRpcServer().registerMethod(pluginName, methodName, method);
       },
       loadPlugin: getPluginAPI().loadPlugin.bind(getPluginAPI()),
-      getMethods: getRpcServer().getMethods.bind(getRpcServer()),
-
+      getRpcServer,
       ssl: {
         setContext: setSslContext,
         getContext: getSslContext,
@@ -120,7 +126,12 @@ export function getPluginAPI(): PluginApiManager {
 }
 
 export async function loadPlugins() {
+  const api = await getPluginAPI();
+
+  api.loadPluginInstance(pluginCore);
+  api.loadPluginInstance(pluginRpc);
+
   for (const plugin of [...new Set(config.array("plugins", []))] as []) {
-    await getPluginAPI().loadPlugin(plugin);
+    api.loadPlugin(plugin);
   }
 }

@@ -15,8 +15,6 @@ contents:
 - src: ./systemd.service
   dst: /etc/systemd/system/lumeweb-relay.service
   type: config
-depends:
-    - lumeweb-relay-plugin-core
 scripts:
     postinstall: ./pkg/scripts/postinstall.sh
     preremove: ./pkg/scripts/preremove.sh

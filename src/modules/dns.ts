@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { get as getDHT } from "./dht.js";
+import { get as getSwarm } from "./swarm.js";
 import { Buffer } from "buffer";
 import { pack } from "msgpackr";
 import config from "../config.js";
@@ -36,19 +36,19 @@ async function ipUpdate() {
 }
 
 export async function start() {
-  const dht = (await getDHT()) as any;
+  const swarm = (await getSwarm()) as any;
 
   await ipUpdate();
 
   await overwriteRegistryEntry(
-    dht.defaultKeyPair,
+    swarm.dht.defaultKeyPair,
     hashDataKey(REGISTRY_NODE_KEY),
     pack(`${config.str("domain")}:${config.uint("port")}`)
   );
 
   log.info(
     "Relay Identity is",
-    Buffer.from(dht.defaultKeyPair.publicKey).toString("hex")
+    Buffer.from(swarm.dht.defaultKeyPair.publicKey).toString("hex")
   );
 
   cron.schedule("0 * * * *", ipUpdate);
