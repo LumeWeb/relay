@@ -34,7 +34,10 @@ export class RPCCache extends EventEmitter {
   constructor(server: RPCServer) {
     super();
     this.server = server;
-    this.init();
+    this._swarm = getSwarm();
+    this.dhtCache = new DHTCache(this._swarm, {
+      protocol: "lumeweb.rpccache",
+    });
   }
 
   public async getNodeQuery(
@@ -124,12 +127,5 @@ export class RPCCache extends EventEmitter {
     delete this._data[queryHash];
 
     return true;
-  }
-
-  private async init() {
-    this.dhtCache = new DHTCache(await getSwarm(), {
-      protocol: "lumeweb.rpccache",
-    });
-    this._swarm = await getSwarm();
   }
 }

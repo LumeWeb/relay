@@ -34,7 +34,7 @@ export function getKeyPair() {
   return deriveMyskyRootKeypair(seedPhraseToSeed(seed)[0]);
 }
 
-async function start() {
+export async function start() {
   const keyPair = getKeyPair();
 
   node = new Hyperswarm({ keyPair, dht: new DHT({ keyPair }) });
@@ -49,10 +49,6 @@ async function start() {
   return node;
 }
 
-export async function get(): Promise<Hyperswarm> {
-  if (!node) {
-    await start();
-  }
-
+export function get(): Hyperswarm {
   return node;
 }

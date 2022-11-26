@@ -20,7 +20,7 @@ import { getSslContext } from "./ssl.js";
 export async function start() {
   const relayPort = config.uint("port");
 
-  const dht = await getSwarm();
+  const dht = getSwarm();
 
   const statusCodeServer = http.createServer(function (req, res) {
     // @ts-ignore

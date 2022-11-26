@@ -13,13 +13,13 @@ export async function start() {
     errorExit("Please set pocket-app-id and pocket-app-key config options.");
   }
 
-  (await getSwarm()).on("connection", (stream: SecretStream) =>
+  getSwarm().on("connection", (stream: SecretStream) =>
     getRpcServer().setup(stream)
   );
 }
 
 export async function getRpcByPeer(peer: string) {
-  const swarm = await getSwarm();
+  const swarm = getSwarm();
 
   if (swarm._allConnections.has(peer)) {
     return swarm._allConnections.get(peer)[RPC_PROTOCOL_SYMBOL];

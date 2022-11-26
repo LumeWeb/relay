@@ -36,7 +36,7 @@ async function ipUpdate() {
 }
 
 export async function start() {
-  const swarm = (await getSwarm()) as any;
+  const swarm = getSwarm();
 
   await ipUpdate();
 
