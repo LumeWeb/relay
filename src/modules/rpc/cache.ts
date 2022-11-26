@@ -113,6 +113,7 @@ export class RPCCache extends EventEmitter {
 
     item.signature = this.signResponse(item);
 
+    this.dhtCache?.addItem(queryHash);
     this._data[queryHash] = item;
   }
 
