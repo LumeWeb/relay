@@ -56,38 +56,12 @@ const plugin: Plugin = {
     });
     api.registerMethod("clear_cached_item", {
       cacheable: false,
-      async handler(req: RPCClearCacheRequest): Promise<RPCClearCacheResponse> {
-        if (req?.relays?.length) {
-          let resp = await broadcastRequest(
-            {
-              module: "rpc",
-              method: "clear_cached_item",
-              data: req.request,
-            },
-            req?.relays
-          );
-          let results: RPCClearCacheResponse = {
-            relays: {},
-            data: true,
-            signedField: "relays",
-          };
-
-          for (const relay in resp) {
-            let ret: RPCClearCacheResponse;
-            try {
-              ret = await resp.get(relay);
-            } catch (e: any) {
-              (results.relays as RPCClearCacheResponseRelayList)[relay] = {
-                error: e.message,
-              };
-            }
-          }
-
-          return results;
+      async handler(req: string): Promise<RPCClearCacheResponse> {
+        if (typeof req !== "string") {
+          throw new Error("item must be a string");
         }
-
         try {
-          api.getRpcServer().cache.deleteItem(req.request);
+          api.getRpcServer().cache.deleteItem(req);
         } catch (e: any) {
           throw e;
         }
