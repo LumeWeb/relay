@@ -40,31 +40,6 @@ export class RPCCache extends EventEmitter {
     });
   }
 
-  public async getNodeQuery(
-    node: string,
-    queryHash: string
-  ): Promise<boolean | RPCResponse> {
-    if (!this.dhtCache?.peerHasItem(node, queryHash)) {
-      return false;
-    }
-
-    const rpc = await getRpcByPeer(node);
-
-    let response;
-
-    try {
-      response = rpc.request("rpc.get_cached_item", queryHash) as RPCCacheItem;
-    } catch (e: any) {
-      return false;
-    }
-
-    if (!this.verifyResponse(b4a.from(node, "hex") as Buffer, response)) {
-      return false;
-    }
-
-    return { ...response?.value };
-  }
-
   public signResponse(item: RPCCacheItem): string {
     const field = item.value.signedField || "data";
     const updated = item.value.updated;
