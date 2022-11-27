@@ -4,9 +4,7 @@ import {
   PluginAPI,
   RPCBroadcastRequest,
   RPCBroadcastResponse,
-  RPCClearCacheRequest,
   RPCClearCacheResponse,
-  RPCClearCacheResponseRelayList,
   RPCRequest,
   RPCResponse,
 } from "@lumeweb/relay-types";
