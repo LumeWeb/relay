@@ -4,7 +4,6 @@ import {
   PluginAPI,
   RPCBroadcastRequest,
   RPCBroadcastResponse,
-  RPCClearCacheResponse,
   RPCRequest,
   RPCResponse,
 } from "@lumeweb/relay-types";
@@ -54,7 +53,7 @@ const plugin: Plugin = {
     });
     api.registerMethod("clear_cached_item", {
       cacheable: false,
-      async handler(req: string): Promise<RPCClearCacheResponse> {
+      async handler(req: string): Promise<void> {
         if (typeof req !== "string") {
           throw new Error("item must be a string");
         }
@@ -63,10 +62,6 @@ const plugin: Plugin = {
         } catch (e: any) {
           throw e;
         }
-
-        return {
-          data: true,
-        };
       },
     });
     api.registerMethod("broadcast_request", {
@@ -87,7 +82,7 @@ const plugin: Plugin = {
           signedField: "relays",
         };
         for (const relay in resp) {
-          let ret: RPCClearCacheResponse;
+          let ret: RPCResponse;
           try {
             ret = await resp.get(relay);
           } catch (e: any) {
