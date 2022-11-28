@@ -40,7 +40,9 @@ export class RPCCache extends EventEmitter {
       protocol: "lumeweb.rpccache",
     });
     this._data.on("del", (key: string) => {
-      this.deleteItem(key);
+      try {
+        this.deleteItem(key);
+      } catch {}
     });
   }
 
