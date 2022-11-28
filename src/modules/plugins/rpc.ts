@@ -8,6 +8,8 @@ import {
   RPCResponse,
 } from "@lumeweb/relay-types";
 import { getRpcByPeer } from "../rpc";
+import { get as getSwarm } from "../swarm";
+import b4a from "b4a";
 
 async function broadcastRequest(
   request: RPCRequest,
@@ -21,7 +23,17 @@ async function broadcastRequest(
   let relayMap = new Map<string, Promise<any>>();
 
   for (const relay of relays) {
-    relayMap.set(relay, makeRequest(relay));
+    let req;
+    if (b4a.equals(b4a.from(relay, "hex"), getSwarm().keyPair.publicKey)) {
+      req = getRpcServer().handleRequest(request);
+    } else {
+      req = makeRequest(relay);
+    }
+
+    relayMap.set(
+      relay,
+      req.catch((error: Error) => error)
+    );
   }
 
   await Promise.allSettled([...relays.values()]);
@@ -70,6 +82,12 @@ const plugin: Plugin = {
         if (!req?.request) {
           throw new Error("request required");
         }
+        if (!req?.request?.module) {
+          throw new Error("request.module required");
+        }
+        if (!req?.request?.method) {
+          throw new Error("request.method required");
+        }
         if (!req?.relays?.length) {
           throw new Error("relays required");
         }
@@ -81,10 +99,15 @@ const plugin: Plugin = {
           data: true,
           signedField: "relays",
         };
-        for (const relay in resp) {
-          let ret: RPCResponse;
+        for (const relay of resp.keys()) {
+          let ret: RPCResponse | Error;
           try {
             ret = await resp.get(relay);
+            if (ret instanceof Error) {
+              result.relays[relay] = { error: ret.message };
+            } else {
+              result.relays[relay] = ret as RPCResponse;
+            }
           } catch (e: any) {
             result.relays[relay] = { error: e.message };
           }
