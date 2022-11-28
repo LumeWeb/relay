@@ -14,6 +14,7 @@ import { RPCServer } from "./server";
 import orderedJSON from "ordered-json";
 // @ts-ignore
 import crypto from "hypercore-crypto";
+import NodeCache from "node-cache";
 
 export class RPCCache extends EventEmitter {
   private dhtCache?: DHTCache;
@@ -25,9 +26,9 @@ export class RPCCache extends EventEmitter {
     return this._swarm;
   }
 
-  private _data: RPCCacheData = {};
+  private _data: NodeCache = new NodeCache({ stdTTL: 60 * 60 * 24 });
 
-  get data(): RPCCacheData {
+  get data(): NodeCache {
     return this._data;
   }
 
@@ -37,6 +38,9 @@ export class RPCCache extends EventEmitter {
     this._swarm = getSwarm();
     this.dhtCache = new DHTCache(this._swarm, {
       protocol: "lumeweb.rpccache",
+    });
+    this._data.on("del", (key: string) => {
+      this.deleteItem(key);
     });
   }
 
@@ -89,7 +93,7 @@ export class RPCCache extends EventEmitter {
     item.signature = this.signResponse(item);
 
     this.dhtCache?.addItem(queryHash);
-    this._data[queryHash] = item;
+    this._data.set(queryHash, item);
   }
 
   public deleteItem(queryHash: string): boolean {
@@ -100,7 +104,7 @@ export class RPCCache extends EventEmitter {
     }
 
     this.dhtCache?.removeItem(queryHash);
-    delete this._data[queryHash];
+    this._data.del(queryHash);
 
     return true;
   }

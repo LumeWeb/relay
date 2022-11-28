@@ -201,8 +201,8 @@ export class RPCServer extends EventEmitter {
 
   private getCachedRequest(request: RPCRequest): RPCCacheItem | boolean {
     const req = RPCServer.hashQuery(request);
-    if (RPCServer.hashQuery(request) in this._cache.data) {
-      return this._cache.data[req] as RPCCacheItem;
+    if (this._cache.data.has(req)) {
+      return this._cache.data.get<RPCCacheItem>(req) as RPCCacheItem;
     }
 
     return false;
@@ -245,8 +245,8 @@ export class RPCServer extends EventEmitter {
 
     if (lock.isLocked()) {
       await lock.waitForUnlock();
-      if (reqId in this._cache.data) {
-        return this._cache.data[reqId] as RPCCacheItem;
+      if (this._cache.data.has(reqId)) {
+        return this._cache.data.get<RPCCacheItem>(reqId) as RPCCacheItem;
       }
     }
 
