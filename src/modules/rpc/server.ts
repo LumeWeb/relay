@@ -12,7 +12,6 @@ import b4a from "b4a";
 import { get as getSwarm, SecretStream } from "../swarm";
 // @ts-ignore
 import c from "compact-encoding";
-import DHTCache from "@lumeweb/dht-cache";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 // @ts-ignore
