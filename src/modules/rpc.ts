@@ -37,5 +37,7 @@ export async function getRpcByPeer(peer: Buffer | string) {
 
       resolve(peer[RPC_PROTOCOL_SYMBOL]);
     });
+
+    swarm.joinPeer(peer);
   });
 }
