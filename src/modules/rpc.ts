@@ -21,7 +21,9 @@ export async function start() {
 
 export async function getRpcByPeer(peer: Buffer | string) {
   const swarm = getSwarm();
-  peer = b4a.from(peer) as Buffer;
+  if (!b4a.isBuffer(peer)) {
+    peer = b4a.from(peer, "hex") as Buffer;
+  }
 
   if (swarm._allConnections.has(peer)) {
     return swarm._allConnections.get(peer)[RPC_PROTOCOL_SYMBOL];
