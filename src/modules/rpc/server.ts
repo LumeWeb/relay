@@ -137,7 +137,7 @@ export class RPCServer extends EventEmitter {
       .toString("hex");
   }
 
-  private async handleRequest(request: RPCRequest) {
+  public async handleRequest(request: RPCRequest) {
     let lockedRequest = await this.waitOnRequestLock(request);
 
     if (lockedRequest) {
@@ -151,15 +151,22 @@ export class RPCServer extends EventEmitter {
       return cachedRequest.value;
     }
 
-    let method = this.getMethodByRequest(request) as RPCMethod;
+    let method = this.getMethodByRequest(request);
 
     let ret;
     let error;
 
-    try {
-      ret = (await method.handler(request.data)) as RPCResponse | any;
-    } catch (e) {
-      error = e;
+    if (method instanceof Error) {
+      error = method;
+    }
+
+    if (!error) {
+      method = method as RPCMethod;
+      try {
+        ret = (await method.handler(request.data)) as RPCResponse | any;
+      } catch (e) {
+        error = e;
+      }
     }
 
     if (error) {
@@ -182,6 +189,7 @@ export class RPCServer extends EventEmitter {
       };
     }
 
+    method = method as RPCMethod;
     if (method.cacheable) {
       this.cache.addItem(request, rpcResult);
     }
