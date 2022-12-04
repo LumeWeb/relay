@@ -9,7 +9,7 @@ import {
   RPCResponse,
 } from "@lumeweb/relay-types";
 import { getRpcByPeer } from "../rpc";
-import { get as getSwarm } from "../swarm";
+import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../swarm";
 import b4a from "b4a";
 
 async function broadcastRequest(
@@ -122,6 +122,21 @@ const plugin: Plugin = {
         }
 
         return result;
+      },
+    });
+    api.registerMethod("get_peers", {
+      cacheable: false,
+      async handler(): Promise<string[]> {
+        return [...getRpcServer().cache.dhtCache.online];
+      },
+    });
+    api.registerMethod("get_direct_peers", {
+      cacheable: false,
+      async handler(): Promise<string[]> {
+        const topic = LUMEWEB_TOPIC_HASH.toString("hex");
+        return [...getRpcServer().cache.swarm.peers.values()]
+          .filter((item: any) => [...item._seenTopics.keys()].includes(topic))
+          .map((item: any) => item.publicKey.toString("hex"));
       },
     });
   },
