@@ -10,8 +10,27 @@ import crypto from "hypercore-crypto";
 import NodeCache from "node-cache";
 
 export class RPCCache extends EventEmitter {
-  private dhtCache?: DHTCache;
   private server: RPCServer;
+
+  constructor(server: RPCServer) {
+    super();
+    this.server = server;
+    this._swarm = getSwarm();
+    this._dhtCache = new DHTCache(this._swarm, {
+      protocol: "lumeweb.rpccache",
+    });
+    this._data.on("del", (key: string) => {
+      try {
+        this.deleteItem(key);
+      } catch {}
+    });
+  }
+
+  private _dhtCache?: DHTCache;
+
+  get dhtCache(): DHTCache {
+    return this._dhtCache as DHTCache;
+  }
 
   private _swarm?: any;
 
@@ -23,20 +42,6 @@ export class RPCCache extends EventEmitter {
 
   get data(): NodeCache {
     return this._data;
-  }
-
-  constructor(server: RPCServer) {
-    super();
-    this.server = server;
-    this._swarm = getSwarm();
-    this.dhtCache = new DHTCache(this._swarm, {
-      protocol: "lumeweb.rpccache",
-    });
-    this._data.on("del", (key: string) => {
-      try {
-        this.deleteItem(key);
-      } catch {}
-    });
   }
 
   public signResponse(item: RPCCacheItem): string {
@@ -93,18 +98,18 @@ export class RPCCache extends EventEmitter {
 
     item.signature = this.signResponse(item);
 
-    this.dhtCache?.addItem(queryHash);
+    this._dhtCache?.addItem(queryHash);
     this._data.set(queryHash, item);
   }
 
   public deleteItem(queryHash: string): boolean {
-    const cache = this.dhtCache?.cache;
+    const cache = this._dhtCache?.cache;
 
     if (!cache?.includes(queryHash)) {
       throw Error("item does not exist");
     }
 
-    this.dhtCache?.removeItem(queryHash);
+    this._dhtCache?.removeItem(queryHash);
     this._data.del(queryHash);
 
     return true;
