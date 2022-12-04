@@ -4,6 +4,7 @@ import {
   PluginAPI,
   RPCBroadcastRequest,
   RPCBroadcastResponse,
+  RPCCacheItem,
   RPCRequest,
   RPCResponse,
 } from "@lumeweb/relay-types";
@@ -58,8 +59,8 @@ const plugin: Plugin = {
 
         return {
           data: true,
-          ...cache[req]?.value,
-          signature: cache[req]?.signature,
+          ...cache.get<RPCCacheItem>(req)?.value,
+          signature: cache.get<RPCCacheItem>(req)?.signature,
         };
       },
     });
