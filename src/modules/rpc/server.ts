@@ -148,7 +148,7 @@ export class RPCServer extends EventEmitter {
 
     if (cachedRequest) {
       this.getRequestLock(request)?.release();
-      return cachedRequest.value;
+      return { ...cachedRequest.value, signature: cachedRequest.signature };
     }
 
     let method = this.getMethodByRequest(request);
