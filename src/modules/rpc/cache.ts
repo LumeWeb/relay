@@ -1,13 +1,6 @@
 import EventEmitter from "events";
 import DHTCache from "@lumeweb/dht-cache";
-import {
-  RPCCacheData,
-  RPCCacheItem,
-  RPCRequest,
-  RPCResponse,
-} from "@lumeweb/relay-types";
-import { getRpcByPeer } from "../rpc";
-import b4a from "b4a";
+import { RPCCacheItem, RPCRequest, RPCResponse } from "@lumeweb/relay-types";
 import { get as getSwarm } from "../swarm";
 import { RPCServer } from "./server";
 // @ts-ignore
@@ -50,8 +43,11 @@ export class RPCCache extends EventEmitter {
     const field = item.value.signedField || "data";
     const updated = item.value.updated;
     // @ts-ignore
-    const data = item.value[field];
-    const json = jsonStringify(data);
+    let json = item.value[field];
+
+    if (typeof json !== "string") {
+      json = jsonStringify(json);
+    }
 
     return this.server.signData(`${updated}${json}`);
   }
@@ -60,8 +56,11 @@ export class RPCCache extends EventEmitter {
     const field = item.value.signedField || "data";
     const updated = item.value.updated;
     // @ts-ignore
-    const data = item.value[field];
-    const json = jsonStringify(data);
+    let json = item.value[field];
+
+    if (typeof json !== "string") {
+      json = jsonStringify(json);
+    }
 
     try {
       if (
