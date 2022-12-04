@@ -175,6 +175,12 @@ export class RPCServer extends EventEmitter {
 
     let rpcResult: RPCResponse = {};
 
+    if (ret === undefined) {
+      ret = {
+        data: true,
+      };
+    }
+
     if (ret?.data) {
       rpcResult = { ...ret };
 
