@@ -93,6 +93,13 @@ const plugin: Plugin = {
           throw new Error("relays required");
         }
 
+        if (
+          req?.request?.module === "rpc" &&
+          req?.request?.method === "broadcast_request"
+        ) {
+          throw new Error("recursive broadcast_request calls are not allowed");
+        }
+
         let resp = await broadcastRequest(req.request, req.relays);
 
         const result: RPCBroadcastResponse = {
