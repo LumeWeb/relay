@@ -18,6 +18,8 @@ import sodium from "sodium-universal";
 import b4a from "b4a";
 
 const LUMEWEB = b4a.from("lumeweb");
+export const LUMEWEB_TOPIC_HASH = b4a.allocUnsafe(32);
+sodium.crypto_generichash(LUMEWEB_TOPIC_HASH, LUMEWEB);
 
 export type SecretStream = any;
 
@@ -38,13 +40,11 @@ export async function start() {
   const keyPair = getKeyPair();
 
   node = new Hyperswarm({ keyPair, dht: new DHT({ keyPair }) });
-  const topic = b4a.allocUnsafe(32);
-  sodium.crypto_generichash(topic, LUMEWEB);
 
   // @ts-ignore
   await node.dht.ready();
   await node.listen();
-  node.join(topic);
+  node.join(LUMEWEB_TOPIC_HASH);
 
   return node;
 }
