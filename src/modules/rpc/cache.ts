@@ -11,7 +11,7 @@ import b4a from "b4a";
 import { get as getSwarm } from "../swarm";
 import { RPCServer } from "./server";
 // @ts-ignore
-import orderedJSON from "ordered-json";
+import jsonStringify from "json-stringify-deterministic";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 import NodeCache from "node-cache";
@@ -51,7 +51,7 @@ export class RPCCache extends EventEmitter {
     const updated = item.value.updated;
     // @ts-ignore
     const data = item.value[field];
-    const json = orderedJSON.stringify(data);
+    const json = jsonStringify(data);
 
     return this.server.signData(`${updated}${json}`);
   }
@@ -61,7 +61,7 @@ export class RPCCache extends EventEmitter {
     const updated = item.value.updated;
     // @ts-ignore
     const data = item.value[field];
-    const json = orderedJSON.stringify(data);
+    const json = jsonStringify(data);
 
     try {
       if (

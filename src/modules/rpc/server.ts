@@ -15,9 +15,10 @@ import c from "compact-encoding";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 // @ts-ignore
-import orderedJSON from "ordered-json";
 import { Mutex } from "async-mutex";
 import { RPCCache } from "./cache";
+// @ts-ignore
+import jsonStringify from "json-stringify-deterministic";
 
 const sodium = require("sodium-universal");
 let server: RPCServer;
@@ -55,7 +56,7 @@ export class RPCServer extends EventEmitter {
     const queryHash = Buffer.allocUnsafe(32);
     sodium.crypto_generichash(
       queryHash,
-      Buffer.from(orderedJSON.stringify(clonedQuery))
+      Buffer.from(jsonStringify(clonedQuery))
     );
     return queryHash.toString("hex");
   }
@@ -128,7 +129,7 @@ export class RPCServer extends EventEmitter {
   public signData(data: any): string {
     let raw = data;
     if (typeof data !== "string") {
-      raw = orderedJSON.stringify(data);
+      raw = jsonStringify(data);
     }
 
     return crypto
