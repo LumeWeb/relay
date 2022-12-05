@@ -127,7 +127,16 @@ const plugin: Plugin = {
     api.registerMethod("get_peers", {
       cacheable: false,
       async handler(): Promise<string[]> {
-        return [...getRpcServer().cache.dhtCache.online];
+        const pubkey = b4a
+          .from(getRpcServer().cache.swarm.keyPair.publicKey)
+          .toString("hex");
+
+        const online = getRpcServer().cache.dhtCache.online;
+        if (online.has(pubkey)) {
+          online.delete(pubkey);
+        }
+
+        return [...online];
       },
     });
     api.registerMethod("get_direct_peers", {
