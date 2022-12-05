@@ -133,10 +133,20 @@ const plugin: Plugin = {
     api.registerMethod("get_direct_peers", {
       cacheable: false,
       async handler(): Promise<string[]> {
+        const online = getRpcServer().cache.dhtCache.online;
+        const pubkey = b4a
+          .from(getRpcServer().cache.swarm.keyPair.publicKey)
+          .toString("hex");
+
+        if (online.has(pubkey)) {
+          online.delete(pubkey);
+        }
+
         const topic = LUMEWEB_TOPIC_HASH.toString("hex");
         return [...getRpcServer().cache.swarm.peers.values()]
           .filter((item: any) => [...item._seenTopics.keys()].includes(topic))
-          .map((item: any) => item.publicKey.toString("hex"));
+          .map((item: any) => item.publicKey.toString("hex"))
+          .filter((item: any) => online.has(item));
       },
     });
   },
