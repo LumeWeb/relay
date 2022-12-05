@@ -27,11 +27,11 @@
   integrity sha512-FDge0dFazETFcxGw/EXzOkN8uJp0PC7Qbm+Pe9T+av2zlBpOgunFHkQPPn+eRuClU73JF+98D531UgayY89tow==
 
 "@babel/runtime@^7.12.5", "@babel/runtime@^7.17.2":
-  version "7.20.1"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.1.tgz#1148bb33ab252b165a06698fde7576092a78b4a9"
-  integrity sha512-mrzLkl6U9YLF8qpqI7TB82PESyEGjm/0Ly91jG575eVxMMlb8fYfOXFZIJ8XfLrJZQbm7dlKry2bJmXBUEkdFg==
+  version "7.20.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.20.6.tgz#facf4879bfed9b5326326273a64220f099b0fce3"
+  integrity sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==
   dependencies:
-    regenerator-runtime "^0.13.10"
+    regenerator-runtime "^0.13.11"
 
 "@babel/types@7.18.4":
   version "7.18.4"
@@ -42,9 +42,9 @@
     to-fast-properties "^2.0.0"
 
 "@babel/types@^7.18.2":
-  version "7.20.2"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.20.2.tgz#67ac09266606190f496322dbaff360fdaa5e7842"
-  integrity sha512-FnnvsNWgZCr232sqtXggapvlkk/tuwR/qhGzcmxI0GXLCjmPYQPzio2FbdlWuY6y1sHFfQKk+rRbUZ9VStQMog==
+  version "7.20.5"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.20.5.tgz#e206ae370b5393d94dfd1d04cd687cace53efa84"
+  integrity sha512-c9fst/h2/dcF7H+MJKZ2T0KjEQ8hY/BNnDk/H3XY8C4Aw/eWQXWn/lWntHF9ooUBnGmEvbfGrTgLWc+um0YDUg==
   dependencies:
     "@babel/helper-string-parser" "^7.19.4"
     "@babel/helper-validator-identifier" "^7.19.1"
@@ -524,7 +524,7 @@
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version "0.1.0"
-  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#c67bc2bba7c439bb4157669bbc09ca432d78f9bc"
+  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#90aeec6802219b61eb055561bf3e8356e68b30c0"
   dependencies:
     "@lumeweb/dht-flood" "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin" "^2.8.1"
@@ -539,7 +539,7 @@
 
 "@lumeweb/dht-flood@https://git.lumeweb.com/LumeWeb/dht-flood.git":
   version "0.1.0"
-  resolved "https://git.lumeweb.com/LumeWeb/dht-flood.git#340cd467349457a01716a7eb1e6c3e513158ca63"
+  resolved "https://git.lumeweb.com/LumeWeb/dht-flood.git#ebaba22213d1b9f051af9f9a0ec04ee28e7cfa61"
   dependencies:
     compact-encoding "^2.11.0"
     lru "^3.1.0"
@@ -596,9 +596,9 @@
   integrity sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==
 
 "@noble/hashes@^1.1.2":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.3.tgz#360afc77610e0a61f3417e497dcf36862e4f8111"
-  integrity sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A==
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.4.tgz#2611ebf5764c1bf754da7c7794de4fb30512336d"
+  integrity sha512-+PYsVPrTSqtVjatKt2A/Proukn2Yrz61OBThOCKErc5w2/r1Fh37vbDv0Eah7pyNltrmacjwTvdw3JoR+WE4TA==
 
 "@noble/secp256k1@^1.6.3":
   version "1.7.0"
@@ -724,9 +724,9 @@
     buffer "~6.0.3"
 
 "@solana/web3.js@^1.47.3":
-  version "1.66.2"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.66.2.tgz#80b43c5868b846124fe3ebac7d3943930c3fa60c"
-  integrity sha512-RyaHMR2jGmaesnYP045VLeBGfR/gAW3cvZHzMFGg7bkO+WOYOYp1nEllf0/la4U4qsYGKCsO9eEevR5fhHiVHg==
+  version "1.69.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.69.0.tgz#1756b1a26087172291c0b5163d3b44d24eef8aa7"
+  integrity sha512-iU2Q0IG25RITsxBkY1Vkk74LffRokViEcSblz4CGxyt+/V7xSkC2DNM0n0rB3aY/9+FvMiz4l5wHnD9UC4Ac/w==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@noble/ed25519" "^1.7.0"
@@ -821,9 +821,9 @@
     form-data "^3.0.0"
 
 "@types/node@*", "@types/node@^18.0.0":
-  version "18.11.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
-  integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
+  version "18.11.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.10.tgz#4c64759f3c2343b7e6c4b9caf761c7a3a05cee34"
+  integrity sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==
 
 "@types/node@^12.12.54":
   version "12.20.55"
@@ -1752,9 +1752,9 @@ fast-stable-stringify@^1.0.0:
   integrity sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag==
 
 fastq@^1.6.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.13.0.tgz#616760f88a7526bdfc596b7cab8c18938c36b98c"
-  integrity sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.14.0.tgz#107f69d7295b11e0fccc264e1fc6389f623731ce"
+  integrity sha512-eR2D+V9/ExcbF9ls441yIuN6TI2ED1Y2ZcA5BmMtJsOkWOFRJQ0Jt0g1UwqXJJVAb+V+umH5Dfr8oh4EVP7VVg==
   dependencies:
     reusify "^1.0.4"
 
@@ -2533,9 +2533,9 @@ minimatch@^3.1.1:
     brace-expansion "^1.1.7"
 
 minimatch@^5.0.1:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.0.tgz#1717b464f4971b144f6aabe8f2d0b8e4511e09c7"
-  integrity sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.1.tgz#6c9dffcf9927ff2a31e74b5af11adf8b9604b022"
+  integrity sha512-362NP+zlprccbEt/SkxKfRMHnNY85V74mVnpUpNyr3F35covl09Kec7/sEFLt3RA4oXmewtoaanoIf67SE5Y5g==
   dependencies:
     brace-expansion "^2.0.1"
 
@@ -2690,9 +2690,9 @@ node-abi@^2.21.0:
     semver "^5.4.1"
 
 node-abi@^3.3.0:
-  version "3.28.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.28.0.tgz#b0df8b317e1c4f2f323756c5fc8ffccc5bca4718"
-  integrity sha512-fRlDb4I0eLcQeUvGq7IY3xHrSb0c9ummdvDSYWfT9+LKP+3jCKw/tKoqaM7r1BAoiAC6GtwyjaGnOz6B3OtF+A==
+  version "3.30.0"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-3.30.0.tgz#d84687ad5d24ca81cdfa912a36f2c5c19b137359"
+  integrity sha512-qWO5l3SCqbwQavymOmtTVuCWZE23++S+rxyoHjXqUmPyzRcaoI4lA2gO55/drddGnedAyjA7sk76SfQ5lfUMnw==
   dependencies:
     semver "^7.3.5"
 
@@ -3200,7 +3200,7 @@ record-cache@^1.1.1:
   dependencies:
     b4a "^1.3.1"
 
-regenerator-runtime@^0.13.10:
+regenerator-runtime@^0.13.11:
   version "0.13.11"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
