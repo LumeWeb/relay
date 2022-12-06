@@ -1,7 +1,5 @@
 #!/bin/bash
 
-rimraf node_modules/libskynetnode/node_modules/node-fetch
-
 for pkg in udx-native sodium-native; do
     (
         cd "node_modules/${pkg}" || return
