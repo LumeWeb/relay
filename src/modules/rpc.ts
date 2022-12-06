@@ -10,10 +10,6 @@ import { get as getSwarm, SecretStream } from "./swarm.js";
 import b4a from "b4a";
 
 export async function start() {
-  if (!config.str("pocket-app-id") || !config.str("pocket-app-key")) {
-    errorExit("Please set pocket-app-id and pocket-app-key config options.");
-  }
-
   getSwarm().on("connection", (stream: SecretStream) =>
     getRpcServer().setup(stream)
   );
