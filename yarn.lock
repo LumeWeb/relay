@@ -482,6 +482,12 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git":
+  version "0.1.7"
+  resolved "https://git.lumeweb.com/LumeWeb/cfg.git#647dc9a2ec9fce5ddfe93b4dc90e2a0e1538e1fa"
+  dependencies:
+    bsert "~0.0.10"
+
 "@lumeweb/cfg@https://github.com/LumeWeb/bcfg.git":
   version "0.1.7"
   resolved "https://github.com/LumeWeb/bcfg.git#3e412d509062fb39d6aa5fb2903125353b3bab64"

@@ -20,7 +20,7 @@
     "dependencies": {
         "@hyperswarm/dht": "^6.0.1",
         "@hyperswarm/dht-relay": "^0.3.0",
-        "@lumeweb/cfg": "https://github.com/LumeWeb/bcfg.git",
+        "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git",
         "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git",
         "@lumeweb/kernel-utils": "https://github.com/LumeWeb/kernel-utils.git",
         "@lumeweb/pokt-rpc-endpoints": "https://github.com/LumeWeb/pokt-rpc-endpoints.git",
