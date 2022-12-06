@@ -484,13 +484,7 @@
 
 "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git":
   version "0.1.7"
-  resolved "https://git.lumeweb.com/LumeWeb/cfg.git#647dc9a2ec9fce5ddfe93b4dc90e2a0e1538e1fa"
-  dependencies:
-    bsert "~0.0.10"
-
-"@lumeweb/cfg@https://github.com/LumeWeb/bcfg.git":
-  version "0.1.7"
-  resolved "https://github.com/LumeWeb/bcfg.git#3e412d509062fb39d6aa5fb2903125353b3bab64"
+  resolved "https://git.lumeweb.com/LumeWeb/cfg.git#8e5b9d2bc6f258f435842d03ed7ad925ffb8e8c1"
   dependencies:
     bsert "~0.0.10"
 
