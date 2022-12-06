@@ -33,12 +33,9 @@ pipeline:
             gpg_password:
                 from_secret: gpg_password
     purge_cdn:
-        image: digitalocean/doctl:latest
+        image: git.lumeweb.com/lumeweb/do-cdn-purge
         settings:
-            do_access_token:
-                from_secret: do_access_token
-            do_cdn_id:
-                from_secret: do_cdn_id
-        commands:
-            - export DIGITALOCEAN_ACCESS_TOKEN=$PLUGIN_DO_ACCESS_TOKEN
-            - doctl compute cdn flush $PLUGIN_DO_CDN_ID
+            DIGITALOCEAN_ACCESS_TOKEN:
+                from_secret: DIGITALOCEAN_ACCESS_TOKEN
+            DIGITALOCEAN_CDN_ID:
+                from_secret: DIGITALOCEAN_CDN_ID
