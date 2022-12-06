@@ -16,7 +16,7 @@ if (!config.str("seed")) {
   config.saveConfigJson("account.json", {
     seed: generateSeedPhraseDeterministic(
       crypto.randomBytes(100).toString("hex")
-    ),
+    )[0],
   });
 }
 
