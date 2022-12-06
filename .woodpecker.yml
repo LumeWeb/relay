@@ -32,3 +32,13 @@ pipeline:
             distro: jammy
             gpg_password:
                 from_secret: gpg_password
+    purge_cdn:
+        image: digitalocean/doctl:latest
+        settings:
+            do_access_token:
+                from_secret: do_access_token
+            do_cdn_id:
+                from_secret: do_cdn_id
+        commands:
+            - export DIGITALOCEAN_ACCESS_TOKEN=$PLUGIN_DO_ACCESS_TOKEN
+            - doctl compute cdn flush $PLUGIN_DO_CDN_ID
