@@ -64,6 +64,7 @@
         "@types/express": "^4.17.13",
         "@types/minimatch": "^3.0.5",
         "@types/node-fetch": "^2.6.2",
+        "cli-progress": "^3.11.2",
         "hyper-typings": "^1.0.0",
         "node-gyp": "^9.1.0",
         "pkg": "^5.8.0",
