@@ -16,6 +16,7 @@ import {
 // @ts-ignore
 import sodium from "sodium-universal";
 import b4a from "b4a";
+import log from "loglevel";
 
 const LUMEWEB = b4a.from("lumeweb");
 export const LUMEWEB_TOPIC_HASH = b4a.allocUnsafe(32);
@@ -45,6 +46,11 @@ export async function start() {
   await node.dht.ready();
   await node.listen();
   node.join(LUMEWEB_TOPIC_HASH);
+
+  log.info(
+    "Relay Identity is",
+    b4a.from(node.dht.defaultKeyPair.publicKey).toString("hex")
+  );
 
   return node;
 }

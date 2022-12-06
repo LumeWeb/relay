@@ -50,11 +50,6 @@ export async function start() {
     pack(`${config.str("domain")}:${config.uint("port")}`)
   );
 
-  log.info(
-    "Relay Identity is",
-    Buffer.from(swarm.dht.defaultKeyPair.publicKey).toString("hex")
-  );
-
   cron.schedule("0 * * * *", ipUpdate);
 }
 
