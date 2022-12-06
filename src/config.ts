@@ -55,10 +55,4 @@ config.load({
   argv: true,
 });
 
-for (const setting of ["domain"]) {
-  if (!config.get(setting)) {
-    errorExit(`Required config option ${setting} not set`);
-  }
-}
-
 export default config;

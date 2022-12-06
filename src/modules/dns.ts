@@ -36,6 +36,10 @@ async function ipUpdate() {
 }
 
 export async function start() {
+  if (!config.str("domain")) {
+    return;
+  }
+
   const swarm = getSwarm();
 
   await ipUpdate();
