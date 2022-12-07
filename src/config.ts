@@ -4,7 +4,7 @@ import * as os from "os";
 import * as fs from "fs";
 import path from "path";
 import log from "loglevel";
-import chalk, { ChalkInstance } from "chalk";
+import chalk, { Chalk } from "chalk";
 import prefix from "loglevel-plugin-prefix";
 
 const config = new Config("lumeweb-relay");
@@ -62,7 +62,7 @@ const colors = {
   INFO: chalk.blue,
   WARN: chalk.yellow,
   ERROR: chalk.red,
-} as { [level: string]: ChalkInstance };
+} as { [level: string]: Chalk };
 
 prefix.reg(log);
 log.enableAll();
