@@ -4,6 +4,8 @@ import * as os from "os";
 import * as fs from "fs";
 import path from "path";
 import log from "loglevel";
+import chalk, { ChalkInstance } from "chalk";
+import prefix from "loglevel-plugin-prefix";
 
 const config = new Config("lumeweb-relay");
 
@@ -53,5 +55,24 @@ config.load({
 });
 
 log.setDefaultLevel(config.get("loglevel"));
+
+const colors = {
+  TRACE: chalk.magenta,
+  DEBUG: chalk.cyan,
+  INFO: chalk.blue,
+  WARN: chalk.yellow,
+  ERROR: chalk.red,
+} as { [level: string]: ChalkInstance };
+
+prefix.reg(log);
+log.enableAll();
+
+prefix.apply(log, {
+  format(level, name, timestamp) {
+    return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](
+      level
+    )} ${chalk.green(`${name}:`)}`;
+  },
+});
 
 export default config;
