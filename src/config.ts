@@ -1,12 +1,9 @@
-//const require = createRequire(import.meta.url);
-//import { createRequire } from "module";
-
 // @ts-ignore
 import Config from "@lumeweb/cfg";
 import * as os from "os";
 import * as fs from "fs";
 import path from "path";
-import { errorExit } from "./lib/error.js";
+import log from "loglevel";
 
 const config = new Config("lumeweb-relay");
 
@@ -54,5 +51,7 @@ config.load({
   env: true,
   argv: true,
 });
+
+log.setDefaultLevel(config.get("loglevel"));
 
 export default config;
