@@ -490,7 +490,7 @@
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version "0.1.0"
-  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#d65d33aa184239e05f6d65fee6b16f3ae0921f39"
+  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#3d48ba81783bcdf17e81f95f19ab0383a36be9ef"
   dependencies:
     "@lumeweb/dht-flood" "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin" "^2.8.1"
@@ -691,9 +691,9 @@
     buffer "~6.0.3"
 
 "@solana/web3.js@^1.47.3":
-  version "1.69.0"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.69.0.tgz#1756b1a26087172291c0b5163d3b44d24eef8aa7"
-  integrity sha512-iU2Q0IG25RITsxBkY1Vkk74LffRokViEcSblz4CGxyt+/V7xSkC2DNM0n0rB3aY/9+FvMiz4l5wHnD9UC4Ac/w==
+  version "1.70.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.70.0.tgz#14ad207f431861397db85921aad8df4e8374e7c8"
+  integrity sha512-HwdI9LaHaszfpzgxJI44iP68mJWUeqK1TeSheKQsGkH5zlVyGWGmim50MyDWu2vXiuL8Akf2xEMSrDYyLordgg==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@noble/ed25519" "^1.7.0"
@@ -788,9 +788,9 @@
     form-data "^3.0.0"
 
 "@types/node@*", "@types/node@^18.0.0":
-  version "18.11.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.10.tgz#4c64759f3c2343b7e6c4b9caf761c7a3a05cee34"
-  integrity sha512-juG3RWMBOqcOuXC643OAdSA525V44cVgGV6dUDuiFtss+8Fk5x1hI93Rsld43VeJVIeqlP9I7Fn9/qaVqoEAuQ==
+  version "18.11.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.11.tgz#1d455ac0211549a8409d3cdb371cd55cc971e8dc"
+  integrity sha512-KJ021B1nlQUBLopzZmPBVuGU9un7WJd/W4ya7Ih02B4Uwky5Nja0yGYav2EfYIk0RR2Q9oVhf60S2XR1BCWJ2g==
 
 "@types/node@^12.12.54":
   version "12.20.55"
