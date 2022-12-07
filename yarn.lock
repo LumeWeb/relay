@@ -490,7 +490,7 @@
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version "0.1.0"
-  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#3d48ba81783bcdf17e81f95f19ab0383a36be9ef"
+  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#fbbc2a2e7179e2826cf479d785e831a74dfd6111"
   dependencies:
     "@lumeweb/dht-flood" "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin" "^2.8.1"
