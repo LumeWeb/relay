@@ -490,7 +490,7 @@
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version "0.1.0"
-  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#90aeec6802219b61eb055561bf3e8356e68b30c0"
+  resolved "https://git.lumeweb.com/LumeWeb/dht-cache.git#d65d33aa184239e05f6d65fee6b16f3ae0921f39"
   dependencies:
     "@lumeweb/dht-flood" "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin" "^2.8.1"
@@ -498,6 +498,7 @@
     compact-encoding "^2.11.0"
     hypercore-crypto "^3.3.0"
     jsnetworkx "^0.3.4"
+    loglevel "^1.8.1"
     lru "^3.1.0"
     ordered-json "^0.1.1"
     protocol-buffers-encodings "^1.2.0"
@@ -2346,7 +2347,7 @@ lodash@^4.17.20:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-loglevel@^1.8.0:
+loglevel@^1.8.0, loglevel@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.8.1.tgz#5c621f83d5b48c54ae93b6156353f555963377b4"
   integrity sha512-tCRIJM51SHjAayKwC+QAg8hT8vg6z7GSgLJKGvzuPb1Wc+hLzqtuVLxp6/HzSPOozuK+8ErAhy7U/sVzw8Dgfg==
