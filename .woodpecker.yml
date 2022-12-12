@@ -36,6 +36,6 @@ pipeline:
         image: git.lumeweb.com/lumeweb/do-cdn-purge
         settings:
             DIGITALOCEAN_ACCESS_TOKEN:
-                from_secret: DIGITALOCEAN_ACCESS_TOKEN
+                from_secret: digitalocean_access_token
             DIGITALOCEAN_CDN_ID:
-                from_secret: DIGITALOCEAN_CDN_ID
+                from_secret: digitalocean_cdn_id
