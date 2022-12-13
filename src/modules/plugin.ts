@@ -55,7 +55,7 @@ export class PluginApiManager {
 
     let plugin: Plugin;
     try {
-      plugin = (await import(paths.shift() as string)) as Plugin;
+      plugin = require(paths.shift() as string) as Plugin;
     } catch (e) {
       throw e;
     }
