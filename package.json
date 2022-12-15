@@ -10,12 +10,12 @@
         "email": "contact@lumeweb.com"
     },
     "scripts": {
-        "compile": "tsc",
+        "compile": "yarn tsc",
         "prebuild": "bash prebuild.sh",
-        "package": "pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip",
-        "package-debug": "pkg -c pkg.json build/index.js -b -t linux --no-bytecode  --public",
-        "build": "npm run compile && npm run prebuild && npm run package",
-        "barebuild": "npm run compile && npm run package"
+        "package": "yarn pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip",
+        "package-debug": "yarn pkg -c pkg.json build/index.js -b -t linux --no-bytecode  --public",
+        "build": "yarn run compile && npm run prebuild && npm run package",
+        "barebuild": "yarn run compile && npm run package"
     },
     "dependencies": {
         "@hyperswarm/dht": "^6.0.1",
@@ -75,6 +75,7 @@
         "prettier": "^2.7.1",
         "rollup": "^2.77.0",
         "supports-color": "https://github.com/LumeWeb/supports-color.git",
-        "typescript": "^4.7.4"
-    }
+        "typescript": "^4.9.4"
+    },
+    "packageManager": "yarn@4.0.0-rc.33"
 }
