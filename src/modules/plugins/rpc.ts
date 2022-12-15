@@ -162,6 +162,21 @@ const plugin: Plugin = {
           .filter((item: any) => online.has(item));
       },
     });
+    api.registerMethod("get_bootstrap_info", {
+      cacheable: false,
+      async handler(): Promise<string[]> {
+        // @ts-ignore
+        return getRpcServer().cache.dhtCache._getBootstrapInfo();
+      },
+    });
+
+    api.registerMethod("get_connected_peers", {
+      cacheable: false,
+      async handler(): Promise<string[]> {
+        // @ts-ignore
+        return [...getRpcServer().cache.dhtCache.connectedTo];
+      },
+    });
   },
 };
 
