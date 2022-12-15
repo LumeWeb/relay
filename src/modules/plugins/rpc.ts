@@ -15,7 +15,7 @@ import b4a from "b4a";
 import type { ClearablePromise } from "p-timeout";
 
 async function dImport(pkg: string): Promise<any> {
-  return new Function(`return import("${pkg}")`);
+  return new Function(`return import("${pkg}")`)();
 }
 
 let pTimeout: typeof import("p-timeout").default;
