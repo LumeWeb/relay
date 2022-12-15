@@ -2,6 +2,8 @@ pipeline:
     build:
         image: git.lumeweb.com/lumeweb/ci-node
         commands:
+            - corepack enable
+            - corepack prepare yarn@stable --activate
             - yarn
             - yarn build
     package:
