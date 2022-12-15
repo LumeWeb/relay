@@ -690,7 +690,7 @@ __metadata:
     node-cron: ^3.0.1
     node-fetch: 2
     node-gyp: ^9.1.0
-    p-timeout: ^6.0.0
+    p-timeout: "https://git.lumeweb.com/LumeWeb/p-timeout.git"
     pkg: ^5.8.0
     prebuildify: ^5.0.1
     prettier: ^2.7.1
@@ -3719,10 +3719,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-timeout@npm:^6.0.0":
+"p-timeout@https://git.lumeweb.com/LumeWeb/p-timeout.git":
   version: 6.0.0
-  resolution: "p-timeout@npm:6.0.0"
-  checksum: c61e72678f3d2a9265d44c871e282e199c68b9b739005884d83dc8451ec8fe6581040fb10d9a48b2136e1b0b75042c6b528130a40bbad08eea6a53838a190b45
+  resolution: "p-timeout@https://git.lumeweb.com/LumeWeb/p-timeout.git#commit=4d4bee14a2cddb72111a95544e91bc957a1d3611"
+  checksum: 34a0dc6acdb3d51f3898b0122d1c1ace2a79a146b7fb1ebeb9ae2159e28c0f391807f29ae58f313ec3b6ce0e1e478215b9258c0517eac6b0845b20f48f04c539
   languageName: node
   linkType: hard
 
