@@ -52,6 +52,7 @@
         "node-cache": "^5.1.2",
         "node-cron": "^3.0.1",
         "node-fetch": "2",
+        "p-timeout": "^6.0.0",
         "promise-retry": "^2.0.1",
         "protomux": "^3.4.0",
         "protomux-rpc": "^1.3.0",
@@ -75,9 +76,5 @@
         "rollup": "^2.77.0",
         "supports-color": "https://github.com/LumeWeb/supports-color.git",
         "typescript": "^4.7.4"
-    },
-    "resolutions": {
-        "**/@hyperswarm/dht": "^6.0.1",
-        "**/node-fetch": "^2.6.6"
     }
 }

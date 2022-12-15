@@ -11,17 +11,19 @@ import {
 import { getRpcByPeer } from "../rpc";
 import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../swarm";
 import b4a from "b4a";
+import pTimeout, { ClearablePromise } from "p-timeout";
 
 async function broadcastRequest(
   request: RPCRequest,
-  relays: string[]
+  relays: string[],
+  timeout = 5000
 ): Promise<Map<string, Promise<any>>> {
   const makeRequest = async (relay: string) => {
     const rpc = await getRpcByPeer(relay);
     return rpc.request(`${request.module}.${request.method}`, request.data);
   };
 
-  let relayMap = new Map<string, Promise<any>>();
+  let relayMap = new Map<string, ClearablePromise<any>>();
 
   for (const relay of relays) {
     let req;
@@ -31,10 +33,12 @@ async function broadcastRequest(
       req = makeRequest(relay);
     }
 
-    relayMap.set(
-      relay,
-      req.catch((error: Error) => error)
-    );
+    let timeoutPromise = pTimeout(req, {
+      milliseconds: timeout,
+      message: `relay timed out after ${timeout} milliseconds`,
+    });
+
+    relayMap.set(relay, timeoutPromise);
   }
 
   await Promise.allSettled([...relays.values()]);
@@ -100,7 +104,7 @@ const plugin: Plugin = {
           throw new Error("recursive broadcast_request calls are not allowed");
         }
 
-        let resp = await broadcastRequest(req.request, req.relays);
+        let resp = await broadcastRequest(req.request, req.relays, req.timeout);
 
         const result: RPCBroadcastResponse = {
           relays: {},
