@@ -77,8 +77,5 @@
         "supports-color": "https://github.com/LumeWeb/supports-color.git",
         "typescript": "^4.9.4"
     },
-    "packageManager": "yarn@4.0.0-rc.33",
-    "resolutions": {
-        "*/node-fetch": "2"
-    }
+    "packageManager": "yarn@4.0.0-rc.33"
 }
