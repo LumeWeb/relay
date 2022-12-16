@@ -83,7 +83,7 @@ log.methodFactory = function (methodName, logLevel, loggerName) {
   var rawMethod = logFactory(methodName, logLevel, loggerName);
 
   return function (...messages) {
-    messageLog = messages.concat(messages);
+    messageLog = messageLog.concat(messages);
     rawMethod(...messages);
   };
 };
