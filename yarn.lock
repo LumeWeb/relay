@@ -592,7 +592,7 @@ __metadata:
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version: 0.1.0
-  resolution: "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git#commit=6bf6ea3595ec698bffcdd95b2c19353c2b07caf3"
+  resolution: "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git#commit=46404958cf462f4a00e9851a0aa1c2998ecf119f"
   dependencies:
     "@lumeweb/dht-flood": "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin": "npm:^2.8.1"
