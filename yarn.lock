@@ -592,7 +592,7 @@ __metadata:
 
 "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git":
   version: 0.1.0
-  resolution: "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git#commit=dd21b0fa3047a145700ffe9ed6a9bf0d69194395"
+  resolution: "@lumeweb/dht-cache@https://git.lumeweb.com/LumeWeb/dht-cache.git#commit=ef4a6f60e9aee3377f50ee68a49c4282166b40be"
   dependencies:
     "@lumeweb/dht-flood": "https://git.lumeweb.com/LumeWeb/dht-flood.git"
     "@protobuf-ts/plugin": "npm:^2.8.1"
@@ -605,7 +605,7 @@ __metadata:
     ordered-json: "npm:^0.1.1"
     protocol-buffers-encodings: "npm:^1.2.0"
     protomux-rpc: "npm:^1.3.0"
-  checksum: f210a60d709f0e364ba6f4ca6252ec5ff64b1bc0a8f0ab46df8bef451d15cc1e87573474e1d25446fcf00e8042b14253ecf50c8a10e2f4619385e9b2b7ffa81c
+  checksum: 1d3ff0031d44e5af0013ebcb063c3303d95f2f04aa65988c65ec2f934f4b6fe199108262ed1a2b14b4f1a93161c02a42a0b8489e7f4090cb6d7b56149e930fef
   languageName: node
   linkType: hard
 
