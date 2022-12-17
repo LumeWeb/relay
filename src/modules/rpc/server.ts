@@ -170,6 +170,7 @@ export class RPCServer extends EventEmitter {
     }
 
     if (error) {
+      this.getRequestLock(request)?.release();
       throw error;
     }
 
