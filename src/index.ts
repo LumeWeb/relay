@@ -4,7 +4,6 @@ import { start as startApp } from "./modules/app";
 import log from "loglevel";
 import config from "./config.js";
 import { loadPlugins } from "./modules/plugin.js";
-import { start as startDns } from "./modules/dns.js";
 import { start as startSSl } from "./modules/ssl.js";
 import { start as startSwarm } from "./modules/swarm.js";
 import * as bip39 from "@scure/bip39";
@@ -23,7 +22,6 @@ async function boot() {
   await loadPlugins();
   await startApp();
   await startRpc();
-  await startDns();
   await startSSl();
   await startRelay();
 }
