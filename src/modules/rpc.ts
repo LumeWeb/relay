@@ -5,7 +5,11 @@ import config from "../config.js";
 import { errorExit } from "../lib/error.js";
 // @ts-ignore
 import stringify from "json-stable-stringify";
-import { getRpcServer, RPC_PROTOCOL_SYMBOL } from "./rpc/server.js";
+import {
+  getRpcServer,
+  RPC_PROTOCOL_SYMBOL,
+  setupStream,
+} from "./rpc/server.js";
 import { get as getSwarm, SecretStream } from "./swarm.js";
 import b4a from "b4a";
 
@@ -33,7 +37,7 @@ export async function getRpcByPeer(peer: Buffer | string) {
       }
       swarm.removeListener("connection", listener);
 
-      resolve(peer[RPC_PROTOCOL_SYMBOL]);
+      resolve(setupStream(peer));
     });
 
     swarm.joinPeer(peer);

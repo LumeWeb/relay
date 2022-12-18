@@ -1,5 +1,4 @@
 import {
-  RPCCacheData,
   RPCCacheItem,
   RPCMethod,
   RPCRequest,
@@ -9,7 +8,7 @@ import EventEmitter from "events";
 // @ts-ignore
 import ProtomuxRPC from "protomux-rpc";
 import b4a from "b4a";
-import { get as getSwarm, SecretStream } from "../swarm";
+import { SecretStream } from "../swarm";
 // @ts-ignore
 import c from "compact-encoding";
 // @ts-ignore
@@ -32,6 +31,18 @@ export function getRpcServer(): RPCServer {
   }
 
   return server as RPCServer;
+}
+
+export function setupStream(stream: SecretStream) {
+  const existing = stream[RPC_PROTOCOL_SYMBOL];
+  if (existing) {
+    return existing;
+  }
+
+  stream[RPC_PROTOCOL_SYMBOL] = new ProtomuxRPC(stream, {
+    id: RPC_PROTOCOL_ID,
+    valueEncoding: c.json,
+  });
 }
 
 export class RPCServer extends EventEmitter {
@@ -102,16 +113,7 @@ export class RPCServer extends EventEmitter {
   }
 
   public setup(stream: SecretStream) {
-    const existing = stream[RPC_PROTOCOL_SYMBOL];
-    if (existing) return existing;
-
-    const options = {
-      id: RPC_PROTOCOL_ID,
-      valueEncoding: c.json,
-    };
-    const rpc = new ProtomuxRPC(stream, options);
-
-    stream[RPC_PROTOCOL_SYMBOL] = rpc;
+    const rpc = setupStream(stream);
 
     for (const module of this._modules.keys()) {
       for (const method of (
