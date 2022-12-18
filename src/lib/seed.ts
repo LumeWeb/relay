@@ -7,8 +7,8 @@ import { errorExit } from "./error.js";
 export function getSeed() {
   const seed = config.str("seed");
 
-  let err = bip39.validateMnemonic(seed, wordlist);
-  if (err) {
+  let valid = bip39.validateMnemonic(seed, wordlist);
+  if (!valid) {
     errorExit("LUME_WEB_RELAY_SEED is invalid. Aborting.");
   }
 
