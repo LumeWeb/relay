@@ -1,36 +1,87 @@
 import config from "../config.js";
+import type { RPCServer } from "./rpc/server.js";
 import { getRpcServer } from "./rpc/server.js";
-import type { PluginAPI, RPCMethod, Plugin } from "@lumeweb/relay-types";
+import type { Plugin, RPCMethod } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
 import path from "path";
-import {
-  getSavedSsl,
-  getSsl,
-  getSslContext,
-  saveSSl,
-  setSsl,
-  setSSlCheck,
-  setSslContext,
-} from "./ssl.js";
-import log from "loglevel";
+import type { Logger } from "loglevel";
+
 import { getSeed } from "../lib/util.js";
-import { getRouter, resetRouter, setRouter } from "./app.js";
-import {
-  createIndependentFileSmall,
-  openIndependentFileSmall,
-  overwriteIndependentFileSmall,
-} from "../lib/file";
-import { setDnsProvider } from "./dns";
 import pluginRpc from "./plugins/rpc";
 import pluginCore from "./plugins/core";
+import type Config from "@lumeweb/cfg";
+import EventEmitter2 from "eventemitter2";
+import log from "loglevel";
 
-let pluginApi: PluginApiManager;
+let pluginAPIManager: PluginAPIManager;
+let pluginAPI: PluginAPI;
 
 const sanitizeName = (name: string) =>
   slugify(name, { lower: true, strict: true });
 
-export class PluginApiManager {
+class PluginAPI extends EventEmitter2 {
+  private _server: RPCServer;
+
+  constructor({
+    config,
+    logger,
+    server,
+  }: {
+    config: Config;
+    logger: Logger;
+    server: RPCServer;
+  }) {
+    super({
+      wildcard: true,
+      verboseMemoryLeak: true,
+      maxListeners: 0,
+    });
+    this._config = config;
+    this._logger = logger;
+    this._server = server;
+  }
+
+  private _config: Config;
+
+  get config(): Config {
+    return this._config;
+  }
+
+  private _logger: Logger;
+
+  get logger(): Logger {
+    return this._logger;
+  }
+
+  get rpcServer(): RPCServer {
+    return this._server;
+  }
+
+  public loadPlugin(
+    moduleName: string
+  ): (moduleName: string) => Promise<Plugin> {
+    return getPluginAPIManager().loadPlugin;
+  }
+
+  get seed(): Uint8Array {
+    return getSeed();
+  }
+
+  registerMethod(methodName: string, method: RPCMethod): void {
+    throw new Error("not implemented and should not be called");
+  }
+}
+
+export function getPluginAPI(): PluginAPI {
+  if (!pluginAPI) {
+    pluginAPI = new PluginAPI({ config, logger: log, server: getRpcServer() });
+  }
+
+  return pluginAPI as PluginAPI;
+}
+
+export class PluginAPIManager {
   private registeredPlugins: Map<string, Plugin> = new Map<string, Plugin>();
 
   public async loadPlugin(moduleName: string): Promise<Plugin> {
@@ -73,60 +124,42 @@ export class PluginApiManager {
     this.registeredPlugins.set(plugin.name, plugin);
 
     try {
-      plugin.plugin(this.getPluginAPI(plugin.name));
+      plugin.plugin(
+        // @ts-ignore
+        new Proxy<PluginAPI>(getPluginAPI(), {
+          get(target: PluginAPI, prop: string): any {
+            if (prop === "registerMethod") {
+              return (methodName: string, method: RPCMethod): void => {
+                return getRpcServer().registerMethod(
+                  plugin.name,
+                  methodName,
+                  method
+                );
+              };
+            }
+
+            return (target as any)[prop];
+          },
+        })
+      );
     } catch (e) {
       throw e;
     }
 
     return plugin;
   }
-
-  private getPluginAPI(pluginName: string): PluginAPI {
-    return {
-      config,
-      registerMethod: (methodName: string, method: RPCMethod): void => {
-        getRpcServer().registerMethod(pluginName, methodName, method);
-      },
-      loadPlugin: getPluginAPI().loadPlugin.bind(getPluginAPI()),
-      getRpcServer,
-      ssl: {
-        setContext: setSslContext,
-        getContext: getSslContext,
-        getSaved: getSavedSsl,
-        set: setSsl,
-        get: getSsl,
-        save: saveSSl,
-        setCheck: setSSlCheck,
-      },
-      files: {
-        createIndependentFileSmall,
-        openIndependentFileSmall,
-        overwriteIndependentFileSmall,
-      },
-      dns: {
-        setProvider: setDnsProvider,
-      },
-      logger: log,
-      getSeed,
-      appRouter: {
-        get: getRouter,
-        set: setRouter,
-        reset: resetRouter,
-      },
-    };
-  }
 }
 
-export function getPluginAPI(): PluginApiManager {
-  if (!pluginApi) {
-    pluginApi = new PluginApiManager();
+export function getPluginAPIManager(): PluginAPIManager {
+  if (!pluginAPIManager) {
+    pluginAPIManager = new PluginAPIManager();
   }
 
-  return pluginApi as PluginApiManager;
+  return pluginAPIManager as PluginAPIManager;
 }
 
 export async function loadPlugins() {
-  const api = await getPluginAPI();
+  const api = getPluginAPIManager();
 
   api.loadPluginInstance(pluginCore);
   api.loadPluginInstance(pluginRpc);

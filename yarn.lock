@@ -674,6 +674,7 @@ __metadata:
     date-fns: "npm:^2.28.0"
     dotenv: "npm:^16.0.1"
     ethers: "npm:^5.6.9"
+    eventemitter2: "npm:^6.4.9"
     express: "npm:^4.18.1"
     fetch-blob: "https://github.com/LumeWeb/fetch-blob.git"
     hyper-typings: "npm:^1.0.0"
@@ -2112,6 +2113,13 @@ __metadata:
     "@ethersproject/web": "npm:5.7.1"
     "@ethersproject/wordlists": "npm:5.7.0"
   checksum: 610a2f023e31be37c859dee025e9f5538009a72e400ba647471e7cc0dd7ed1020d0b9970ee45be80f976cb4d1a9b31eae42b4e3cfdcdfb20785e2fcd67e96a6b
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:^6.4.9":
+  version: 6.4.9
+  resolution: "eventemitter2@npm:6.4.9"
+  checksum: c180cc0012389f2cd564cdfba949807175dd309b1d7f0900cfdfc5a97436a867a30964b94f86613ab237d960d52f7e4c85098c9c8ef6dc8ed29bbf4e79465d8b
   languageName: node
   linkType: hard
 
