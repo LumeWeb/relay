@@ -34,10 +34,16 @@ pipeline:
             distro: jammy
             gpg_password:
                 from_secret: GPG_PASSWORD
-    purge_cdn:
+    purge_do_cdn:
         image: git.lumeweb.com/lumeweb/do-cdn-purge
         settings:
             DIGITALOCEAN_ACCESS_TOKEN:
                 from_secret: digitalocean_access_token
             DIGITALOCEAN_CDN_ID:
                 from_secret: digitalocean_cdn_id
+    purge_cf_cdn:
+        image: git.lumeweb.com/lumeweb/cf-cdn-purge
+        settings:
+            CLOUDFLARE_ACCESS_TOKEN:
+                from_secret: cloudflare_access_token
+            DOMAIN: web3relay.io
