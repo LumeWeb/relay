@@ -15,7 +15,6 @@ import log from "loglevel";
 import { AddressInfo } from "net";
 // @ts-ignore
 import promiseRetry from "promise-retry";
-import { getSslContext } from "./ssl.js";
 
 export async function start() {
   const relayPort = config.uint("port");
@@ -43,15 +42,7 @@ export async function start() {
 
   let relayServer: https.Server | http.Server;
 
-  if (config.bool("ssl")) {
-    relayServer = https.createServer({
-      SNICallback(servername, cb) {
-        cb(null, getSslContext());
-      },
-    });
-  } else {
-    relayServer = http.createServer();
-  }
+  relayServer = http.createServer();
 
   let wsServer = new WS.Server({ server: relayServer });
 
