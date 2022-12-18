@@ -16,7 +16,7 @@ export function getSeed() {
 }
 
 export function getHDKey(): HDKey {
-  return HDKey.fromMasterSeed(getSeed()).derive("m/44'/1627'/0'/0");
+  return HDKey.fromMasterSeed(getSeed()).derive("m/44'/1627'/0'/0'/0'");
 }
 
 export function getKeyPair() {
