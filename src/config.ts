@@ -31,7 +31,6 @@ config.inject({
   logLevel: "info",
   pluginDir: path.resolve(configDir, "..", "plugins"),
   plugins: ["core"],
-  ssl: false,
 });
 
 config.load({
