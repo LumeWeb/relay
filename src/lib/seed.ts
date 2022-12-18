@@ -8,7 +8,7 @@ export function getSeed() {
   const seed = config.str("seed");
 
   let err = bip39.validateMnemonic(seed, wordlist);
-  if (err !== null) {
+  if (err) {
     errorExit("LUME_WEB_RELAY_SEED is invalid. Aborting.");
   }
 
