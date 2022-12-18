@@ -7,7 +7,7 @@ import * as fs from "fs";
 import path from "path";
 import type { Logger } from "loglevel";
 
-import { getSeed } from "../lib/util.js";
+import { getSeed } from "../lib/seed.js";
 import pluginRpc from "./plugins/rpc";
 import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";

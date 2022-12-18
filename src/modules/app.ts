@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import http from "http";
 import { AddressInfo } from "net";
 import log from "loglevel";
-import { getKeyPair } from "./swarm.js";
+import { getKeyPair } from "../lib/seed.js";
 
 let app: Express;
 let router = express.Router();

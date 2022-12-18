@@ -8,7 +8,7 @@ import {
 import promiseRetry from "promise-retry";
 import config from "../config.js";
 import log from "loglevel";
-import { getSeed } from "../lib/util.js";
+import { getSeed } from "../lib/seed.js";
 import type {
   IndependentFileSmall,
   SavedSslData,
