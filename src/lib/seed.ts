@@ -4,6 +4,8 @@ import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
 import { errorExit } from "./error.js";
 
+const BIP44_PATH = "m/44'/1627'/0'/0'/0'";
+
 export function getSeed() {
   const seed = config.str("seed");
 
@@ -16,7 +18,7 @@ export function getSeed() {
 }
 
 export function getHDKey(): HDKey {
-  return HDKey.fromMasterSeed(getSeed()).derive("m/44'/1627'/0'/0'/0'");
+  return HDKey.fromMasterSeed(getSeed()).derive(BIP44_PATH);
 }
 
 export function getKeyPair() {
