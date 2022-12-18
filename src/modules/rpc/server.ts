@@ -43,6 +43,8 @@ export function setupStream(stream: SecretStream) {
     id: RPC_PROTOCOL_ID,
     valueEncoding: c.json,
   });
+
+  return stream[RPC_PROTOCOL_SYMBOL];
 }
 
 export class RPCServer extends EventEmitter {
