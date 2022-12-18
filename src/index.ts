@@ -7,16 +7,14 @@ import { loadPlugins } from "./modules/plugin.js";
 import { start as startDns } from "./modules/dns.js";
 import { start as startSSl } from "./modules/ssl.js";
 import { start as startSwarm } from "./modules/swarm.js";
-import { generateSeedPhraseDeterministic } from "libskynet";
-import * as crypto from "crypto";
+import * as bip39 from "@scure/bip39";
+import { wordlist } from "@scure/bip39/wordlists/english";
 
 log.setDefaultLevel(config.str("log-level"));
 
 if (!config.str("seed")) {
   config.saveConfigJson("account.json", {
-    seed: generateSeedPhraseDeterministic(
-      crypto.randomBytes(100).toString("hex")
-    )[0],
+    seed: bip39.generateMnemonic(wordlist),
   });
 }
 
