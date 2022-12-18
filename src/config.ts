@@ -74,22 +74,4 @@ prefix.apply(log, {
   },
 });
 
-const logFactory = log.methodFactory;
-
-let messageLog: string[] = [];
-
-log.methodFactory = function (methodName, logLevel, loggerName) {
-  var rawMethod = logFactory(methodName, logLevel, loggerName);
-
-  return function (...messages) {
-    messageLog = messageLog.concat(messages);
-    rawMethod(...messages);
-  };
-};
-
-// @ts-ignore
-log.getLogs = function (): string[] {
-  return messageLog;
-};
-
 export default config;

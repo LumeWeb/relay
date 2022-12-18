@@ -177,14 +177,6 @@ const plugin: Plugin = {
         return [...getRpcServer().cache.dhtCache.connectedTo];
       },
     });
-
-    api.registerMethod("get_logs", {
-      cacheable: false,
-      async handler(): Promise<string[]> {
-        // @ts-ignore
-        return api.logger.getLogs();
-      },
-    });
   },
 };
 
