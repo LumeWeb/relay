@@ -13,6 +13,7 @@ import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "loglevel";
+import { get as getSwarm } from "./swarm.js";
 
 let pluginAPIManager: PluginAPIManager;
 let pluginAPI: PluginAPI;
@@ -27,10 +28,12 @@ class PluginAPI extends EventEmitter2 {
     config,
     logger,
     server,
+    swarm,
   }: {
     config: Config;
     logger: Logger;
     server: RPCServer;
+    swarm: any;
   }) {
     super({
       wildcard: true,
@@ -40,6 +43,13 @@ class PluginAPI extends EventEmitter2 {
     this._config = config;
     this._logger = logger;
     this._server = server;
+    this._swarm = swarm;
+  }
+
+  private _swarm: any;
+
+  get swarm(): any {
+    return this._swarm;
   }
 
   private _config: Config;
@@ -58,14 +68,14 @@ class PluginAPI extends EventEmitter2 {
     return this._server;
   }
 
+  get seed(): Uint8Array {
+    return getSeed();
+  }
+
   public loadPlugin(
     moduleName: string
   ): (moduleName: string) => Promise<Plugin> {
     return getPluginAPIManager().loadPlugin;
-  }
-
-  get seed(): Uint8Array {
-    return getSeed();
   }
 
   registerMethod(methodName: string, method: RPCMethod): void {
@@ -75,7 +85,12 @@ class PluginAPI extends EventEmitter2 {
 
 export function getPluginAPI(): PluginAPI {
   if (!pluginAPI) {
-    pluginAPI = new PluginAPI({ config, logger: log, server: getRpcServer() });
+    pluginAPI = new PluginAPI({
+      config,
+      logger: log,
+      server: getRpcServer(),
+      swarm: getSwarm(),
+    });
   }
 
   return pluginAPI as PluginAPI;
