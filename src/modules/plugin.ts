@@ -159,12 +159,14 @@ export function getPluginAPIManager(): PluginAPIManager {
 }
 
 export async function loadPlugins() {
-  const api = getPluginAPIManager();
+  const apiManager = getPluginAPIManager();
 
-  api.loadPluginInstance(pluginCore);
-  api.loadPluginInstance(pluginRpc);
+  apiManager.loadPluginInstance(pluginCore);
+  apiManager.loadPluginInstance(pluginRpc);
 
   for (const plugin of [...new Set(config.array("plugins", []))] as []) {
-    api.loadPlugin(plugin);
+    await apiManager.loadPlugin(plugin);
   }
+
+  getPluginAPI().emit("core.pluginsLoaded");
 }
