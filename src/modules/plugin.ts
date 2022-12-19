@@ -7,13 +7,15 @@ import * as fs from "fs";
 import path from "path";
 import type { Logger } from "pino";
 
-import { getSeed } from "../lib/seed.js";
+import { getHDKey, getSeed } from "../lib/seed.js";
 import pluginRpc from "./plugins/rpc";
 import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "../log.js";
 import { get as getSwarm } from "./swarm.js";
+import { get as getSSl } from "./ssl.js";
+import type { HDKey } from "micro-ed25519-hdkey";
 
 let pluginAPIManager: PluginAPIManager;
 let pluginAPI: PluginAPI;
@@ -70,6 +72,14 @@ class PluginAPI extends EventEmitter2 {
 
   get seed(): Uint8Array {
     return getSeed();
+  }
+
+  get identity(): HDKey {
+    return getHDKey();
+  }
+
+  get ssl() {
+    return getSSl();
   }
 
   public loadPlugin(
