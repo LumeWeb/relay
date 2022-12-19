@@ -11,7 +11,7 @@ import { wordlist } from "@scure/bip39/wordlists/english";
 log.setDefaultLevel(config.str("log-level"));
 
 if (!config.str("seed")) {
-  config.saveConfigJson("account.json", {
+  config.save("account.json", {
     seed: bip39.generateMnemonic(wordlist),
   });
 }
