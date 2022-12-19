@@ -14,7 +14,7 @@ import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "../log.js";
 import { get as getSwarm } from "./swarm.js";
-import { get as getSSl } from "./ssl.js";
+import { get as getSSl, SSLManager } from "./ssl.js";
 import type { HDKey } from "micro-ed25519-hdkey";
 
 let pluginAPIManager: PluginAPIManager;
@@ -78,7 +78,7 @@ class PluginAPI extends EventEmitter2 {
     return getHDKey();
   }
 
-  get ssl() {
+  get ssl(): SSLManager {
     return getSSl();
   }
 

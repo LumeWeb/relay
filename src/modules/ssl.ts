@@ -5,7 +5,7 @@ import config from "../config.js";
 
 export type SSLManagerRenewHandler = (domain: string) => Promise<boolean>;
 
-class SSLManager {
+export class SSLManager {
   private _context?: tls.SecureContext;
   private _key?: Buffer;
   private _cert?: Buffer;
