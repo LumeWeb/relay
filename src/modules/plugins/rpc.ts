@@ -48,39 +48,91 @@ async function broadcastRequest(
 const plugin: Plugin = {
   name: "rpc",
   async plugin(api: PluginAPI): Promise<void> {
-    api.registerMethod("get_cached_item", {
-      cacheable: false,
-      async handler(req: string): Promise<RPCResponse> {
-        if (typeof req !== "string") {
-          throw new Error("item must be a string");
-        }
+    if (api.config.bool("cache")) {
+      api.registerMethod("get_cached_item", {
+        cacheable: false,
+        async handler(req: string): Promise<RPCResponse> {
+          if (typeof req !== "string") {
+            throw new Error("item must be a string");
+          }
 
-        const cache = getRpcServer().cache.data;
+          const cache = api.rpcServer.cache?.data;
 
-        if (!Object.keys(cache).includes(req)) {
-          throw new Error("item does not exist");
-        }
+          if (!cache?.has(req)) {
+            throw new Error("item does not exist");
+          }
 
-        return {
-          data: true,
-          ...cache.get<RPCCacheItem>(req)?.value,
-          signature: cache.get<RPCCacheItem>(req)?.signature,
-        };
-      },
-    });
-    api.registerMethod("clear_cached_item", {
-      cacheable: false,
-      async handler(req: string): Promise<void> {
-        if (typeof req !== "string") {
-          throw new Error("item must be a string");
-        }
-        try {
-          api.getRpcServer().cache.deleteItem(req);
-        } catch (e: any) {
-          throw e;
-        }
-      },
-    });
+          return {
+            data: true,
+            ...cache.get<RPCCacheItem>(req)?.value,
+            signature: cache.get<RPCCacheItem>(req)?.signature,
+          };
+        },
+      });
+      api.registerMethod("clear_cached_item", {
+        cacheable: false,
+        async handler(req: string): Promise<void> {
+          if (typeof req !== "string") {
+            throw new Error("item must be a string");
+          }
+          try {
+            api.rpcServer.cache.deleteItem(req);
+          } catch (e: any) {
+            throw e;
+          }
+        },
+      });
+      api.registerMethod("get_peers", {
+        cacheable: false,
+        async handler(): Promise<string[]> {
+          const pubkey = b4a.from(api.identity.publicKeyRaw).toString("hex");
+
+          const online = api.rpcServer.cache?.dhtCache.online || new Set();
+          if (online.has(pubkey)) {
+            online.delete(pubkey);
+          }
+
+          return [...online];
+        },
+      });
+      if (api.logger.level === "debug") {
+        api.registerMethod("get_direct_peers", {
+          cacheable: false,
+          async handler(): Promise<string[]> {
+            const online = api.rpcServer.cache.dhtCache.online;
+            const pubkey = b4a
+              .from(api.swarm.keyPair.publicKeyRaw())
+              .toString("hex");
+
+            if (online.has(pubkey)) {
+              online.delete(pubkey);
+            }
+
+            const topic = LUMEWEB_TOPIC_HASH.toString("hex");
+            return [...api.swarm.peers.values()]
+              .filter((item: any) =>
+                [...item._seenTopics.keys()].includes(topic)
+              )
+              .map((item: any) => item.publicKey.toString("hex"))
+              .filter((item: any) => online.has(item));
+          },
+        });
+        api.registerMethod("get_bootstrap_info", {
+          cacheable: false,
+          async handler(): Promise<string[]> {
+            // @ts-ignore
+            return api.rpcServer.cache.dhtCache._getBootstrapInfo();
+          },
+        });
+        api.registerMethod("get_connected_peers", {
+          cacheable: false,
+          async handler(): Promise<string[]> {
+            // @ts-ignore
+            return [...api.rpcServer.cache.dhtCache.connectedTo];
+          },
+        });
+      }
+    }
     api.registerMethod("broadcast_request", {
       cacheable: false,
       async handler(req: RPCBroadcastRequest): Promise<RPCBroadcastResponse> {
@@ -126,55 +178,6 @@ const plugin: Plugin = {
         }
 
         return result;
-      },
-    });
-    api.registerMethod("get_peers", {
-      cacheable: false,
-      async handler(): Promise<string[]> {
-        const pubkey = b4a
-          .from(getRpcServer().cache.swarm.keyPair.publicKey)
-          .toString("hex");
-
-        const online = getRpcServer().cache.dhtCache.online;
-        if (online.has(pubkey)) {
-          online.delete(pubkey);
-        }
-
-        return [...online];
-      },
-    });
-    api.registerMethod("get_direct_peers", {
-      cacheable: false,
-      async handler(): Promise<string[]> {
-        const online = getRpcServer().cache.dhtCache.online;
-        const pubkey = b4a
-          .from(getRpcServer().cache.swarm.keyPair.publicKey)
-          .toString("hex");
-
-        if (online.has(pubkey)) {
-          online.delete(pubkey);
-        }
-
-        const topic = LUMEWEB_TOPIC_HASH.toString("hex");
-        return [...getRpcServer().cache.swarm.peers.values()]
-          .filter((item: any) => [...item._seenTopics.keys()].includes(topic))
-          .map((item: any) => item.publicKey.toString("hex"))
-          .filter((item: any) => online.has(item));
-      },
-    });
-    api.registerMethod("get_bootstrap_info", {
-      cacheable: false,
-      async handler(): Promise<string[]> {
-        // @ts-ignore
-        return getRpcServer().cache.dhtCache._getBootstrapInfo();
-      },
-    });
-
-    api.registerMethod("get_connected_peers", {
-      cacheable: false,
-      async handler(): Promise<string[]> {
-        // @ts-ignore
-        return [...getRpcServer().cache.dhtCache.connectedTo];
       },
     });
   },
