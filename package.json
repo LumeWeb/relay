@@ -42,7 +42,6 @@
         "json-stable-stringify": "^1.0.1",
         "json-stringify-deterministic": "^1.0.7",
         "loady": "https://github.com/LumeWeb/loady.git",
-        "loglevel": "^1.8.1",
         "micro-ed25519-hdkey": "^0.1.2",
         "msgpackr": "^1.6.1",
         "node-cache": "^5.1.2",
