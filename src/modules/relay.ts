@@ -4,60 +4,44 @@ import DHT from "@hyperswarm/dht";
 import { relay } from "@hyperswarm/dht-relay";
 // @ts-ignore
 import Stream from "@hyperswarm/dht-relay/ws";
-import express, { Express } from "express";
 import config from "../config.js";
-import * as http from "http";
-import * as https from "https";
 import { get as getSwarm } from "./swarm.js";
-import WS from "ws";
+import { get as getSslManager } from "./ssl.js";
 // @ts-ignore
 import log from "loglevel";
 import { AddressInfo } from "net";
 // @ts-ignore
 import promiseRetry from "promise-retry";
+import fastify from "fastify";
+import * as http2 from "http2";
+import websocket from "@fastify/websocket";
 
 export async function start() {
   const relayPort = config.uint("port");
-
   const dht = getSwarm();
+  let sslOptions: boolean | http2.SecureServerOptions = false;
 
-  const statusCodeServer = http.createServer(function (req, res) {
-    // @ts-ignore
-    res.writeHead(req.headers["x-status"] ?? 200, {
-      "Content-Type": "text/plain",
-    });
-    res.end();
+  if (getSslManager().enabled) {
+    sslOptions = {
+      SNICallback: () => getSslManager().context,
+    } as http2.SecureServerOptions;
+  }
+
+  let relayServer = fastify({
+    http2: true,
+    https: sslOptions as http2.SecureServerOptions,
   });
 
-  await new Promise((resolve) => {
-    statusCodeServer.listen(25252, "0.0.0.0", function () {
-      const address = statusCodeServer.address() as AddressInfo;
-      log.info(
-        "Status Code Server started on ",
-        `${address.address}:${address.port}`
-      );
-      resolve(null);
-    });
+  relayServer.register(websocket);
+
+  relayServer.get("/", { websocket: true }, (connection) => {
+    relay(dht, new Stream(false, connection.socket));
   });
 
-  let relayServer: https.Server | http.Server;
-
-  relayServer = http.createServer();
-
-  let wsServer = new WS.Server({ server: relayServer });
-
-  wsServer.on("connection", (socket: any) => {
-    relay(dht, new Stream(false, socket));
-  });
-
-  await new Promise((resolve) => {
-    relayServer.listen(relayPort, "0.0.0.0", function () {
-      const address = relayServer.address() as AddressInfo;
-      log.info(
-        "DHT Relay Server started on ",
-        `${address.address}:${address.port}`
-      );
-      resolve(null);
-    });
-  });
+  await relayServer.listen({ port: config.uint("port"), host: "0.0.0.0" });
+  let address = relayServer.server.address() as AddressInfo;
+  log.info(
+    "DHT Relay Server started on ",
+    `${address.address}:${address.port}`
+  );
 }
