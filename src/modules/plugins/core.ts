@@ -14,7 +14,7 @@ const plugin: Plugin = {
     api.registerMethod("get_methods", {
       cacheable: false,
       async handler(): Promise<any> {
-        return api.getRpcServer().getMethods();
+        return api.rpcServer.getMethods();
       },
     });
   },
