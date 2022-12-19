@@ -616,11 +616,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git":
+"@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=f69a12fb52c757fac5ce7287f58c13120af69ad2":
   version: 0.1.7
   resolution: "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=f69a12fb52c757fac5ce7287f58c13120af69ad2"
   dependencies:
+    arg: "npm:^5.0.2"
     bsert: "npm:~0.0.10"
+    deep-to-flat-object: "npm:^1.0.1"
+    object-path: "npm:^0.11.8"
   checksum: 6149b9d33793ce3a694e005645a3f934b9370e9c585601c89ad19328218f52b0e68330662bce3d500d41ce38830f79b3053a6379d4ecdf74ad692b58356dc7d9
   languageName: node
   linkType: hard
@@ -671,7 +674,7 @@ __metadata:
     "@fastify/websocket": "npm:^7.1.1"
     "@hyperswarm/dht": "npm:^6.0.1"
     "@hyperswarm/dht-relay": "npm:^0.3.0"
-    "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git"
+    "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git#commit=f69a12fb52c757fac5ce7287f58c13120af69ad2"
     "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git"
     "@lumeweb/relay-types": "https://git.lumeweb.com/LumeWeb/relay-types.git"
     "@scure/bip39": "npm:^1.1.0"
@@ -1118,6 +1121,13 @@ __metadata:
     delegates: "npm:^1.0.0"
     readable-stream: "npm:^2.0.6"
   checksum: 4be69d954d6b091a7fddfe7c7b29ad8cb0a6c06afce95938e2fb2d27ea6edbc667095147e16d76ee774a45153f56a81b82c798855a9745c322a9f05947647353
+  languageName: node
+  linkType: hard
+
+"arg@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "arg@npm:5.0.2"
+  checksum: 0549deb5027bdd3c8379460d34fb7d2be191dcbafd2f2dfa1346096126ce0ac8f3c6660eef2c117bf68b5bac4b563570eb2f97d5a807ef663f781db4a442ce29
   languageName: node
   linkType: hard
 
@@ -1600,6 +1610,15 @@ __metadata:
   version: 0.6.0
   resolution: "deep-extend@npm:0.6.0"
   checksum: 9320ad7378ceb509703180d40da1625393906f55beeb10b55d9a1d39dc77e6e56e76c09eef905320330f89738df2c40bdf0e85777d14d5d3a8059c3cabbf3919
+  languageName: node
+  linkType: hard
+
+"deep-to-flat-object@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "deep-to-flat-object@npm:1.0.1"
+  dependencies:
+    lodash: "npm:^4.17.21"
+  checksum: 24bc371c267f6538744bb52a3abea806bbe77c3b299527987f514be81ce2853677e3b2b0560b7db530ddd86e314971bc7c843e3e67c5ea276bb5817fb5e06d49
   languageName: node
   linkType: hard
 
@@ -2599,6 +2618,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: 3ac18e92108d68f88429fcddee609e42cf2b653583d9bac22308815a4cd6b185b89a0ad0d9b0c670c371d9d6b61571a98fee6b36e1db14e52766ca253ed9cba0
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -3116,6 +3142,13 @@ __metadata:
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: f5cd1f2f1e82e12207e4f2377d9d7d90fbc0d9822a6afa717a6dcab6930d8925e1ebbbb25df770c31ff11335ee423459ba65ffa2e53999926c328b806b4d73d6
+  languageName: node
+  linkType: hard
+
+"object-path@npm:^0.11.8":
+  version: 0.11.8
+  resolution: "object-path@npm:0.11.8"
+  checksum: 7f146d4fdfa6b8a0ef57b93f626e6ca9cebbf0a4164b92cd5972b6bb7ae2d5b1bd3115f7dce1fa9a8629a02a00500cbd080782ab5ccf7f33f696e855af1d8d9f
   languageName: node
   linkType: hard
 
