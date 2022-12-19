@@ -21,7 +21,7 @@ export function getHDKey(): HDKey {
   return HDKey.fromMasterSeed(getSeed()).derive(BIP44_PATH);
 }
 
-export function getKeyPair() {
+export function getKeyPair(): { publicKey: Uint8Array; secretKey: Uint8Array } {
   const key = getHDKey();
 
   return { publicKey: key.publicKeyRaw, secretKey: key.privateKey };
