@@ -662,8 +662,15 @@ __metadata:
 
 "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git":
   version: 0.1.0
-  resolution: "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git#commit=2d7bed64d580293aaa810f1f6d6fe9ff0e5c359e"
-  checksum: 7265158184d01196fceb39d18e639bc0fc3ab4977f1ddc00e6af46d66687aed619ce2040f9ec77a1e57484f509b28e7a2f3116a060e7336895f925bfe6306b8e
+  resolution: "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git#commit=f1da2249ac8d21e76e729d019c75cf15f01bb6a0"
+  dependencies:
+    "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git"
+    "@types/eventemitter2": "npm:^4.1.0"
+    arg: "npm:^5.0.2"
+    eventemitter2: "npm:^6.4.9"
+    micro-ed25519-hdkey: "npm:^0.1.2"
+    pino: "npm:^8.8.0"
+  checksum: 8d46b69d80b24a8b0c9709f6a8270d4861c3f58eb11a60d92af8432e70f82731f9ade0b84bdf2361232c90dd94ce3631b9da09b47846185941f911279d674a4c
   languageName: node
   linkType: hard
 
@@ -919,6 +926,15 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 9618d677b3a563db1ce9b843c2640cce9550b4f5a84ebdb10ff60e26c5bb572c9844ad180debd4df918682a1326f7ef0d148cf4ccd93fe239a7d20e8742e3b5d
+  languageName: node
+  linkType: hard
+
+"@types/eventemitter2@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@types/eventemitter2@npm:4.1.0"
+  dependencies:
+    eventemitter2: "npm:*"
+  checksum: 64e08ed52804bb9c5cdde8aff52e1dc33ed596f2ffa37364e6f0b02655b898746c7bf6722b36e9456af1eb0d0e42a436e2d2b2e0f523ca922ebde4768a242540
   languageName: node
   linkType: hard
 
@@ -1793,7 +1809,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter2@npm:^6.4.9":
+"eventemitter2@npm:*, eventemitter2@npm:^6.4.9":
   version: 6.4.9
   resolution: "eventemitter2@npm:6.4.9"
   checksum: c180cc0012389f2cd564cdfba949807175dd309b1d7f0900cfdfc5a97436a867a30964b94f86613ab237d960d52f7e4c85098c9c8ef6dc8ed29bbf4e79465d8b
