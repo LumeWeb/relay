@@ -12,11 +12,11 @@ export async function start() {
     logger: true,
   });
 
-  await app.listen({ port: 80, host: "0.0.0.0" });
-
   app.get("/", (req, res) => {
     res.send(Buffer.from(keyPair.publicKey).toString("hex"));
   });
+
+  await app.listen({ port: 80, host: "0.0.0.0" });
 
   const address = app.server.address() as AddressInfo;
 
