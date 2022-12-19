@@ -18,6 +18,7 @@ import { Mutex } from "async-mutex";
 import { RPCCache } from "./cache";
 // @ts-ignore
 import jsonStringify from "json-stringify-deterministic";
+import config from "../../config";
 
 const sodium = require("sodium-universal");
 let server: RPCServer;
@@ -54,9 +55,16 @@ export class RPCServer extends EventEmitter {
   >();
   private pendingRequests: Map<string, Mutex> = new Map<string, Mutex>();
 
-  private _cache: RPCCache = new RPCCache(this);
+  private _cache?: RPCCache;
 
-  get cache(): RPCCache {
+  constructor() {
+    super();
+    if (config.bool("cache")) {
+      this._cache = new RPCCache(this);
+    }
+  }
+
+  get cache(): RPCCache | undefined {
     return this._cache;
   }
 
@@ -137,7 +145,7 @@ export class RPCServer extends EventEmitter {
     }
 
     return crypto
-      .sign(Buffer.from(raw), this._cache.swarm.keyPair.secretKey)
+      .sign(Buffer.from(raw), this._cache?.swarm.keyPair.secretKey)
       .toString("hex");
   }
 
@@ -201,8 +209,8 @@ export class RPCServer extends EventEmitter {
     }
 
     method = method as RPCMethod;
-    if (method.cacheable) {
-      this.cache.addItem(request, rpcResult);
+    if (config.bool("cache") && method.cacheable) {
+      this.cache?.addItem(request, rpcResult);
     }
 
     this.getRequestLock(request)?.release();
@@ -211,9 +219,14 @@ export class RPCServer extends EventEmitter {
   }
 
   private getCachedRequest(request: RPCRequest): RPCCacheItem | boolean {
+    if (!config.bool("cache")) {
+      return false;
+    }
+
     const req = RPCServer.hashQuery(request);
-    if (this._cache.data.has(req)) {
-      return this._cache.data.get<RPCCacheItem>(req) as RPCCacheItem;
+
+    if (this._cache?.data.has(req)) {
+      return this._cache?.data.get<RPCCacheItem>(req) as RPCCacheItem;
     }
 
     return false;
@@ -256,8 +269,8 @@ export class RPCServer extends EventEmitter {
 
     if (lock.isLocked()) {
       await lock.waitForUnlock();
-      if (this._cache.data.has(reqId)) {
-        return this._cache.data.get<RPCCacheItem>(reqId) as RPCCacheItem;
+      if (this._cache?.data.has(reqId)) {
+        return this._cache?.data.get<RPCCacheItem>(reqId) as RPCCacheItem;
       }
     }
 

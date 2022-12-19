@@ -29,6 +29,7 @@ config.inject({
   logLevel: "info",
   pluginDir: path.resolve(configDir, "..", "plugins"),
   plugins: ["core"],
+  cache: true,
 });
 
 config.load();
