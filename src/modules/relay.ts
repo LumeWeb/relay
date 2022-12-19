@@ -17,7 +17,6 @@ import * as http2 from "http2";
 import websocket from "@fastify/websocket";
 
 export async function start() {
-  const relayPort = config.uint("port");
   const dht = getSwarm();
   let sslOptions: boolean | http2.SecureServerOptions = false;
 
@@ -30,6 +29,7 @@ export async function start() {
   let relayServer = fastify({
     http2: true,
     https: sslOptions as http2.SecureServerOptions,
+    logger: log.child({ module: "relay-server" }),
   });
 
   relayServer.register(websocket);
@@ -39,9 +39,4 @@ export async function start() {
   });
 
   await relayServer.listen({ port: config.uint("port"), host: "0.0.0.0" });
-  let address = relayServer.server.address() as AddressInfo;
-  log.info(
-    "DHT Relay Server started on ",
-    `${address.address}:${address.port}`
-  );
 }

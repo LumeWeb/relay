@@ -31,8 +31,8 @@ export async function start() {
   node.join(LUMEWEB_TOPIC_HASH);
 
   log.info(
-    "Relay Identity is",
-    b4a.from(node.dht.defaultKeyPair.publicKey).toString("hex")
+    "Relay Identity is %s",
+    b4a.from(getKeyPair().publicKey).toString("hex")
   );
 
   return node;

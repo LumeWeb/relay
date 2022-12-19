@@ -9,7 +9,7 @@ let app: FastifyInstance;
 export async function start() {
   const keyPair = getKeyPair();
   app = fastify({
-    logger: true,
+    logger: log.child({ module: "app-server" }),
   });
 
   app.get("/", (req, res) => {
@@ -17,8 +17,4 @@ export async function start() {
   });
 
   await app.listen({ port: 80, host: "0.0.0.0" });
-
-  const address = app.server.address() as AddressInfo;
-
-  log.info("HTTP/App Server started on ", `${address.address}:${address.port}`);
 }
