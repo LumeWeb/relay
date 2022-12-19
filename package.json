@@ -21,7 +21,7 @@
         "@fastify/websocket": "^7.1.1",
         "@hyperswarm/dht": "^6.0.1",
         "@hyperswarm/dht-relay": "^0.3.0",
-        "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git#commit=f69a12fb52c757fac5ce7287f58c13120af69ad2",
+        "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git#commit=e11e94c61c92ae7b0eeabd43bc65176de75084fb",
         "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git",
         "@scure/bip39": "^1.1.0",
         "@types/acme-client": "^3.3.0",
