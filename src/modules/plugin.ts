@@ -12,7 +12,7 @@ import pluginRpc from "./plugins/rpc";
 import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
-import log from "loglevel";
+import { log } from "./log.js";
 import { get as getSwarm } from "./swarm.js";
 
 let pluginAPIManager: PluginAPIManager;

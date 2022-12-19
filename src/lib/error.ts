@@ -1,4 +1,4 @@
-import log from "loglevel";
+import { log } from "../log.js";
 
 export function errorExit(msg: string): void {
   log.error(msg);

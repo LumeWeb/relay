@@ -1,6 +1,6 @@
 import * as tls from "tls";
 import b4a from "b4a";
-import log from "loglevel";
+import { log } from "./log.js";
 import config from "../config.js";
 
 export type SSLManagerRenewHandler = (domain: string) => Promise<boolean>;

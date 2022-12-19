@@ -9,7 +9,7 @@ import DHT from "@hyperswarm/dht";
 // @ts-ignore
 import sodium from "sodium-universal";
 import b4a from "b4a";
-import log from "loglevel";
+import { log } from "../log.js";
 import { getKeyPair } from "../lib/seed.js";
 
 const LUMEWEB = b4a.from("lumeweb");
