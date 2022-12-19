@@ -8,6 +8,7 @@ import jsonStringify from "json-stringify-deterministic";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 import NodeCache from "node-cache";
+import { log } from "../../log.js";
 
 export class RPCCache extends EventEmitter {
   private server: RPCServer;
@@ -18,6 +19,7 @@ export class RPCCache extends EventEmitter {
     this._swarm = getSwarm();
     this._dhtCache = new DHTCache(this._swarm, {
       protocol: "lumeweb.rpccache",
+      logger: log.child({ module: "dht-cache" }),
     });
     this._data.on("del", (key: string) => {
       try {
