@@ -5,14 +5,14 @@ import type { Plugin, RPCMethod } from "@lumeweb/relay-types";
 import slugify from "slugify";
 import * as fs from "fs";
 import path from "path";
-import type { Logger } from "loglevel";
+import type { Logger } from "pino";
 
 import { getSeed } from "../lib/seed.js";
 import pluginRpc from "./plugins/rpc";
 import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
-import log from "./log.js";
+import log from "../log.js";
 import { get as getSwarm } from "./swarm.js";
 
 let pluginAPIManager: PluginAPIManager;
