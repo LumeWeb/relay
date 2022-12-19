@@ -8,7 +8,7 @@ import config from "../config.js";
 import { get as getSwarm } from "./swarm.js";
 import { get as getSslManager } from "./ssl.js";
 // @ts-ignore
-import log from "./log.js";
+import log from "../log.js";
 import { AddressInfo } from "net";
 // @ts-ignore
 import promiseRetry from "promise-retry";
