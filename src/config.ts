@@ -31,10 +31,7 @@ config.inject({
   plugins: ["core"],
 });
 
-config.load({
-  env: true,
-  argv: true,
-});
+config.load();
 
 configDir = config.str("configdir");
 
@@ -46,10 +43,7 @@ if (fs.existsSync(configDir)) {
   }
 }
 
-config.load({
-  env: true,
-  argv: true,
-});
+config.load();
 
 log.level = config.get("loglevel");
 
