@@ -3,9 +3,7 @@ import Config from "@lumeweb/cfg";
 import * as os from "os";
 import * as fs from "fs";
 import path from "path";
-import log from "loglevel";
-import chalk, { Chalk } from "chalk";
-import prefix from "loglevel-plugin-prefix";
+import { log } from "./log.js";
 
 const config = new Config("lumeweb-relay");
 
@@ -53,25 +51,6 @@ config.load({
   argv: true,
 });
 
-log.setDefaultLevel(config.get("loglevel"));
-
-const colors = {
-  TRACE: chalk.magenta,
-  DEBUG: chalk.cyan,
-  INFO: chalk.blue,
-  WARN: chalk.yellow,
-  ERROR: chalk.red,
-} as { [level: string]: Chalk };
-
-prefix.reg(log);
-log.enableAll();
-
-prefix.apply(log, {
-  format(level, name, timestamp) {
-    return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](
-      level
-    )} ${chalk.green(`${name}:`)}`;
-  },
-});
+log.level = config.get("loglevel");
 
 export default config;
