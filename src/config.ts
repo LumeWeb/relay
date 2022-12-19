@@ -3,7 +3,7 @@ import Config from "@lumeweb/cfg";
 import * as os from "os";
 import * as fs from "fs";
 import path from "path";
-import { log } from "./log.js";
+import log from "./log.js";
 
 const config = new Config("lumeweb-relay");
 

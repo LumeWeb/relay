@@ -1,5 +1,5 @@
 import { AddressInfo } from "net";
-import { log } from "./log.js";
+import log from "./log.js";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { getKeyPair } from "../lib/seed.js";

@@ -5,4 +5,5 @@ const stream = pretty({
   colorize: true,
 });
 
-export const log = pino(stream);
+const log = pino(stream);
+export default log;

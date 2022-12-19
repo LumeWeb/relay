@@ -8,7 +8,7 @@ import jsonStringify from "json-stringify-deterministic";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 import NodeCache from "node-cache";
-import { log } from "../../log.js";
+import log from "../../log.js";
 
 export class RPCCache extends EventEmitter {
   private server: RPCServer;
