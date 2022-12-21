@@ -60,6 +60,10 @@ class PluginAPI extends EventEmitter2 {
     return this._config;
   }
 
+  get pluginConfig(): Config {
+    throw new Error("not implemented and should not be called");
+  }
+
   private _logger: Logger;
 
   get logger(): Logger {
@@ -161,6 +165,35 @@ export class PluginAPIManager {
                   method
                 );
               };
+            }
+
+            if (prop === "pluginConfig") {
+              return new Proxy<Config>(config, {
+                get(target: Config, prop: string): any {
+                  if (prop === "set") {
+                    return (key: string, value: any): void => {
+                      target.set(`plugin.${plugin.name}.${key}`, value);
+                    };
+                  }
+
+                  if (prop === "get") {
+                    return (key: string, fallback = null): any => {
+                      return target.get(
+                        `plugin.${plugin.name}.${key}`,
+                        fallback
+                      );
+                    };
+                  }
+
+                  if (prop === "has") {
+                    return (key: string): any => {
+                      return target.has(`plugin.${plugin.name}.${key}`);
+                    };
+                  }
+
+                  throw new Error(`Invalid method accessed ${prop}`);
+                },
+              });
             }
 
             return (target as any)[prop];
