@@ -8,7 +8,7 @@ import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
 
 if (!config.str("seed")) {
-  config.save("account.json", {
+  config.save("account", {
     seed: bip39.generateMnemonic(wordlist),
   });
 }
