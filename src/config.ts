@@ -28,7 +28,6 @@ config.inject({
   port: 8080,
   logLevel: "info",
   pluginDir: path.resolve(configDir, "..", "plugins"),
-  plugins: ["core"],
   cache: true,
 });
 
