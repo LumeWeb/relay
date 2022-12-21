@@ -616,15 +616,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=e11e94c61c92ae7b0eeabd43bc65176de75084fb":
+"@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=302181c70701dcf79cd7cd68e4816ac394ff0795":
   version: 0.1.7
-  resolution: "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=e11e94c61c92ae7b0eeabd43bc65176de75084fb"
+  resolution: "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=302181c70701dcf79cd7cd68e4816ac394ff0795"
   dependencies:
     arg: "npm:^5.0.2"
     bsert: "npm:~0.0.10"
     deep-to-flat-object: "npm:^1.0.1"
     object-path: "npm:^0.11.8"
-  checksum: 495814d13c0b1041b958bf9f444131646bab1fbe1383543da933bf6e28fea12fb11a97948bef0f8b8b48725450338193c59bae7490f598558081b1e3dda215ea
+  checksum: 48169b77088cc0b80f1f469d8a866dd3469ca6a4044978d36e61f366161b8f9e5b4d4193d90e1db74450c143a0830c3533f8e914671cd8dc8f20c74fc4447f5b
   languageName: node
   linkType: hard
 
@@ -681,7 +681,7 @@ __metadata:
     "@fastify/websocket": "npm:^7.1.1"
     "@hyperswarm/dht": "npm:^6.0.1"
     "@hyperswarm/dht-relay": "npm:^0.3.0"
-    "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git#commit=e11e94c61c92ae7b0eeabd43bc65176de75084fb"
+    "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git#commit=302181c70701dcf79cd7cd68e4816ac394ff0795"
     "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git"
     "@lumeweb/relay-types": "https://git.lumeweb.com/LumeWeb/relay-types.git"
     "@scure/bip39": "npm:^1.1.0"
