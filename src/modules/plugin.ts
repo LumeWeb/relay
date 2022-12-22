@@ -191,7 +191,7 @@ export class PluginAPIManager {
                     };
                   }
 
-                  throw new Error(`Invalid method accessed ${prop}`);
+                  return (target as any)[prop];
                 },
               });
             }
