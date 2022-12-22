@@ -19,7 +19,6 @@
     },
     "dependencies": {
         "@fastify/websocket": "^7.1.1",
-        "@hyperswarm/dht": "^6.0.1",
         "@hyperswarm/dht-relay": "^0.3.0",
         "@lumeweb/cfg": "https://git.lumeweb.com/LumeWeb/cfg.git",
         "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git",
@@ -38,7 +37,7 @@
         "eventemitter2": "^6.4.9",
         "fastify": "^4.10.2",
         "fetch-blob": "https://github.com/LumeWeb/fetch-blob.git",
-        "hyperswarm": "^3.0.4",
+        "hyperswarm": "^4.3.5",
         "json-stable-stringify": "^1.0.1",
         "json-stringify-deterministic": "^1.0.7",
         "loady": "https://github.com/LumeWeb/loady.git",
