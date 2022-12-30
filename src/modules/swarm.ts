@@ -32,10 +32,12 @@ export async function start() {
   const address = bootstrap.address() as AddressInfo;
   node = new Hyperswarm({
     keyPair,
-    dht: new DHT({ keyPair }),
-    bootstrap: [{ host: address.address, port: address.port }].concat(
-      require("@hyperswarm/dht/lib/constants").BOOTSTRAP_NODES
-    ),
+    dht: new DHT({
+      keyPair,
+      bootstrap: [{ host: address.address, port: address.port }].concat(
+        require("@hyperswarm/dht/lib/constants").BOOTSTRAP_NODES
+      ),
+    }),
   });
 
   // @ts-ignore
