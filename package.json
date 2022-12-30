@@ -41,7 +41,7 @@
         "json-stable-stringify": "^1.0.1",
         "json-stringify-deterministic": "^1.0.7",
         "loady": "https://github.com/LumeWeb/loady.git",
-        "micro-ed25519-hdkey": "^0.1.2",
+        "micro-ed25519-hdkey": "patch:micro-ed25519-hdkey@npm%3A0.1.2#~/.yarn/patches/micro-ed25519-hdkey-npm-0.1.2-5d1d767d1d.patch",
         "msgpackr": "^1.6.1",
         "node-cache": "^5.1.2",
         "node-cron": "^3.0.1",
@@ -72,5 +72,8 @@
         "supports-color": "https://github.com/LumeWeb/supports-color.git",
         "typescript": "^4.9.4"
     },
-    "packageManager": "yarn@4.0.0-rc.33"
+    "packageManager": "yarn@4.0.0-rc.33",
+    "resolutions": {
+        "micro-ed25519-hdkey@npm:^0.1.2": "patch:micro-ed25519-hdkey@npm%3A0.1.2#~/.yarn/patches/micro-ed25519-hdkey-npm-0.1.2-5d1d767d1d.patch"
+    }
 }
