@@ -13,7 +13,11 @@ import pluginCore from "./plugins/core";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "../log.js";
-import { get as getSwarm } from "./swarm.js";
+import {
+  get as getSwarm,
+  getProtocolManager,
+  ProtocolManager,
+} from "./swarm.js";
 import { get as getSSl, SSLManager } from "./ssl.js";
 import type { HDKey } from "micro-ed25519-hdkey";
 
@@ -84,6 +88,10 @@ class PluginAPI extends EventEmitter2 {
 
   get ssl(): SSLManager {
     return getSSl();
+  }
+
+  get protocols(): ProtocolManager {
+    return getProtocolManager();
   }
 
   public loadPlugin(

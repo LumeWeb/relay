@@ -5,6 +5,8 @@
 import Hyperswarm from "hyperswarm";
 // @ts-ignore
 import DHT from "@hyperswarm/dht";
+// @ts-ignore
+import Protomux from "protomux";
 
 // @ts-ignore
 import sodium from "sodium-universal";
@@ -20,6 +22,7 @@ sodium.crypto_generichash(LUMEWEB_TOPIC_HASH, LUMEWEB);
 export type SecretStream = any;
 
 let node: Hyperswarm;
+let protocolManager: ProtocolManager;
 
 export async function start() {
   const keyPair = getKeyPair();
@@ -50,4 +53,45 @@ export async function start() {
 
 export function get(): Hyperswarm {
   return node;
+}
+
+export class ProtocolManager {
+  private _protocols: Map<string, Function> = new Map<string, Function>();
+  private _swarm;
+
+  constructor(swarm: any) {
+    this._swarm = swarm;
+
+    this._swarm.on("connection", (peer: any) => {
+      for (const protocol of this._protocols) {
+        Protomux.from(peer).pair(
+          protocol[0],
+          this.handler.bind(this, protocol[0], peer)
+        );
+      }
+    });
+  }
+
+  private handler(protocol: string, peer: any) {
+    if (this._protocols.has(protocol)) {
+      this._protocols.get(protocol)?.(peer, Protomux.from(peer));
+    }
+  }
+
+  public register(name: string, handler: Function): boolean {
+    if (this._protocols.has(name)) {
+      return false;
+    }
+
+    this._protocols.set(name, handler);
+    return true;
+  }
+}
+
+export function getProtocolManager(): ProtocolManager {
+  if (!protocolManager) {
+    protocolManager = new ProtocolManager(get());
+  }
+
+  return protocolManager;
 }
