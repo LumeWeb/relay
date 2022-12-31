@@ -650,13 +650,13 @@ __metadata:
 
 "@lumeweb/dht-flood@https://git.lumeweb.com/LumeWeb/dht-flood.git":
   version: 0.1.0
-  resolution: "@lumeweb/dht-flood@https://git.lumeweb.com/LumeWeb/dht-flood.git#commit=9cd5e798d91bfb5ffe9665894421e22372852f8f"
+  resolution: "@lumeweb/dht-flood@https://git.lumeweb.com/LumeWeb/dht-flood.git#commit=9333ab7a38b5c9204e7ca3ff2b0324cdea28fcd7"
   dependencies:
     compact-encoding: "npm:^2.11.0"
     lru: "npm:^3.1.0"
     protocol-buffers-encodings: "npm:^1.2.0"
     protomux-rpc: "npm:^1.3.0"
-  checksum: de53558a9e91bcade4136c1566b5ee913b03b5086e91cce64fdff2c5e2e09726e33829d42da6294ad324f8b7ee184fba5e0121efacbb314522a4d928f2705bf5
+  checksum: dfb865367eba2508f185e005d07844f5b1f157eb6a3e9bcf031326887ec0de0c25ed65e223f4671876d5b4cefcc0d71767809c1687219d84887f29dacad040b8
   languageName: node
   linkType: hard
 
