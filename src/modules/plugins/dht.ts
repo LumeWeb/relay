@@ -21,6 +21,13 @@ const plugin: Plugin = {
           .map((peerInfo) => b4a.from(peerInfo.publicKey).toString());
       },
     });
+
+    api.registerMethod("get_topics", {
+      cacheable: false,
+      async handler(topic: string): Promise<string[]> {
+        return [...api.swarm.peers.keys()];
+      },
+    });
   },
 };
 
