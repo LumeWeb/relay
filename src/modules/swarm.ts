@@ -13,6 +13,7 @@ import sodium from "sodium-universal";
 import b4a from "b4a";
 import log from "../log.js";
 import { getKeyPair } from "../lib/seed.js";
+import { getPluginAPI } from "./plugin";
 
 const LUMEWEB = b4a.from("lumeweb");
 export const LUMEWEB_TOPIC_HASH = b4a.allocUnsafe(32);
@@ -43,6 +44,10 @@ export async function start() {
   await node.dht.ready();
   await node.listen();
   node.join(LUMEWEB_TOPIC_HASH);
+
+  getPluginAPI().on("core.shutdown", async () => {
+    return bootstrap.destroy();
+  });
 
   log.info(
     "Relay Identity is %s",
