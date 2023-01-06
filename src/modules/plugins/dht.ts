@@ -24,7 +24,7 @@ const plugin: Plugin = {
 
     api.registerMethod("get_topics", {
       cacheable: false,
-      async handler(topic: string): Promise<string[]> {
+      async handler(): Promise<string[]> {
         return [...api.swarm.peers.keys()];
       },
     });
