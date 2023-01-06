@@ -2,7 +2,7 @@ import { start as startRpc } from "./modules/rpc.js";
 import { start as startRelay } from "./modules/relay.js";
 import { start as startApp } from "./modules/app";
 import config from "./config.js";
-import { loadPlugins } from "./modules/plugin.js";
+import { getPluginAPI, loadPlugins } from "./modules/plugin.js";
 import { start as startSwarm, get as getSwarm } from "./modules/swarm.js";
 import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
@@ -28,6 +28,7 @@ process.on("uncaughtException", function (err) {
 });
 
 async function shutdown() {
+  await getPluginAPI().emitAsync("core.shutdown");
   await getSwarm().destroy();
   process.exit();
 }
