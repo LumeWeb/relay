@@ -1,5 +1,4 @@
 import { Plugin, PluginAPI } from "@lumeweb/relay-types";
-import { getRpcServer } from "../rpc/server";
 
 const plugin: Plugin = {
   name: "core",
