@@ -19,6 +19,7 @@ import {
 import { get as getSSl, SSLManager } from "./ssl.js";
 import type { HDKey } from "micro-ed25519-hdkey";
 import corePlugins from "../plugins";
+import Util from "./plugin/util";
 
 let pluginAPIManager: PluginAPIManager;
 let pluginAPI: PluginAPI;
@@ -49,6 +50,12 @@ class PluginAPI extends EventEmitter2 {
     this._logger = logger;
     this._server = server;
     this._swarm = swarm;
+  }
+
+  private _util: Util = new Util();
+
+  get util(): Util {
+    return this._util;
   }
 
   private _swarm: any;
