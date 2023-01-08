@@ -154,6 +154,8 @@ export class PluginAPIManager {
       throw e;
     }
 
+    log.debug("Loaded plugin %s", moduleName);
+
     return this.loadPluginInstance(plugin);
   }
 
@@ -217,6 +219,8 @@ export class PluginAPIManager {
     } catch (e) {
       throw e;
     }
+
+    log.debug("Initialized plugin %s", plugin.name);
 
     return plugin;
   }
