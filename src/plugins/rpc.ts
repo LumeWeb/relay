@@ -1,4 +1,3 @@
-import { getRpcServer } from "../modules/rpc/server";
 import {
   Plugin,
   PluginAPI,
@@ -12,6 +11,8 @@ import { getRpcByPeer } from "../modules/rpc";
 import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../modules/swarm";
 import b4a from "b4a";
 import pTimeout, { ClearablePromise } from "p-timeout";
+
+let api: PluginAPI;
 
 async function broadcastRequest(
   request: RPCRequest,
@@ -28,7 +29,7 @@ async function broadcastRequest(
   for (const relay of relays) {
     let req;
     if (b4a.equals(b4a.from(relay, "hex"), getSwarm().keyPair.publicKey)) {
-      req = getRpcServer().handleRequest(request);
+      req = api.rpcServer.handleRequest(request);
     } else {
       req = makeRequest(relay);
     }
@@ -47,7 +48,8 @@ async function broadcastRequest(
 
 const plugin: Plugin = {
   name: "rpc",
-  async plugin(api: PluginAPI): Promise<void> {
+  async plugin(_api: PluginAPI): Promise<void> {
+    api = _api;
     if (api.config.bool("cache")) {
       api.registerMethod("get_cached_item", {
         cacheable: false,
