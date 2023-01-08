@@ -8,9 +8,9 @@ import path from "path";
 import type { Logger } from "pino";
 
 import { getHDKey, getSeed } from "../lib/seed.js";
-import pluginRpc from "./plugins/rpc";
-import pluginCore from "./plugins/core";
-import pluginDht from "./plugins/dht";
+import pluginRpc from "../plugins/rpc";
+import pluginCore from "../plugins/core";
+import pluginDht from "../plugins/dht";
 import type Config from "@lumeweb/cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "../log.js";

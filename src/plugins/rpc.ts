@@ -1,4 +1,4 @@
-import { getRpcServer } from "../rpc/server";
+import { getRpcServer } from "../modules/rpc/server";
 import {
   Plugin,
   PluginAPI,
@@ -8,8 +8,8 @@ import {
   RPCRequest,
   RPCResponse,
 } from "@lumeweb/relay-types";
-import { getRpcByPeer } from "../rpc";
-import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../swarm";
+import { getRpcByPeer } from "../modules/rpc";
+import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../modules/swarm";
 import b4a from "b4a";
 import pTimeout, { ClearablePromise } from "p-timeout";
 
