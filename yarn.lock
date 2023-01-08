@@ -662,7 +662,7 @@ __metadata:
 
 "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git":
   version: 0.1.0
-  resolution: "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git#commit=0d6219837a743543f97eaf391895a6608e0fb7d5"
+  resolution: "@lumeweb/relay-types@https://git.lumeweb.com/LumeWeb/relay-types.git#commit=5a3226e0b966f30523f24904de55de21e1321587"
   dependencies:
     "@lumeweb/dht-cache": "https://git.lumeweb.com/LumeWeb/dht-cache.git"
     "@types/eventemitter2": "npm:^4.1.0"
@@ -670,7 +670,7 @@ __metadata:
     eventemitter2: "npm:^6.4.9"
     micro-ed25519-hdkey: "npm:^0.1.2"
     pino: "npm:^8.8.0"
-  checksum: b66513fa0735920f5df8d1f5c2325756293c68d63a7252ee7daf3740b3511c8981825c11e6bd345517769b28741f50045c3136a6e1aa1de2adbb408a12f37085
+  checksum: f23f639954bdbe7a5e0252d65918f644a28de7320ee64627fab613d3cdc58d3384d2bb15fdab313d5e2f41fa5b51b3153f32e64597899a9d3cc7c55ab7557d2a
   languageName: node
   linkType: hard
 
