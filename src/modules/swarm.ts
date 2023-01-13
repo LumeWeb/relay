@@ -71,7 +71,7 @@ export class ProtocolManager {
     this._swarm.on("connection", (peer: any) => {
       for (const protocol of this._protocols) {
         Protomux.from(peer).pair(
-          protocol[0],
+          { protocol: protocol[0] },
           this.handler.bind(this, protocol[0], peer)
         );
       }
