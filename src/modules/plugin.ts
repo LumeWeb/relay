@@ -207,7 +207,7 @@ export class PluginAPIManager {
             }
 
             if (prop === "logger") {
-              return target.logger.child({ plugin: plugin.name });
+              return log.child({ plugin: plugin.name });
             }
 
             return (target as any)[prop];
