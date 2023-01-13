@@ -32,12 +32,10 @@ class PluginAPI extends EventEmitter2 {
 
   constructor({
     config,
-    logger,
     server,
     swarm,
   }: {
     config: Config;
-    logger: Logger;
     server: RPCServer;
     swarm: any;
   }) {
@@ -47,7 +45,6 @@ class PluginAPI extends EventEmitter2 {
       maxListeners: 0,
     });
     this._config = config;
-    this._logger = logger;
     this._server = server;
     this._swarm = swarm;
   }
@@ -73,8 +70,6 @@ class PluginAPI extends EventEmitter2 {
   get pluginConfig(): Config {
     throw new Error("not implemented and should not be called");
   }
-
-  private _logger: Logger;
 
   get logger(): Logger {
     throw new Error("not implemented and should not be called");
@@ -115,7 +110,6 @@ export function getPluginAPI(): PluginAPI {
   if (!pluginAPI) {
     pluginAPI = new PluginAPI({
       config,
-      logger: log,
       server: getRpcServer(),
       swarm: getSwarm(),
     });
