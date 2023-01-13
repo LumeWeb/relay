@@ -77,7 +77,7 @@ class PluginAPI extends EventEmitter2 {
   private _logger: Logger;
 
   get logger(): Logger {
-    return this._logger;
+    throw new Error("not implemented and should not be called");
   }
 
   get rpcServer(): RPCServer {
@@ -210,6 +210,10 @@ export class PluginAPIManager {
                   return (target as any)[prop];
                 },
               });
+            }
+
+            if (prop === "logger") {
+              return target.logger.child({ plugin: plugin.name });
             }
 
             return (target as any)[prop];
