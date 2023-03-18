@@ -30,15 +30,16 @@ export async function getRpcByPeer(peer: Buffer | string) {
   }
 
   return new Promise((resolve) => {
-    const listener = () => {};
-    swarm.on("connection", (peer: any, info: any) => {
+    const listener = (peer: any, info: any) => {
       if (info.publicKey.toString("hex") !== peer.toString("hex")) {
         return;
       }
       swarm.removeListener("connection", listener);
 
       resolve(setupStream(peer));
-    });
+    };
+
+    swarm.on("connection", listener);
 
     swarm.joinPeer(peer);
   });
