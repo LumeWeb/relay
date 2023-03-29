@@ -24,8 +24,6 @@ const plugin: Plugin = {
       async handler(): Promise<any> {
         await pluginsLoadedPromise;
 
-        console.log("get_methods", api.rpcServer.getMethods());
-
         return api.rpcServer.getMethods();
       },
     });
