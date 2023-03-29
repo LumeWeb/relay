@@ -163,7 +163,7 @@ export class PluginAPIManager {
     this.registeredPlugins.set(plugin.name, plugin);
 
     try {
-      plugin.plugin(
+      await plugin.plugin(
         // @ts-ignore
         new Proxy<PluginAPI>(getPluginAPI(), {
           get(target: PluginAPI, prop: string): any {
