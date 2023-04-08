@@ -23,7 +23,7 @@ import config from "../../config";
 const sodium = require("sodium-universal");
 let server: RPCServer;
 
-const RPC_PROTOCOL_ID = b4a.from("lumeweb");
+export const RPC_PROTOCOL_ID = b4a.from("lumeweb");
 export const RPC_PROTOCOL_SYMBOL = Symbol.for(RPC_PROTOCOL_ID.toString());
 
 export function getRpcServer(): RPCServer {
