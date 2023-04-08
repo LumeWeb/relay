@@ -69,6 +69,9 @@ export class ProtocolManager {
     this._swarm = swarm;
 
     this._swarm.on("connection", (peer: any) => {
+      if (!peer.userData) {
+        peer.userData = null;
+      }
       for (const protocol of this._protocols) {
         Protomux.from(peer).pair(
           { protocol: protocol[0] },
