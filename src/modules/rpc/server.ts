@@ -8,17 +8,15 @@ import EventEmitter from "events";
 // @ts-ignore
 import ProtomuxRPC from "protomux-rpc";
 import b4a from "b4a";
-import { SecretStream } from "../swarm";
+import { get as getSwarm, SecretStream } from "../swarm";
 // @ts-ignore
 import c from "compact-encoding";
 // @ts-ignore
 import crypto from "hypercore-crypto";
 // @ts-ignore
 import { Mutex } from "async-mutex";
-import { RPCCache } from "./cache";
 // @ts-ignore
 import jsonStringify from "json-stringify-deterministic";
-import config from "../../config";
 
 const sodium = require("sodium-universal");
 let server: RPCServer;
@@ -54,19 +52,6 @@ export class RPCServer extends EventEmitter {
     Map<string, RPCMethod>
   >();
   private pendingRequests: Map<string, Mutex> = new Map<string, Mutex>();
-
-  private _cache?: RPCCache;
-
-  constructor() {
-    super();
-    if (config.bool("cache")) {
-      this._cache = new RPCCache(this);
-    }
-  }
-
-  get cache(): RPCCache | undefined {
-    return this._cache;
-  }
 
   public static hashQuery(query: RPCRequest): string {
     const clonedQuery: RPCRequest = {
@@ -145,7 +130,7 @@ export class RPCServer extends EventEmitter {
     }
 
     return crypto
-      .sign(Buffer.from(raw), this._cache?.swarm.keyPair.secretKey)
+      .sign(Buffer.from(raw), getSwarm().keyPair.secretKey)
       .toString("hex");
   }
 
@@ -154,13 +139,6 @@ export class RPCServer extends EventEmitter {
 
     if (lockedRequest) {
       return lockedRequest;
-    }
-
-    let cachedRequest = this.getCachedRequest(request) as RPCCacheItem;
-
-    if (cachedRequest) {
-      this.getRequestLock(request)?.release();
-      return { ...cachedRequest.value, signature: cachedRequest.signature };
     }
 
     let method = this.getMethodByRequest(request);
@@ -208,28 +186,9 @@ export class RPCServer extends EventEmitter {
       };
     }
 
-    method = method as RPCMethod;
-    if (config.bool("cache") && method.cacheable) {
-      this.cache?.addItem(request, rpcResult);
-    }
-
     this.getRequestLock(request)?.release();
 
     return rpcResult;
-  }
-
-  private getCachedRequest(request: RPCRequest): RPCCacheItem | boolean {
-    if (!config.bool("cache")) {
-      return false;
-    }
-
-    const req = RPCServer.hashQuery(request);
-
-    if (this._cache?.data.has(req)) {
-      return this._cache?.data.get<RPCCacheItem>(req) as RPCCacheItem;
-    }
-
-    return false;
   }
 
   private getMethodByRequest(request: RPCRequest): Error | RPCMethod {
@@ -269,9 +228,6 @@ export class RPCServer extends EventEmitter {
 
     if (lock.isLocked()) {
       await lock.waitForUnlock();
-      if (this._cache?.data.has(reqId)) {
-        return this._cache?.data.get<RPCCacheItem>(reqId) as RPCCacheItem;
-      }
     }
 
     await lock.acquire();
