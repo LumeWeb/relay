@@ -18,6 +18,8 @@ export async function start() {
     res.send(Buffer.from(keyPair.publicKey).toString("hex"));
   });
 
+  await getPluginAPI().emitAsync("core.appServer.buildRoutes");
+
   await app.listen({ port: config.uint("core.appport"), host: "0.0.0.0" });
 
   getPluginAPI().emit("core.appServer.started");
