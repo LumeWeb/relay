@@ -5,7 +5,7 @@ import * as fs from "fs";
 import path from "path";
 import log from "./log.js";
 
-const config = new Config("lumeweb-relay", "core.confdir");
+const config = new Config("lumeweb-relay", "core.confDir");
 
 let configDir;
 
@@ -33,7 +33,7 @@ config.inject({
 
 config.load();
 
-configDir = config.str("core.confdir");
+configDir = config.str("core.confDir");
 
 if (fs.existsSync(configDir)) {
   try {
