@@ -62,11 +62,21 @@ export class SSLManager {
   }
 
   private _maybeUpdateContext() {
-    if (b4a.isBuffer(this._cert) && b4a.isBuffer(this._key)) {
-      this._context = tls.createSecureContext({
-        cert: this._cert,
+    const valid = (value: any) =>
+      b4a.isBuffer(value) || typeof value === "string" || Array.isArray(value);
+
+    if (valid(this._cert) && valid(this._key)) {
+      const opts: tls.SecureContextOptions = {
         key: this._key,
-      });
+      };
+
+      if (Array.isArray(this._cert)) {
+        opts.ca = this._cert.slice(1);
+        opts.cert = this._cert[0];
+      } else {
+        opts.cert = this._cert;
+      }
+      this._context = tls.createSecureContext(opts);
     }
   }
 }
