@@ -1,4 +1,4 @@
-import { HDKey } from "micro-ed25519-hdkey";
+import { HDKey } from "ed25519-keygen/hdkey";
 import config from "../config";
 import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
