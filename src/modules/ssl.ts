@@ -4,6 +4,7 @@ import log from "../log.js";
 import config from "../config.js";
 
 export type SSLManagerRenewHandler = (domain: string) => Promise<boolean>;
+type SSLCert = string | Buffer | Array<string | Buffer>;
 
 export class SSLManager {
   private _key?: Buffer;
@@ -19,9 +20,9 @@ export class SSLManager {
     return this._context as tls.SecureContext;
   }
 
-  private _cert?: Buffer;
+  private _cert?: SSLCert;
 
-  set cert(cert: Buffer) {
+  set cert(cert: SSLCert) {
     this._cert = cert;
     this._maybeUpdateContext();
   }
