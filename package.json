@@ -26,7 +26,7 @@
         "b4a": "^1.6.3",
         "compact-encoding": "^2.11.0",
         "dotenv": "^16.0.3",
-        "ed25519-keygen": "^0.4.1",
+        "ed25519-keygen": "github:LumeWeb/ed25519-keygen",
         "ethers": "^5.7.2",
         "eventemitter2": "^6.4.9",
         "fastify": "^4.15.0",
@@ -62,10 +62,5 @@
         "prettier": "^2.8.7",
         "supports-color": "github:LumeWeb/supports-color",
         "typescript": "^4.9.5"
-    },
-    "pnpm": {
-        "overrides": {
-            "micro-packed": "git+https://github.com/LumeWeb/micro-packed.git"
-        }
     }
 }
