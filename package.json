@@ -63,8 +63,5 @@
         "supports-color": "github:LumeWeb/supports-color",
         "typescript": "^4.9.5"
     },
-    "packageManager": "yarn@4.0.0-rc.33",
-    "resolutions": {
-        "micro-ed25519-hdkey@npm:^0.1.2": "patch:micro-ed25519-hdkey@npm%3A0.1.2#~/.yarn/patches/micro-ed25519-hdkey-npm-0.1.2-5d1d767d1d.patch"
-    }
+    "packageManager": "yarn@4.0.0-rc.33"
 }
