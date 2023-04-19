@@ -24,11 +24,11 @@ switch (os.platform()) {
 }
 
 config.inject({
-  "core.confdir": configDir,
+  "core.confDir": configDir,
   "core.port": 8080,
-  "core.appport": 80,
-  "core.loglevel": "info",
-  "core.plugindir": path.resolve(configDir, "..", "plugins"),
+  "core.appPort": 80,
+  "core.logLevel": "info",
+  "core.pluginDir": path.resolve(configDir, "..", "plugins"),
 });
 
 config.load();
