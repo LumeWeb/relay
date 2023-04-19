@@ -4,6 +4,7 @@ import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { getKeyPair } from "../lib/seed.js";
 import config from "../config";
+import { getPluginAPI } from "./plugin";
 
 let app: FastifyInstance;
 
@@ -18,6 +19,8 @@ export async function start() {
   });
 
   await app.listen({ port: config.uint("core.appport"), host: "0.0.0.0" });
+
+  getPluginAPI().emit("core.appServerStarted");
 }
 
 export function get(): FastifyInstance {
