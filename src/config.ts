@@ -5,7 +5,7 @@ import * as fs from "fs";
 import path from "path";
 import log from "./log.js";
 
-const config = new Config("lumeweb-relay");
+const config = new Config("lumeweb-relay", "core.confdir");
 
 let configDir;
 
