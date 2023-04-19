@@ -16,7 +16,6 @@ import {
   getProtocolManager,
   ProtocolManager,
 } from "./swarm.js";
-import { get as getSSl, SSLManager } from "./ssl.js";
 import { get as getApp } from "./app.js";
 import type { HDKey } from "micro-ed25519-hdkey";
 import corePlugins from "../plugins";
@@ -86,10 +85,6 @@ class PluginAPI extends EventEmitter2 {
 
   get identity(): HDKey {
     return getHDKey();
-  }
-
-  get ssl(): SSLManager {
-    return getSSl();
   }
 
   get protocols(): ProtocolManager {
