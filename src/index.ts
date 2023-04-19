@@ -7,9 +7,11 @@ import { start as startSwarm, get as getSwarm } from "./modules/swarm.js";
 import * as bip39 from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english";
 
-if (!config.str("seed")) {
+if (!config.str("core.seed")) {
   config.save("account", {
-    seed: bip39.generateMnemonic(wordlist),
+    core: {
+      seed: bip39.generateMnemonic(wordlist),
+    },
   });
 }
 
