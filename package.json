@@ -62,5 +62,10 @@
         "prettier": "^2.8.7",
         "supports-color": "github:LumeWeb/supports-color",
         "typescript": "^4.9.5"
+    },
+    "pnpm": {
+        "overrides": {
+            "micro-packed": "git+https://github.com/LumeWeb/micro-packed.git"
+        }
     }
 }
