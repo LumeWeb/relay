@@ -618,13 +618,13 @@ __metadata:
 
 "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git":
   version: 0.1.7
-  resolution: "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=e1d4785240c3815a5b0e376e96e0fb0edfd0c064"
+  resolution: "@lumeweb/cfg@https://git.lumeweb.com/LumeWeb/cfg.git#commit=62856686f20c2a627f4bafa92be24ef7f2d49a0d"
   dependencies:
     arg: "npm:^5.0.2"
     bsert: "npm:~0.0.10"
     deep-to-flat-object: "npm:^1.0.1"
     object-path: "npm:^0.11.8"
-  checksum: 1b1120ca829d80713b1ed24d3a7827d82fad78c903ce47a0e289bf5799ce791c0e95a967340e83812e290b2749c5c326f4584a6ec33d8dbacaa8d0c04c5291f5
+  checksum: 5124fda214790212f99fbb6cea6eaf8b6240bbc3c026e1bd4cab9bd441b8be3ccfc2ea1a77cae1fd50d957d1f902f9c955067805d8233168771286e9dacc0d3d
   languageName: node
   linkType: hard
 
