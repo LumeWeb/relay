@@ -1,4 +1,4 @@
-import { Plugin, PluginAPI } from "@lumeweb/relay-types";
+import { Plugin, PluginAPI } from "@lumeweb/interface-relay";
 import b4a from "b4a";
 
 const plugin: Plugin = {

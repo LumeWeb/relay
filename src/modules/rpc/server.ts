@@ -3,7 +3,7 @@ import {
   RPCMethod,
   RPCRequest,
   RPCResponse,
-} from "@lumeweb/relay-types";
+} from "@lumeweb/interface-relay";
 import EventEmitter from "events";
 // @ts-ignore
 import ProtomuxRPC from "protomux-rpc";

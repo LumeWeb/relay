@@ -1,4 +1,4 @@
-import { Plugin, PluginAPI } from "@lumeweb/relay-types";
+import { Plugin, PluginAPI } from "@lumeweb/interface-relay";
 
 const plugin: Plugin = {
   name: "core",

@@ -1,7 +1,7 @@
 import config from "../config.js";
 import type { RPCServer } from "./rpc/server.js";
 import { getRpcServer } from "./rpc/server.js";
-import type { Plugin, RPCMethod } from "@lumeweb/relay-types";
+import type { Plugin, RPCMethod } from "@lumeweb/interface-relay";
 import slugify from "slugify";
 import * as fs from "fs";
 import path from "path";

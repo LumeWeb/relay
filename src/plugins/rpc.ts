@@ -6,7 +6,7 @@ import {
   RPCCacheItem,
   RPCRequest,
   RPCResponse,
-} from "@lumeweb/relay-types";
+} from "@lumeweb/interface-relay";
 import { getRpcByPeer } from "../modules/rpc";
 import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../modules/swarm";
 import b4a from "b4a";

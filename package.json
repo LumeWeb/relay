@@ -18,6 +18,7 @@
         "@fastify/websocket": "^7.1.1",
         "@hyperswarm/dht-relay": "^0.3.0",
         "@lumeweb/cfg": "git+https://git.lumeweb.com/LumeWeb/cfg.git",
+        "@lumeweb/interface-relay": "git+https://git.lumeweb.com/LumeWeb/interface-relay",
         "@scure/bip39": "^1.1.0",
         "@types/node": "^18.0.0",
         "@types/ws": "^8.5.3",
