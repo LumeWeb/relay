@@ -3,6 +3,7 @@ import log from "../log.js";
 import fastify from "fastify";
 import type { FastifyInstance } from "fastify";
 import { getKeyPair } from "../lib/seed.js";
+import config from "../config";
 
 let app: FastifyInstance;
 
@@ -16,5 +17,5 @@ export async function start() {
     res.send(Buffer.from(keyPair.publicKey).toString("hex"));
   });
 
-  await app.listen({ port: 80, host: "0.0.0.0" });
+  await app.listen({ port: config.uint("core.appport"), host: "0.0.0.0" });
 }
