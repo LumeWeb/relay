@@ -20,7 +20,7 @@ export async function start() {
 
   await app.listen({ port: config.uint("core.appport"), host: "0.0.0.0" });
 
-  getPluginAPI().emit("core.appServerStarted");
+  getPluginAPI().emit("core.appServer.started");
 }
 
 export function get(): FastifyInstance {
