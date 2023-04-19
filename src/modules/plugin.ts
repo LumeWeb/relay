@@ -130,7 +130,7 @@ export class PluginAPIManager {
 
     const paths = [];
     for (const modulePath of [`${moduleName}.js`, `${moduleName}.mjs`]) {
-      const fullPath = path.join(config.get("plugindir"), modulePath);
+      const fullPath = path.join(config.get("core.plugindir"), modulePath);
       if (fs.existsSync(fullPath)) {
         paths.push(fullPath);
         break;
@@ -239,7 +239,7 @@ export async function loadPlugins() {
     await apiManager.loadPluginInstance(plugin);
   }
 
-  for (const plugin of [...new Set(config.array("plugins", []))] as []) {
+  for (const plugin of [...new Set(config.array("core.plugins", []))] as []) {
     await apiManager.loadPlugin(plugin);
   }
 

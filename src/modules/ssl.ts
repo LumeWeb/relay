@@ -51,7 +51,7 @@ export class SSLManager {
   }
 
   get enabled() {
-    return config.bool("ssl") && this._renewHandler;
+    return config.bool("core.ssl") && this._renewHandler;
   }
 }
 
@@ -59,7 +59,7 @@ let sslManager: SSLManager;
 
 export function get(): SSLManager {
   if (!sslManager) {
-    sslManager = new SSLManager(config.get("domain"));
+    sslManager = new SSLManager(config.get("core.domain"));
   }
 
   return sslManager;

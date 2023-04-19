@@ -8,7 +8,7 @@ import b4a from "b4a";
 const BIP44_PATH = "m/44'/1627'/0'/0'/0'";
 
 export function getSeed() {
-  const seed = config.str("seed");
+  const seed = config.str("core.seed");
 
   let valid = bip39.validateMnemonic(seed, wordlist);
   if (!valid) {

@@ -19,21 +19,20 @@ switch (os.platform()) {
 
   case "linux":
   default:
-    configDir = "/etc/lumeweb/relay/config.d";
+    configDir = "/etc/lumeweb/relay/conf.d";
     break;
 }
 
 config.inject({
-  configDir,
-  port: 8080,
-  logLevel: "info",
-  pluginDir: path.resolve(configDir, "..", "plugins"),
-  cache: true,
+  "core.confdir": configDir,
+  "core.port": 8080,
+  "core.loglevel": "info",
+  "core.plugindir": path.resolve(configDir, "..", "plugins"),
 });
 
 config.load();
 
-configDir = config.str("configdir");
+configDir = config.str("core.confdir");
 
 if (fs.existsSync(configDir)) {
   try {
@@ -45,6 +44,6 @@ if (fs.existsSync(configDir)) {
 
 config.load();
 
-log.level = config.get("loglevel");
+log.level = config.get("core.loglevel");
 
 export default config;
