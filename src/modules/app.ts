@@ -19,3 +19,7 @@ export async function start() {
 
   await app.listen({ port: config.uint("core.appport"), host: "0.0.0.0" });
 }
+
+export function get(): FastifyInstance {
+  return app;
+}
