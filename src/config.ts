@@ -26,7 +26,7 @@ switch (os.platform()) {
 config.inject({
   "core.confdir": configDir,
   "core.port": 8080,
-  "core.apport": 80,
+  "core.appport": 80,
   "core.loglevel": "info",
   "core.plugindir": path.resolve(configDir, "..", "plugins"),
 });
