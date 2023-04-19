@@ -20,7 +20,7 @@ export async function start() {
   const dht = getSwarm();
   let sslOptions: boolean | http2.SecureServerOptions = false;
 
-  if (getSslManager().enabled) {
+  if (getSslManager().ready) {
     sslOptions = {
       SNICallback: () => getSslManager().context,
     } as http2.SecureServerOptions;

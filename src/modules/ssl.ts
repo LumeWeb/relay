@@ -6,18 +6,34 @@ import config from "../config.js";
 export type SSLManagerRenewHandler = (domain: string) => Promise<boolean>;
 
 export class SSLManager {
-  private _context?: tls.SecureContext;
   private _key?: Buffer;
-  private _cert?: Buffer;
   private _domain: string;
-  private _renewHandler?: SSLManagerRenewHandler;
 
   constructor(domain: string) {
     this._domain = domain;
   }
 
+  private _context?: tls.SecureContext;
+
   get context(): tls.SecureContext {
     return this._context as tls.SecureContext;
+  }
+
+  private _cert?: Buffer;
+
+  set cert(cert: Buffer) {
+    this._cert = cert;
+    this._maybeUpdateContext();
+  }
+
+  private _renewHandler?: SSLManagerRenewHandler;
+
+  get renewHandler(): SSLManagerRenewHandler {
+    return this._renewHandler as any;
+  }
+
+  set renewHandler(value: SSLManagerRenewHandler) {
+    this._renewHandler = value;
   }
 
   set privateKey(key: Buffer) {
@@ -25,18 +41,12 @@ export class SSLManager {
     this._maybeUpdateContext();
   }
 
-  set cert(cert: Buffer) {
-    this._cert = cert;
-    this._maybeUpdateContext();
+  get enabled() {
+    return config.bool("core.ssl");
   }
 
-  private _maybeUpdateContext() {
-    if (b4a.isBuffer(this._cert) && b4a.isBuffer(this._key)) {
-      this._context = tls.createSecureContext({
-        cert: this._cert,
-        key: this._key,
-      });
-    }
+  get ready() {
+    return this.enabled && this.renewHandler;
   }
 
   public async renew(): Promise<boolean> {
@@ -50,8 +60,13 @@ export class SSLManager {
     return result;
   }
 
-  get enabled() {
-    return config.bool("core.ssl") && this._renewHandler;
+  private _maybeUpdateContext() {
+    if (b4a.isBuffer(this._cert) && b4a.isBuffer(this._key)) {
+      this._context = tls.createSecureContext({
+        cert: this._cert,
+        key: this._key,
+      });
+    }
   }
 }
 
