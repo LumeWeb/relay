@@ -147,20 +147,31 @@ export class PluginAPIManager {
     }
 
     let plugin: Plugin;
+    let pluginPath = paths.shift();
     try {
-      plugin = require(paths.shift() as string) as Plugin;
+      plugin = require(pluginPath as string) as Plugin;
     } catch (e) {
       throw e;
     }
 
     log.debug("Loaded plugin %s", moduleName);
 
-    return this.loadPluginInstance(plugin);
+    const instance = await this.loadPluginInstance(plugin);
+
+    if (!instance) {
+      throw new Error(`Corrupt plugin found at ${pluginPath}`);
+    }
+
+    return instance as Plugin;
   }
 
-  public async loadPluginInstance(plugin: Plugin): Promise<Plugin> {
+  public async loadPluginInstance(plugin: Plugin): Promise<Plugin | boolean> {
     if ("default" in plugin) {
       plugin = plugin?.default as Plugin;
+    }
+
+    if (!("name" in plugin)) {
+      return false;
     }
 
     plugin.name = sanitizeName(plugin.name);
