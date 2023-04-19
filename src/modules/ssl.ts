@@ -8,10 +8,15 @@ type SSLCert = string | Buffer | Array<string | Buffer>;
 
 export class SSLManager {
   private _key?: Buffer;
-  private _domain: string;
 
   constructor(domain: string) {
     this._domain = domain;
+  }
+
+  private _domain: string;
+
+  get domain(): string {
+    return this._domain;
   }
 
   private _context?: tls.SecureContext;
