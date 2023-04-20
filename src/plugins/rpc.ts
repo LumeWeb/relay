@@ -3,12 +3,11 @@ import {
   PluginAPI,
   RPCBroadcastRequest,
   RPCBroadcastResponse,
-  RPCCacheItem,
   RPCRequest,
   RPCResponse,
 } from "@lumeweb/interface-relay";
 import { getRpcByPeer } from "../modules/rpc";
-import { get as getSwarm, LUMEWEB_TOPIC_HASH } from "../modules/swarm";
+import { get as getSwarm } from "../modules/swarm";
 import b4a from "b4a";
 import pTimeout, { ClearablePromise } from "p-timeout";
 
