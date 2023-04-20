@@ -1,14 +1,18 @@
 {
     "name": "@lumeweb/relay",
     "type": "commonjs",
-    "version": "0.1.0",
+    "version": "0.0.0-development",
     "description": "",
     "main": "build/index.js",
+    "repository": {
+        "url": "https://git.lumeweb.com/LumeWeb/relay.git"
+    },
     "author": {
         "name": "Derrick Hammer",
         "email": "contact@lumeweb.com"
     },
     "scripts": {
+        "semantic-release": "semantic-release",
         "compile": "npm run tsc",
         "prebuild": "bash prebuild.sh",
         "package": "pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip",
@@ -49,6 +53,7 @@
         "sodium-universal": "^4.0.0"
     },
     "devDependencies": {
+        "@semantic-release/changelog": "^6.0.3",
         "@types/b4a": "^1.6.0",
         "@types/minimatch": "^3.0.5",
         "@types/node-fetch": "^2.6.3",
@@ -58,6 +63,7 @@
         "pkg": "^5.8.1",
         "prebuildify": "^5.0.1",
         "prettier": "^2.8.7",
+        "semantic-release": "21",
         "supports-color": "github:LumeWeb/supports-color",
         "typescript": "^4.9.5"
     }
