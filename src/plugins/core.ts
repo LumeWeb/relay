@@ -1,15 +1,13 @@
 import { Plugin, PluginAPI } from "@lumeweb/interface-relay";
 
-let pluginsLoadedResolve: () => void;
-let pluginsLoadedPromise = new Promise<void>((resolve) => {
-  pluginsLoadedResolve = resolve;
-});
+import defer from "p-defer";
 
 const plugin: Plugin = {
   name: "core",
   async plugin(api: PluginAPI): Promise<void> {
+    const pluginsLoaded = defer();
     api.once("core.pluginsLoaded", () => {
-      pluginsLoadedResolve();
+      pluginsLoaded.resolve();
     });
 
     api.registerMethod("ping", {
@@ -22,7 +20,7 @@ const plugin: Plugin = {
     api.registerMethod("get_methods", {
       cacheable: false,
       async handler(): Promise<any> {
-        await pluginsLoadedPromise;
+        await pluginsLoaded.promise;
 
         return api.rpcServer.getMethods();
       },
