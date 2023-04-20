@@ -7,16 +7,24 @@ import { errorExit } from "../lib/error.js";
 import stringify from "json-stable-stringify";
 import {
   getRpcServer,
+  RPC_PROTOCOL_ID,
   RPC_PROTOCOL_SYMBOL,
   setupStream,
 } from "./rpc/server.js";
 import { get as getSwarm, SecretStream } from "./swarm.js";
 import b4a from "b4a";
+// @ts-ignore
+import Protomux from "protomux";
 
 export async function start() {
-  getSwarm().on("connection", (stream: SecretStream) =>
-    getRpcServer().setup(stream)
-  );
+  getSwarm().on("connection", (stream: SecretStream) => {
+    Protomux.from(stream).pair(
+      { protocol: "protomux-rpc", id: RPC_PROTOCOL_ID },
+      async () => {
+        getRpcServer().setup(stream);
+      }
+    );
+  });
 }
 
 export async function getRpcByPeer(peer: Buffer | string) {
@@ -30,15 +38,16 @@ export async function getRpcByPeer(peer: Buffer | string) {
   }
 
   return new Promise((resolve) => {
-    const listener = () => {};
-    swarm.on("connection", (peer: any, info: any) => {
+    const listener = (peer: any, info: any) => {
       if (info.publicKey.toString("hex") !== peer.toString("hex")) {
         return;
       }
       swarm.removeListener("connection", listener);
 
       resolve(setupStream(peer));
-    });
+    };
+
+    swarm.on("connection", listener);
 
     swarm.joinPeer(peer);
   });
