@@ -15,7 +15,7 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Set Repo Origin
-              run: git remote set origin https://git.lumeweb.com/LumeWeb/relay.git
+              run: git remote set-url origin https://git.lumeweb.com/LumeWeb/relay.git
             - uses: webfactory/ssh-agent@v0.7.0
               with:
                ssh-private-key: ${{ secrets.GITEA_SSH_KEY }}
