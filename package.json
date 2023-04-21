@@ -55,6 +55,7 @@
     },
     "devDependencies": {
         "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/exec": "^6.0.3",
         "@semantic-release/git": "^10.0.1",
         "@types/b4a": "^1.6.0",
         "@types/minimatch": "^3.0.5",
