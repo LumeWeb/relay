@@ -5,7 +5,7 @@
     "description": "",
     "main": "build/index.js",
     "repository": {
-        "url": "https://git.lumeweb.com/LumeWeb/relay.git"
+        "url": "gitea@git.lumeweb.com:LumeWeb/relay.git"
     },
     "author": {
         "name": "Derrick Hammer",
