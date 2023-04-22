@@ -15,7 +15,7 @@
         "semantic-release": "semantic-release",
         "compile": "tsc",
         "prebuild": "bash prebuild.sh",
-        "package": "pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip -b",
+        "package": "pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip",
         "build": "npm run compile && npm run prebuild && npm run package"
     },
     "dependencies": {
