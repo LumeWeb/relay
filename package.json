@@ -43,7 +43,7 @@
         "msgpackr": "^1.8.5",
         "node-cache": "^5.1.2",
         "node-fetch": "^2.6.9",
-        "p-defer": "^4.0.0",
+        "p-defer": "git+https://git.lumeweb.com/LumeWeb/p-defer.git",
         "p-timeout": "git+https://git.lumeweb.com/LumeWeb/p-timeout.git",
         "pino": "^8.11.0",
         "pino-pretty": "^9.4.0",
