@@ -3,32 +3,34 @@ version: 2.1
 orbs:
     node: circleci/node@5.1.0
 
+
+jobs:
+    setup:
+        docker:
+            -   image: "circleci/node:lts"
+        steps:
+            -   add_ssh_keys:
+                    fingerprints:
+                        - "SHA256:Gs0mI8VeDvaMRBUlJMwnLgiBTodCWyHDXKSXQcXW1mo"
+            - checkout
 workflows:
     release:
         jobs:
-            release:
-                contexts:
-                    - publish
-                docker:
-                    -   image: "circleci/node:lts"
-                steps:
-                    - checkout
-                    -   run:
-                            name: Set Repo Origin
-                            command: |
-                                git remote set-url origin https://git.lumeweb.com/LumeWeb/relay.git
-                    -   add_ssh_keys:
-                            fingerprints:
-                                - "SHA256:Gs0mI8VeDvaMRBUlJMwnLgiBTodCWyHDXKSXQcXW1mo"
-                    -   node/run:
-                            npm-run: build
-                    -   node/run:
-                            npm-run: semantic-release
-                            environment:
-                                CLOUDSMITH_API_KEY: $CLOUDSMITH_API_KEY
-                filters:
-                    branches:
-                        only:
-                            - master
-                            - develop
-                            - /^develop-.*$/
+            - setup
+            -   node/run:
+                    npm-run: build
+                    filters:
+                        branches:
+                            only:
+                                - master
+                                - develop
+                                - /^develop-.*$/
+            -   node/run:
+                    npm-run: semantic-release
+                    filters:
+                        branches:
+                            only:
+                                - master
+                                - develop
+                                - /^develop-.*$/
+
