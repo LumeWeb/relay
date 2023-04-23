@@ -16,7 +16,8 @@
         "compile": "tsc",
         "prebuild": "bash prebuild.sh",
         "package": "pkg -c pkg.json build/index.js -t linux  --public --no-native-build -C gzip",
-        "build": "npm run compile && npm run prebuild && npm run package"
+        "build": "npm run compile && npm run prebuild && npm run package",
+        "postinstall": "patch-package"
     },
     "dependencies": {
         "@fastify/websocket": "^7.2.0",
@@ -63,6 +64,7 @@
         "cli-progress": "^3.12.0",
         "hyper-typings": "^1.0.0",
         "node-gyp": "^9.3.1",
+        "patch-package": "^6.5.1",
         "pkg": "^5.8.1",
         "prebuildify": "^5.0.1",
         "prettier": "^2.8.7",

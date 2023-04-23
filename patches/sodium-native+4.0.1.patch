@@ -1,0 +1,20 @@
+diff --git a/node_modules/sodium-native/package.json b/node_modules/sodium-native/package.json
+index bda9dd4..3a5541a 100644
+--- a/node_modules/sodium-native/package.json
++++ b/node_modules/sodium-native/package.json
+@@ -3,15 +3,6 @@
+   "version": "4.0.1",
+   "description": "Low level bindings for libsodium",
+   "main": "index.js",
+-  "files": [
+-    "index.js",
+-    "deps/**",
+-    "modules/**",
+-    "binding.c",
+-    "binding.gyp",
+-    "macros.h",
+-    "prebuilds/**"
+-  ],
+   "dependencies": {
+     "node-gyp-build": "^4.3.0"
+   },
