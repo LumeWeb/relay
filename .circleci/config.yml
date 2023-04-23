@@ -17,7 +17,9 @@ jobs:
 workflows:
     release:
         jobs:
-            - setup
+            - setup:
+                  context:
+                      - publish
             -   node/run:
                     name: build
                     npm-run: build
@@ -39,3 +41,5 @@ workflows:
                                 - develop
                                 - /^develop-.*$/
 
+                    context:
+                        - publish
