@@ -3,23 +3,9 @@ version: 2.1
 orbs:
     node: circleci/node@5.1.0
     ssh: credijusto/ssh@0.5.2
-jobs:
-    setup:
-        docker:
-            -   image: "cimg/node:lts"
-        steps:
-            -   add_ssh_keys:
-                    fingerprints:
-                        - "47:cf:a1:17:d9:81:8e:c5:51:e5:53:c8:33:e4:33:b9"
-            - checkout
-            - ssh/ssh-add-host:
-                  host_url: GITEA_HOST
 workflows:
     release:
         jobs:
-            - setup:
-                  context:
-                      - publish
             -   node/run:
                     name: build
                     npm-run: build
@@ -43,3 +29,9 @@ workflows:
 
                     context:
                         - publish
+                    setup:
+                        -   add_ssh_keys:
+                                fingerprints:
+                                    - "47:cf:a1:17:d9:81:8e:c5:51:e5:53:c8:33:e4:33:b9"
+                        -   ssh/ssh-add-host:
+                                host_url: GITEA_HOST
