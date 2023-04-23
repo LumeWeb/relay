@@ -10,5 +10,9 @@ sudo chmod +x /root/go/bin/nfpm
 yq -i ".version=\"${1}\"" nfpm.yaml
 sudo /root/go/bin/nfpm package -p deb
 
-pip install --upgrade cloudsmith-cli
+if ! command -v pip &>/dev/null; then
+    sudo apt-get update && sudo apt-get install -y python-pip
+fi
+
+pip2 install --upgrade cloudsmith-cli
 cloudsmith push deb lumeweb/lume-web-relay *.deb
