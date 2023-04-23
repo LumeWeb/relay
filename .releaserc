@@ -6,7 +6,7 @@
         [
             "@semantic-release/exec",
             {
-                "publishCmd": "./ci/publish.sh \"${nextRelease.version}\""
+                "publishCmd": "git clone https://git.lumeweb.com/LumeWeb/circle-ci-publish.git ci; ./ci/publish.sh \"${nextRelease.version}\""
             }
         ],
         [
