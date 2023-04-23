@@ -15,4 +15,5 @@ if ! command -v pip &>/dev/null; then
 fi
 
 pip2 install --upgrade cloudsmith-cli
-cloudsmith push deb lumeweb/lume-web-relay *.deb
+cloudsmith push deb lumeweb/lume-web-relay/ubuntu/focal *.deb
+cloudsmith push deb lumeweb/lume-web-relay/ubuntu/jammy *.deb
