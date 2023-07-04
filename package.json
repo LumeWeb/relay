@@ -20,7 +20,7 @@
         "postinstall": "patch-package"
     },
     "dependencies": {
-        "@fastify/websocket": "^7.2.0",
+        "@fastify/websocket": "^8.1.0",
         "@hyperswarm/dht-relay": "^0.4.0",
         "@lumeweb/cfg": "git+https://git.lumeweb.com/LumeWeb/cfg.git",
         "@lumeweb/interface-relay": "git+https://git.lumeweb.com/LumeWeb/interface-relay",
@@ -34,7 +34,7 @@
         "ed25519-keygen": "github:LumeWeb/ed25519-keygen",
         "ethers": "^5.7.2",
         "eventemitter2": "^6.4.9",
-        "fastify": "^4.15.0",
+        "fastify": "^4.19.2",
         "fetch-blob": "github:LumeWeb/fetch-blob",
         "hyperswarm": "^4.4.0",
         "json-stable-stringify": "^1.0.2",
