@@ -29,5 +29,11 @@ export async function start() {
     relay(dht, new Stream(false, connection.socket));
   });
 
-  await relayServer.listen({ port: config.uint("core.port"), host: "0.0.0.0" });
+  let port = config.uint("core.relayPort");
+
+  if (!port) {
+    port = config.uint("core.port");
+  }
+
+  await relayServer.listen({ port, host: "0.0.0.0" });
 }
