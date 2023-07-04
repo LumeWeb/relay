@@ -19,14 +19,14 @@ export async function start() {
   const dht = getSwarm();
 
   let relayServer = fastify({
-    http2: true,
     logger: log.child({ module: "relay-server" }),
   });
 
-  relayServer.register(websocket);
+  await relayServer.register(websocket);
 
   relayServer.get("/", { websocket: true }, (connection) => {
     relay(dht, new Stream(false, connection.socket));
+    connection.socket.binaryType = "nodebuffer";
   });
 
   let port = config.uint("core.relayPort");
