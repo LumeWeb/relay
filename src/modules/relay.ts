@@ -16,7 +16,7 @@ import * as http2 from "http2";
 import websocket from "@fastify/websocket";
 
 export async function start() {
-  const dht = getSwarm();
+  const swarm = getSwarm();
 
   let relayServer = fastify({
     logger: log.child({ module: "relay-server" }),
@@ -25,7 +25,7 @@ export async function start() {
   await relayServer.register(websocket);
 
   relayServer.get("/", { websocket: true }, (connection) => {
-    relay(dht, new Stream(false, connection.socket));
+    relay(swarm.dht, new Stream(false, connection.socket));
     connection.socket.binaryType = "nodebuffer";
   });
 
