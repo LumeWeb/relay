@@ -1,5 +1,5 @@
 // @ts-ignore
-import Config from "@lumeweb/cfg";
+import { Config } from "@lumeweb/relay-cfg";
 import * as os from "os";
 import * as fs from "fs";
 import path from "path";
@@ -34,7 +34,7 @@ config.inject({
 
 config.load();
 
-configDir = config.str("core.confDir");
+configDir = config.str("core.confDir") as string;
 
 if (fs.existsSync(configDir)) {
   try {
