@@ -22,8 +22,8 @@
     "dependencies": {
         "@fastify/websocket": "^8.1.0",
         "@hyperswarm/dht-relay": "^0.4.0",
-        "@lumeweb/cfg": "git+https://git.lumeweb.com/LumeWeb/cfg.git",
-        "@lumeweb/interface-relay": "git+https://git.lumeweb.com/LumeWeb/interface-relay",
+        "@lumeweb/interface-relay": "^0.0.2-develop.1",
+        "@lumeweb/relay-cfg": "^0.1.9",
         "@scure/bip39": "^1.2.0",
         "@types/node": "^18.15.11",
         "@types/ws": "^8.5.4",
