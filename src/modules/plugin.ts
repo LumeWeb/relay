@@ -250,7 +250,9 @@ export async function loadPlugins() {
     await apiManager.loadPluginInstance(plugin);
   }
 
-  for (const plugin of [...new Set(config.array("core.plugins", []))] as []) {
+  for (const plugin of [
+    ...new Set(config.array("core.plugins", [] as any)),
+  ] as []) {
     await apiManager.loadPlugin(plugin);
   }
 

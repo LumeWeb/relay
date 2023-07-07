@@ -32,7 +32,7 @@ export async function start() {
   let port = config.uint("core.relayPort");
 
   if (!port) {
-    port = config.uint("core.port");
+    port = config.uint("core.port") as number;
   }
 
   await relayServer.listen({ port, host: "0.0.0.0" });

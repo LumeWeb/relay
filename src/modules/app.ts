@@ -20,7 +20,10 @@ export async function start() {
 
   await getPluginAPI().emitAsync("core.appServer.buildRoutes");
 
-  await app.listen({ port: config.uint("core.appPort"), host: "0.0.0.0" });
+  await app.listen({
+    port: config.uint("core.appPort") as number,
+    host: "0.0.0.0",
+  });
 
   getPluginAPI().emit("core.appServer.started");
 }
