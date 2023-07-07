@@ -17,7 +17,7 @@ import {
   ProtocolManager,
 } from "./swarm.js";
 import { get as getApp } from "./app.js";
-import type { HDKey } from "ed25519-keygen/dist/hdkey";
+import type { HDKey } from "ed25519-keygen/hdkey";
 import corePlugins from "../plugins";
 import Util from "./plugin/util";
 
