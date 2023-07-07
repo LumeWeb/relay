@@ -8,7 +8,7 @@ import path from "path";
 import type { Logger } from "pino";
 
 import { getHDKey, getSeed } from "../lib/seed.js";
-import type Config from "@lumeweb/cfg";
+import type { Config } from "@lumeweb/relay-cfg";
 import EventEmitter2 from "eventemitter2";
 import log from "../log.js";
 import {
