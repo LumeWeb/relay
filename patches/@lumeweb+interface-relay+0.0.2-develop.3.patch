@@ -1,0 +1,12 @@
+diff --git a/node_modules/@lumeweb/interface-relay/package.json b/node_modules/@lumeweb/interface-relay/package.json
+index 0bfaba0..c503d91 100644
+--- a/node_modules/@lumeweb/interface-relay/package.json
++++ b/node_modules/@lumeweb/interface-relay/package.json
+@@ -2,7 +2,6 @@
+     "name": "@lumeweb/interface-relay",
+     "version": "0.0.2-develop.3",
+     "main": "lib/index.js",
+-    "type": "module",
+     "types": "lib/index.d.ts",
+     "module": "lib/index.mjs",
+     "exports": {
