@@ -43,6 +43,8 @@ export function setupStream(stream: SecretStream) {
     valueEncoding: c.json,
   });
 
+  stream.setKeepAlive(5000);
+
   return stream[RPC_PROTOCOL_SYMBOL];
 }
 
